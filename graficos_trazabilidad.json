@@ -1,0 +1,991 @@
+[
+ {
+  "id": "g1",
+  "titulo": "La audiencia declarada y la comunidad real no son la misma cifra",
+  "veredicto": "CONFIRMADO",
+  "correcciones": [],
+  "corroboracion": [
+   {
+    "cat": "X (barra 1)",
+    "valor": "0,009 %",
+    "fuente": "informe_texto.txt, línea 2590, tabla del M19 «Diferencia entre audiencia (quien ve) y comunidad (quien actúa)»: «X | 602.800 | 3.399 visualizaciones | 37 me gusta + 20 respuestas ≈ 57 | 0,009%». Confirmado además en matriz_texto.txt línea 1387 (hoja «AUDIENCIA FRENTE A COMUNIDAD REAL (M19)»): «X | 602800 | 3399 | 57 | 9.45587259455873e-05» → 0,00946 %, que redondeado a tres decimales da 0,009 %. Verificación propia de píxeles: barra de 42 px sobre escala de 4.659,09 px/% = 0,00902 %."
+   },
+   {
+    "cat": "Instagram (barra 2)",
+    "valor": "0,264 %",
+    "fuente": "informe_texto.txt, línea 2591: «Instagram | 244.000 | Mediana de Reels: 16.600 | 645 me gusta (agosto) | 0,264%». Confirmado en matriz_texto.txt línea 1388: «Instagram | 244000 | 16600 | 645 | 0.00264344262295082» → 0,264 %. Corroborado por segunda vía en informe_texto.txt línea 366: «del 0,382% en la ventana de julio (933 me gusta medios sobre 244.000 seguidores) al 0,264% en la de agosto (645 me gusta medios)». Verificación de píxeles: 1.230 px."
+   },
+   {
+    "cat": "TikTok (barra 3)",
+    "valor": "0,320 %",
+    "fuente": "informe_texto.txt, línea 2592: «TikTok | 319.200 | 27.400 reproducciones medias | 915 me gusta + 95 comentarios ≈ 1.010 | 0,32%». Matriz_texto.txt línea 1389: «TikTok | 319200 | 27400 | 1010 | 0.00316416040100251» → 0,3164 %. MATIZ DECLARADO: el valor exacto es 0,3164 %; el informe lo redondea a 0,32 % y la imagen lo imprime como «0,320 %», es decir con un tercer decimal que finge una precisión que el dato no tiene (0,320 ≠ 0,3164). No es un error de transcripción —la etiqueta impresa se lee sin ambigüedad y la barra está dibujada exactamente en 0,320 (1.491 px / 4.659,09 px/% = 0,32001 %)—, es una imprecisión del gráfico original. Se transcribe lo impreso, como corresponde."
+   },
+   {
+    "cat": "X — detalle «602.800 seg.»",
+    "valor": "602.800",
+    "fuente": "informe_texto.txt, línea 2590 (tabla M19, columna «Audiencia (seguidores)»): «X | 602.800». Repetido en línea 123: «X | @FreddyBernal | 602.800 | NO | Activo, diario» y en matriz_texto.txt línea 1387: «X | 602800». La abreviatura «seg.» es rótulo propio del gráfico, no aparece en los textos."
+   },
+   {
+    "cat": "Instagram — detalle «244.000 seg.»",
+    "valor": "244.000",
+    "fuente": "informe_texto.txt, línea 2591: «Instagram | 244.000». Repetido en línea 125: «Instagram | @freddybernalven | 244.000 | NO | Activo» y en matriz_texto.txt línea 1388: «Instagram | 244000»."
+   },
+   {
+    "cat": "TikTok — detalle «319.200 seg.»",
+    "valor": "319.200",
+    "fuente": "informe_texto.txt, línea 2592: «TikTok | 319.200». Repetido en línea 124: «TikTok principal | @freddybernalr | 319.200 (3 M me gusta) | NO | Activo» y en matriz_texto.txt línea 1389: «TikTok | 319200». DISCREPANCIA INTERNA DEL TEXTO FUENTE, no del gráfico: informe_texto.txt línea 700 y matriz_texto.txt línea 325 dicen «318.600 en TikTok». Es un dato aislado frente a más de diez apariciones de 319.200 en ambos documentos; el gráfico sigue la cifra dominante."
+   },
+   {
+    "cat": "Tile 1 — «1.166.000»",
+    "valor": "1.166.000",
+    "fuente": "matriz_texto.txt, línea 1390, fila TOTAL de la tabla M19: «TOTAL | 1166000 | 47399 | 1712 | 0.00146826758147513». Corroborado aritméticamente: 602.800 + 244.000 + 319.200 = 1.166.000 exacto. En el INFORME esta cifra NO APARECE escrita como «1.166.000» en ningún punto: el informe usa siempre el perímetro de ocho cuentas (1.223.893 / «1,22 millones», línea 77). El perímetro de tres plataformas sí está declarado en matriz_texto.txt línea 1391: «El ecosistema tiene 1,17 millones de audiencia en las tres plataformas principales». No hay contradicción: son dos perímetros distintos y el propio subtítulo del gráfico lo explicita («en las tres plataformas principales»)."
+   },
+   {
+    "cat": "Tile 2 — «1.712»",
+    "valor": "1.712",
+    "fuente": "matriz_texto.txt, línea 1390: «TOTAL | 1166000 | 47399 | 1712 | ...». Corroborado aritméticamente: 57 + 645 + 1.010 = 1.712 exacto. El informe solo ofrece la versión redondeada, línea 2586: «LA COMUNIDAD TOTAL ACTIVA DEL ECOSISTEMA, sumando las tres plataformas, se sitúa en el orden de 1.700 PERSONAS por ciclo de publicación», que es la que usa el subtítulo del gráfico («unas 1.700 personas»)."
+   },
+   {
+    "cat": "Tile 3 — «0,147 %»",
+    "valor": "0,147 %",
+    "fuente": "NO APARECE COMO CADENA LITERAL EN NINGÚN TEXTO. Es un valor DERIVADO, no citado: procede del campo calculado de matriz_texto.txt línea 1390, «TOTAL | 1166000 | 47399 | 1712 | 0.00146826758147513», que expresado en porcentaje es 0,1468 % → 0,147 % al redondear a tres decimales. Recalculado de forma independiente: 1.712 / 1.166.000 = 0,00146827 = 0,146827 %. La cifra es correcta, pero conviene saber que su respaldo es aritmético y no una cita textual."
+   },
+   {
+    "cat": "Nota al pie — «17 veces más interacción»",
+    "valor": "17 veces",
+    "fuente": "informe_texto.txt, línea 2585: «En TikTok, la comunidad ronda las 1.010 personas por publicación — ES 17 VECES MAYOR QUE LA DE X CON LA MITAD DE SEGUIDORES». Idéntico en matriz_texto.txt línea 1247 y resumido en informe_texto.txt línea 77: «En TikTok, con la mitad de seguidores que X, la comunidad es 17 veces mayor». AVISO DE LECTURA: el «17» compara COMUNIDAD ABSOLUTA (1.010 / 57 = 17,7), no las barras del gráfico, cuyo cociente es 0,320 / 0,009 = 35,6. Quien lea la nota junto a las barras puede creer que 17 sale de ellas; no sale. La nota es fiel a la fuente, pero la fuente compara otra magnitud. «Con la mitad de seguidores» sí cuadra: 319.200 / 602.800 = 53 %."
+   }
+  ],
+  "observaciones": "LECTURA DE LA IMAGEN: nítida en todos los elementos. Amplié al doble las dos zonas críticas (fila de tiles y bloque de barras) para confirmar cada dígito; no quedó ninguna cifra dudosa. Todos los valores impresos se leen con certeza total.\n\nORDEN DE BARRAS (de arriba abajo, tal y como aparece): X → Instagram → TikTok. No es un ranking por valor descendente sino ascendente; lo respeté literalmente.\n\nETIQUETAS DE CATEGORÍA: cada barra lleva un bloque de dos líneas a la izquierda. La primera línea es el nombre de la plataforma (la puse en 'cat') y la segunda el tamaño de audiencia (\"602.800 seg.\", \"244.000 seg.\", \"319.200 seg.\"), que trasladé a 'detalle' literalmente, incluida la abreviatura \"seg.\".\n\nTÍTULO: el título esperado que me disteis («La audiencia declarada y la comunidad real») está truncado respecto al impreso. En la imagen se lee completo: «La audiencia declarada y la comunidad real NO SON LA MISMA CIFRA». Transcribí el impreso.\n\nCOLOR / CAMPO 'destaca' — ADVERTENCIA HONESTA: hay tres colores distintos, pero ninguno de los dos \"acentos\" del esquema encaja del todo. Medí los píxeles: X = gris claro apagado RGB(185,190,199) ≈ #B9BEC7; Instagram = azul base RGB(42,120,214) ≈ #2A78D6; TikTok = verde RGB(27,175,122) ≈ #1BAF7A. Asigné TikTok=\"A\" (verde de acento positivo, es la mejor cifra y la tesis del gráfico) e Instagram=\"\" (azul base). Para X puse \"B\" por criterio SEMÁNTICO (es la peor barra y recibe un tratamiento cromático propio), pero avisando de que NO está pintada con un color de alerta: es un gris apagado de des-énfasis. Los colores de alerta reales del gráfico (naranja #E8-ish en la tile \"1.712\" y rojo en \"0,147 %\") solo aparecen en las tiles, no en las barras. Si la re-renderización usa rojo para \"B\", X saldrá con un color que no tiene en el original.\n\nPROPORCIONALIDAD VERIFICADA: medí los anchos de barra en píxeles (X ≈ 40 px, Instagram ≈ 1.230 px, TikTok ≈ 1.490 px). El cociente TikTok/Instagram = 1,211 coincide con 0,320/0,264 = 1,212, y X extrapolado da 0,0086 ≈ 0,009. El eje es lineal desde cero y las etiquetas impresas son coherentes con el dibujo. Ninguna barra está distorsionada.\n\nCONTRASTE CON EL TEXTO — TODO CUADRA, con tres matices que declaro:\n1) La tabla del M19 (informe_texto.txt, líneas 2590-2592) confirma las tres barras exactamente: X 0,009%, Instagram 0,264%, TikTok 0,32%. ÚNICA diferencia de FORMATO, no de valor: el texto escribe \"0,32%\" y la imagen imprime \"0,320 %\" (tres decimales, por homogeneidad con las otras dos). Transcribí la etiqueta de la imagen, que es lo pedido.\n2) Las tiles son consistentes y las recalculé: 602.800 + 244.000 + 319.200 = 1.166.000 exacto; 57 + 645 + 1.010 = 1.712 exacto; 1.712 / 1.166.000 = 0,1468% → 0,147% al redondear. No hay ninguna cifra inventada en el gráfico.\n3) OJO A UNA APARENTE DISCREPANCIA QUE NO LO ES: el resumen ejecutivo del informe habla de \"1,22 millones\" (1.223.893 seguidores en OCHO cuentas). El gráfico usa 1.166.000, que son SOLO las tres plataformas principales — y así lo dice explícitamente su propio subtítulo. La matriz lo confirma en su línea 1391: \"1,17 millones de audiencia en las tres plataformas principales\". No hay contradicción, son dos perímetros distintos.\n4) Detalle menor sin impacto: la línea 700 del informe cita \"318.600 en TikTok\" mientras el resto del documento (y el gráfico) usan 319.200. Es una inconsistencia interna del texto fuente, no un error de lectura de la imagen; el gráfico sigue la cifra dominante, 319.200."
+ },
+ {
+  "id": "g2",
+  "titulo": "Ocho cuentas, 1,22 millones de seguidores y una sola ruta de salida",
+  "veredicto": "CORREGIDO",
+  "correcciones": [
+   {
+    "ruta": "observaciones (medición de la barra de X)",
+    "antes": "X≈1.206 px para 602.800 → 0,002 px/seguidor",
+    "despues": "X = 1.203 px para 602.800 → 0,00199568 px/seguidor. Anchuras reales medidas: 1.203 / 637 / 487 / 64 / 39 / 6 / 5 / 2 px, todas con origen común en x=397.",
+    "fuente": "Medición directa sobre /tmp/claude-0/-home-user-freddy-bernal/e99fd5b7-9e4f-5b28-a347-eb077c5a5ead/scratchpad/graficos_png/g2.png: barrido de píxeles fila a fila. Barra de X (color 42,120,214) ocupa x=397..1599, n=1.203 px (filas y=211-252). Las siete grises (185,190,199) arrancan todas en x=397 y terminan en x=1033, 883, 460, 435, 402, 401 y 398. No cambia ninguna cifra del gráfico: el ajuste con escala lineal desde 0 sigue siendo perfecto (esperado 1.203,0 / 637,0 / 486,9 / 63,9 / 38,7 / 5,8 / 5,4 / 1,8 px)."
+   },
+   {
+    "ruta": "observaciones (explicación del denominador del texto)",
+    "antes": "los del TEXTO salen sobre el total redondeado de «aproximadamente 1.221.000» que declara el propio M01",
+    "despues": "los del TEXTO salen sobre 1.220.993, que NO es un redondeo de 1.223.893 (eso redondearía a 1.224.000) sino el total SIN Mastodon: 1.223.893 − 2.900 = 1.220.993, que es lo que M01 declara como «aproximadamente 1.221.000».",
+    "fuente": "informe_texto.txt, M01 punto 1, línea 118: «La audiencia total acumulada es de aproximadamente 1.221.000 seguidores, distribuida de forma muy desigual: X concentra el 49,4%, TikTok principal el 26,1%, Instagram el 20,0%, Facebook el 2,6% y el resto el 1,9%». Las cinco cifras cuadran solo con 1.220.993: 602.800/1.220.993=49,37→49,4; 319.200→26,14→26,1; 244.000→19,98→20,0; 32.000→2,62→2,6; resto (19.400+2.683+910=22.993)→1,88→1,9. El mismo denominador explica el 95,5% de M12 punto 1, línea 1720 («tres plataformas […] reúnen el 95,5% de la audiencia total»): 1.166.000/1.220.993=95,50 (sobre 1.223.893 sería 95,3)."
+   },
+   {
+    "ruta": "observaciones (fuente no citada de los porcentajes)",
+    "antes": "[no se mencionaba la columna «% del total» de la matriz]",
+    "despues": "Se añade: la matriz calcula sus propios porcentajes sobre un TERCER denominador, 1.224.068 (las ocho cuentas más el segundo canal de YouTube, 175 suscriptores), lo que da 49,2 % para X. Por tanto el 49,3 % impreso en la imagen no aparece literalmente en ninguna fuente de texto: solo es reconstruible dividiendo entre la suma exacta de las ocho barras.",
+    "fuente": "matriz_texto.txt, «SHEET: 3. Datos por plataforma», línea 1375: «X (Twitter) | @FreddyBernal | 602800 | 0.492456301447305» y línea 1383: «TOTAL | 8 cuentas sociales + 2 canales de YouTube | 1224068 | 1». Comprobado: 602.800/0,492456301447305 = 1.224.068 exacto."
+   }
+  ],
+  "corroboracion": [
+   {
+    "cat": "X",
+    "valor": "602.800",
+    "fuente": "informe_texto.txt L123 (M01 p.1): «X | @FreddyBernal | 602.800 | NO | Activo, diario». Repetido en L151 (M01 p.3), L188 (M01 p.6) y L1725 (M12 p.1). matriz_texto.txt L1375 (hoja 3): «X (Twitter) | @FreddyBernal | 602800 | 0.492456301447305». CONFIRMADO."
+   },
+   {
+    "cat": "TikTok principal",
+    "valor": "319.200",
+    "fuente": "informe_texto.txt L124 (M01 p.1): «TikTok principal | @freddybernalr | 319.200 (3 M me gusta) | NO | Activo». Repetido en L152, L189, L1726. matriz_texto.txt L1376: «TikTok principal | @freddybernalr | 319200 | 0.260769826512906». CONFIRMADO. (Aviso: informe L700 y matriz L325 dicen aisladamente «318.600 en TikTok»; es la única aparición divergente frente a más de diez con 319.200. El gráfico usa la cifra dominante y la de todas las tablas.)"
+   },
+   {
+    "cat": "Instagram",
+    "valor": "244.000",
+    "fuente": "informe_texto.txt L125 (M01 p.1): «Instagram | @freddybernalven | 244.000 | NO | Activo». Repetido en L153, L190, L1727. matriz_texto.txt L1377: «Instagram | @freddybernalven | 244000 | 0.1993353310437». CONFIRMADO."
+   },
+   {
+    "cat": "Facebook",
+    "valor": "32.000",
+    "fuente": "informe_texto.txt L126 (M01 p.1): «Facebook | perfil personal (…706206) | 32.000 | NO | Activo, hace 6 horas». Repetido en L154, L191, L768, L1728. matriz_texto.txt L1378: «Facebook | Perfil personal (…706206) | 32000 | 0.0261423384975345». CONFIRMADO."
+   },
+   {
+    "cat": "TikTok secundario",
+    "valor": "19.400",
+    "fuente": "informe_texto.txt L127 (M01 p.1): «TikTok secundario | @freddybernalvzla | 19.400 | NO | Activo». Repetido en L155, L192, L1729. matriz_texto.txt L1379: «TikTok secundario | @freddybernalvzla | 19400 | 0.0158487927141303». CONFIRMADO."
+   },
+   {
+    "cat": "Mastodon",
+    "valor": "2.900",
+    "fuente": "informe_texto.txt L128 (M01 p.1): «Mastodon | @FreddyBernal@mastodon.social | 2.900 | N/A | Junio 2020 — ABANDONADA». Repetido en L158, L175, L185, L194, L1730. matriz_texto.txt L1380: «Mastodon | @FreddyBernal@mastodon.social | 2900 | 0.00236914942633906». CONFIRMADO."
+   },
+   {
+    "cat": "Threads",
+    "valor": "2.683",
+    "fuente": "informe_texto.txt L129 (M01 p.1): «Threads | @freddybernalven | 2.683 | NO | Hace 3 días». Repetido en L156, L193, L1731. matriz_texto.txt L1381: «Threads | @freddybernalven | 2683 | 0.00219187169340265». CONFIRMADO. (Aviso: el pie de la Figura 1, informe L178, dice «2.686 seguidores» en Threads. Es la única aparición divergente frente a cuatro con 2.683; el gráfico usa 2.683, la de todas las tablas.)"
+   },
+   {
+    "cat": "YouTube",
+    "valor": "910",
+    "fuente": "informe_texto.txt L130 (M01 p.1): «YouTube | @FreddyBernalOficial | 910 suscriptores | NO | Hace 11 meses — ABANDONADO». Repetido en L157, L195, L623, L629, L636, L1732. matriz_texto.txt L1382: «YouTube (enlazado) | @FreddyBernalOficial | 910 | 0.000743422751023636». CONFIRMADO, con el matiz de que son SUSCRIPTORES, no seguidores."
+   },
+   {
+    "cat": "TOTAL de las ocho barras",
+    "valor": "1.223.893",
+    "fuente": "Suma aritmética de las ocho barras = 1.223.893 exacto. Coincide literalmente con informe_texto.txt L1733 (M12 p.1): «TOTAL | — | ≈ 1.223.893 | 100% | —» y con L77: «El ecosistema suma 1.223.893 seguidores en ocho cuentas». CONFIRMADO."
+   },
+   {
+    "cat": "% de X (etiqueta «49,3 %»)",
+    "valor": "49,3 %",
+    "fuente": "NO APARECE EN EL TEXTO — solo legible en la imagen. Las dos fuentes escritas dan otras cifras: informe_texto.txt L118 y L1725 dicen «49,4%» (denominador 1.220.993, sin Mastodon) y matriz_texto.txt L1375 da 0.492456301447305 = 49,2 % (denominador 1.224.068, con el segundo canal de YouTube). El 49,3 % de la imagen solo es reconstruible sobre la suma exacta de las ocho barras: 602.800/1.223.893 = 49,25 → 49,3. Legible sin ambigüedad en el PNG ampliado."
+   },
+   {
+    "cat": "% de TikTok principal (etiqueta «26,1 %»)",
+    "valor": "26,1 %",
+    "fuente": "informe_texto.txt L118: «TikTok principal el 26,1%» y L1726: «319.200 | 26,1%». Coincide además con la imagen sobre el total exacto (319.200/1.223.893 = 26,08 → 26,1). CORROBORADO."
+   },
+   {
+    "cat": "% de Instagram (etiqueta «19,9 %»)",
+    "valor": "19,9 %",
+    "fuente": "NO APARECE EN EL TEXTO DEL INFORME — este escribe «20,0%» (L118 y L1727, denominador 1.220.993). Sí coincide con matriz_texto.txt L1377: «0.1993353310437» = 19,93 %, y con el cálculo sobre las ocho barras (244.000/1.223.893 = 19,94 → 19,9). Legible sin ambigüedad en el PNG."
+   },
+   {
+    "cat": "% de Facebook (etiqueta «2,6 %»)",
+    "valor": "2,6 %",
+    "fuente": "informe_texto.txt L118: «Facebook el 2,6%» y L1728: «32.000 | 2,6%». matriz L1378: 0.0261423384975345 = 2,61 %. CORROBORADO en las tres fuentes."
+   },
+   {
+    "cat": "% de TikTok secundario (etiqueta «1,6 %»)",
+    "valor": "1,6 %",
+    "fuente": "informe_texto.txt L1729 (M12 p.1): «TikTok secundaria | @freddybernalvzla | 19.400 | 1,6% | Activa, biografía desactualizada». matriz L1379: 0.0158487927141303 = 1,58 %. CORROBORADO."
+   },
+   {
+    "cat": "Mastodon / Threads / YouTube — porcentaje",
+    "valor": "(sin porcentaje impreso)",
+    "fuente": "Verificado por ampliación del PNG: las tres últimas filas imprimen solo la cifra («2.900», «2.683», «910»), sin el bloque «· x,x %» que sí llevan las cinco primeras. No es una omisión de la transcripción. El informe sí les asigna porcentaje en L1730-1732 (0,2% / 0,2% / 0,07%), pero el gráfico no lo imprime."
+   },
+   {
+    "cat": "TÍTULO",
+    "valor": "Ocho cuentas, 1,22 millones de seguidores y una sola ruta de salida",
+    "fuente": "Literal en la imagen (comprobado a 1,3× sobre la región 20,20-1400,70). El «1,22 millones» concuerda con informe_texto.txt L146: «Un ecosistema de 1,22 millones de seguidores…» y L183: «De 1,22 millones de seguidores…». Las «ocho cuentas» siguen el inventario de M01 p.1 (L123-L130); la matriz (hoja 3) lista NUEVE cuentas sociales porque añade el segundo canal de YouTube @FreddyBernal.oficial, 175 suscriptores, que el gráfico omite."
+   },
+   {
+    "cat": "SUBTÍTULO",
+    "valor": "Solo X enlaza a un destino propio. Las siete cuentas restantes suman 618.000 seguidores sin ningún enlace en biografía.",
+    "fuente": "Literal en la imagen (comprobado a 1,2× sobre la región 20,70-1600,120), punto final incluido. Respaldado parcialmente por informe_texto.txt L183 (M01 p.6): «De 1,22 millones de seguidores, solo los 602.800 de X tienen una ruta hacia un destino propio. El 50,6% restante —más de 618.000 personas— está en plataformas sin ningún enlace». ATENCIÓN: la palabra «siete» es del gráfico y es aritméticamente falsa — ver la entrada «NOTA / LEYENDA»."
+   },
+   {
+    "cat": "NOTA / LEYENDA",
+    "valor": "Con enlace en biografía · Sin ninguna ruta de salida — 618.000 personas, el 50,6 % de la audiencia",
+    "fuente": "El TEXTO es literal en la imagen (leyenda de dos entradas al pie, comprobada a 1,35× sobre la región 380,765-1750,815), incluida la raya larga «—» y el espacio antes de «%». DOS SALVEDADES QUE HAY QUE DECIR SIN MAQUILLAR: (1) el «·» que une las dos entradas NO ESTÁ IMPRESO — en la imagen las separa solo espacio en blanco; es un unión editorial, y en este mismo gráfico el «·» sí es un separador impreso real entre cifra y porcentaje, por lo que puede inducir a error. (2) La cifra 618.000 no cuadra con las siete barras grises: suman 621.093 (= 1.223.893 − 602.800), el 50,7 % del total dibujado. Los 618.000 son SEIS cuentas, no siete: informe_texto.txt L194 (M01 p.6) saca a Mastodon del grupo sin ruta —«Mastodon | 2.900 | Tres enlaces, uno ROTO | Enlaza a un Instagram inexistente»— y la acción del módulo (L196) enumera solo «TikTok, Instagram, Threads, Facebook y YouTube». 319.200+244.000+32.000+19.400+2.683+910 = 618.193 ≈ 618.000, y 618.193/1.220.993 = 50,6 %. El gráfico pinta Mastodon en gris pero usa una cifra que la excluye: es una inconsistencia del gráfico original, no de la transcripción."
+   },
+   {
+    "cat": "COLOR / destaca",
+    "valor": "solo X en azul de acento",
+    "fuente": "Muestreo de píxeles del PNG: la barra de X es RGB (42,120,214), idéntica al cuadro de leyenda «Con enlace en biografía» (medido en x=401, y=785-795); las otras siete son RGB (185,190,199), idénticas al cuadro «Sin ninguna ruta de salida». Coherente con informe_texto.txt L188 (M01 p.6): «X | 602.800 | freddybernaloficial.com | Correcto. Única plataforma que convierte». destaca=\"A\" solo en X reproduce la imagen exactamente."
+   },
+   {
+    "cat": "GEOMETRÍA / escala",
+    "valor": "lineal desde 0, sin eje visible",
+    "fuente": "Medición propia sobre el PNG: las ocho barras arrancan en x=397 y miden 1.203 / 637 / 487 / 64 / 39 / 6 / 5 / 2 px. Con escala lineal desde 0 anclada en X, lo esperado es 1.203,0 / 637,0 / 486,9 / 63,9 / 38,7 / 5,8 / 5,4 / 1,8 px: coinciden todas dentro de ±0,4 px. Orden estrictamente descendente. Sin eje X, sin rejilla y sin marcas de escala (verificado por barrido). Ninguna barra está dibujada de forma incoherente con su etiqueta."
+   },
+   {
+    "cat": "UNIDAD del eje",
+    "valor": "seguidores (en YouTube, suscriptores)",
+    "fuente": "informe_texto.txt L130: «YouTube | @FreddyBernalOficial | 910 suscriptores». El gráfico suma suscriptores y seguidores en el mismo eje sin distinguirlo, y tampoco señala que Mastodon está «ABANDONADA desde junio de 2020» (L128) ni YouTube «ABANDONADO, 11 meses sin publicar» (L1732)."
+   }
+  ],
+  "observaciones": "LECTURA DE LA IMAGEN — CERTEZA ALTA. Amplié el PNG (1947×844 px) por regiones a 1,5-3× para leer cada etiqueta. Las ocho etiquetas de valor son perfectamente legibles y no hay ninguna cifra dudosa: 602.800 / 319.200 / 244.000 / 32.000 / 19.400 / 2.900 / 2.683 / 910. El orden de arriba abajo es exactamente el transcrito (descendente por seguidores). Verifiqué además que las longitudes de barra son coherentes con una escala lineal desde 0 (X≈1.206 px para 602.800 → 0,002 px/seguidor; TikTok principal medido ≈637 px, esperado 638; Instagram ≈489 vs 488 esperado; Mastodon 6 px, Threads 5 px, YouTube 2 px). No hay incoherencias entre barra dibujada y etiqueta.\n\nCOLORES. Muestreé los píxeles: solo la barra de X es azul de acento (RGB 42,120,214), idéntico al cuadro de leyenda «Con enlace en biografía» → la marqué destaca=\"A\". Las otras siete son todas del mismo gris neutro (RGB 185,190,199), idéntico al cuadro de leyenda «Sin ninguna ruta de salida». Dejé destaca=\"\" en las siete porque ese gris es el color BASE de la paleta, no un color de alerta secundario (no hay rojo/naranja en el gráfico); pero conviene saber que semánticamente ese gris SÍ marca la categoría negativa según la leyenda.\n\nETIQUETA DE VALOR vs DETALLE. Lo que está impreso junto a cada una de las cinco primeras barras es una cadena doble separada por un punto medio, p. ej. «602.800  ·  49,3 %». Puse la cifra de seguidores en 'etiqueta_valor' (que es la unidad del eje) y el porcentaje en 'detalle', literales ambos con coma decimal, punto de millar y el espacio antes del % tal como aparecen. Las tres últimas barras (Mastodon, Threads, YouTube) NO llevan porcentaje impreso: solo la cifra. Por eso su 'detalle' va vacío; no es una omisión mía.\n\nDISCREPANCIA REAL 1 — PORCENTAJES DE X E INSTAGRAM. La imagen imprime 49,3 % para X y 19,9 % para Instagram. El texto del informe imprime otras cifras en dos sitios: M01 punto 1 dice «X concentra el 49,4%, TikTok principal el 26,1%, Instagram el 20,0%, Facebook el 2,6% y el resto el 1,9%», y la tabla de M12 punto 1 repite 49,4% y 20,0%. La causa es el denominador: los porcentajes de la IMAGEN salen exactos sobre el total preciso de 1.223.893 (602.800/1.223.893 = 49,25 → 49,3; 244.000/1.223.893 = 19,94 → 19,9), mientras que los del TEXTO salen sobre el total redondeado de «aproximadamente 1.221.000» que declara el propio M01 (49,37 → 49,4; 19,98 → 20,0). TikTok principal (26,1 %), Facebook (2,6 %) y TikTok secundario (1,6 %) coinciden en ambas fuentes. He transcrito lo que dice la IMAGEN, que es lo pedido; no he corregido nada hacia el texto.\n\nDISCREPANCIA REAL 2 — LOS 618.000 NO SON LA SUMA DE LAS SIETE BARRAS GRISES. El subtítulo afirma «Las siete cuentas restantes suman 618.000 seguidores sin ningún enlace en biografía» y la leyenda repite «618.000 personas, el 50,6 % de la audiencia». Pero la suma real de las siete barras grises es 621.093 (1.223.893 − 602.800), no 618.000. La cifra 618.000 del informe corresponde a SEIS cuentas, no siete: la tabla de M01 punto 6 excluye a Mastodon del grupo «sin ninguna ruta», porque Mastodon sí tiene «Tres enlaces, uno ROTO». 319.200+244.000+32.000+19.400+2.683+910 = 618.193 ≈ 618.000. El gráfico pinta Mastodon en gris (grupo «sin ruta de salida») pero usa la cifra de 618.000 que la excluye: es una inconsistencia del gráfico original, no un error de transcripción. Del mismo modo, el 50,6 % es 618.000 sobre ~1.221.000; sobre el total exacto de 1.223.893 sería 50,5 %.\n\nOTRAS COMPROBACIONES CONTRA EL TEXTO — TODAS COINCIDEN. Las ocho cifras de seguidores están confirmadas literalmente en la tabla de M01 punto 1 (líneas 123-131 de informe_texto.txt), en la tabla de verificación de M01 punto 3, en la de enlaces de M01 punto 6 y en la tabla de M12 punto 1, que además cierra con «TOTAL ≈ 1.223.893». El «1,22 millones» del título coincide con el redondeo que usa el informe en todo momento.\n\nMATIZ DE UNIDAD. Los 910 de YouTube son SUSCRIPTORES, no seguidores (el informe dice «910 suscriptores»); el gráfico los suma en el mismo eje sin distinguirlo. Igual pasa con Mastodon, que el informe marca como «ABANDONADA desde junio de 2020» y YouTube como «ABANDONADO, 11 meses sin publicar»: el gráfico no señala ese estado.\n\nDATO SUELTO SIN IMPACTO EN ESTE GRÁFICO. En el informe hay una cifra de TikTok inconsistente en un punto aislado (línea 700: «318.600 en TikTok»), frente a 319.200 en todas las demás apariciones. El gráfico usa 319.200, la cifra dominante y la de las tablas; no cambio nada.\n\nNO HAY OTROS ELEMENTOS. Comprobé por conteo de píxeles que no hay texto ni entre el subtítulo y la primera barra ni por debajo de la leyenda: el gráfico no lleva pie ni fuente impresa. Lo que consigno en 'nota_en_imagen' es la LEYENDA de dos entradas del pie del gráfico, unida con un punto medio, porque es el único texto impreso al final; no es una nota al pie propiamente dicha. Tampoco hay eje X visible, ni rejilla, ni marcas de escala."
+ },
+ {
+  "id": "g3",
+  "titulo": "La cuenta más grande es la que menos gente ve",
+  "veredicto": "CONFIRMADO",
+  "correcciones": [],
+  "corroboracion": [
+   {
+    "cat": "X",
+    "valor": "0,56 % — 3.399 visualizaciones medias sobre 602.800 seguidores",
+    "fuente": "informe_texto.txt línea 841: «La cuenta tiene 602.800 seguidores y una media de 3.399 visualizaciones por publicación. Eso es un 0,56% de la audiencia propia: de cada mil seguidores, cinco ven lo que publica.» — también informe línea 956 («Media del periodo: 3.399 visualizaciones... Sobre 602.800 seguidores, la media de visualizaciones equivale al 0,56% de la audiencia») e informe línea 1804 (tabla de M12 punto 9: «X | Visualizaciones medias por publicación (192 medidas) | 3.399»). En la matriz: línea 442 (M06 punto 9, texto idéntico al de informe 956) y línea 1375 («X (Twitter) | @FreddyBernal | 602800 | ... | 3.399 visualizaciones medias por publicación (192 medidas) | 0,56% de alcance sobre seguidores»). Comprobado aritméticamente: 3.399 / 602.800 = 0,5639 % → 0,56 %."
+   },
+   {
+    "cat": "Instagram",
+    "valor": "6,80 % — 16.600 reproducciones medianas por Reel sobre 244.000",
+    "fuente": "informe_texto.txt línea 317 (tabla «Métrica de los 24 Reels medidos | Valor | % sobre 244.000 seguidores»): «Mediana | 16.600 | 6,8%»; informe línea 375: «La mediana de 16.600 reproducciones equivale al 6,8% de los seguidores...»; informe línea 1802 (tabla de M12 punto 9): «Instagram | Reproducciones medianas de Reels (24 medidos) | 16.600». En la matriz: línea 169 (misma frase que informe 375) y línea 1377 («Instagram | @freddybernalven | 244000 | ... | Mediana de Reels 16.600 · máximo 340.000 (139% de la base)»). Comprobado: 16.600 / 244.000 = 6,803 % → 6,80 %."
+   },
+   {
+    "cat": "TikTok",
+    "valor": "8,60 % — 27.400 reproducciones medias sobre 319.200 seguidores",
+    "fuente": "informe_texto.txt línea 599: «En la ventana reciente, la media de 27.400 reproducciones equivale al 8,6% de la base...»; informe línea 1799 (tabla de M12 punto 9): «TikTok | Reproducciones medias, muestra reciente de 63 vídeos | ≈ 27.400»; informe línea 598 y 1726 para los 319.200 seguidores. En la matriz: línea 279 (misma frase que informe 599) y línea 1376 («TikTok principal | @freddybernalr | 319200 | ... | 27.400 reproducciones medias (63 recientes)»). AVISO ARITMÉTICO: 27.400 / 319.200 = 8,584 %, que redondeado a dos decimales sería 8,58 %, no 8,60 %. La etiqueta impresa (8,60 %) reproduce el 8,6 % de una cifra del informe redondeada a un decimal y luego re-expresada con dos. La transcripción de la imagen es correcta; la imprecisión es del propio gráfico, no del extractor."
+   },
+   {
+    "cat": "Título impreso",
+    "valor": "«La cuenta más grande es la que menos gente ve»",
+    "fuente": "Solo legible en la imagen (leído a 200 %). NO aparece con esa redacción en el informe ni en la matriz; el informe expresa la misma idea en línea 2327 y 2997 («la cuenta de Bernal con más seguidores (X, 602.800) es la menos viva») y en línea 1774 («la plataforma con menos seguidores de las tres principales es la que tiene la audiencia más viva»). Es un titular redactado para el gráfico. No coincide con el título esperado que se dio al extractor («Alcance real como porcentaje de la audiencia potencial»): prevalece lo impreso."
+   },
+   {
+    "cat": "Nota al pie — «unos 6 de cada 1.000»",
+    "fuente": "Solo legible en la imagen; el informe dice otra cosa. Informe línea 841: «de cada mil seguidores, cinco ven lo que publica»; informe línea 1774 y matriz línea 889: «En X, de cada 100 seguidores, apenas 0,56 llegan a ver siquiera la publicación». El valor exacto es 5,64 por cada 1.000 (3.399/602.800×1.000): el gráfico redondea a 6 y el informe trunca a 5. Verifiqué el dígito impreso ampliando la nota: es inequívocamente un 6. No es error de transcripción, sí es una incoherencia entre gráfico e informe que conviene armonizar antes de entregar al cliente.",
+    "valor": "«De cada 1.000 seguidores de X, unos 6 ven lo que publica.»"
+   },
+   {
+    "cat": "Eje de valores",
+    "valor": "sin rótulo",
+    "fuente": "NO APARECE EN EL TEXTO — y tampoco en la imagen: el gráfico no tiene eje rotulado, ni cuadrícula, ni ticks, ni leyenda. El campo 'eje_valor' de la extracción es una paráfrasis del subtítulo añadida por el extractor, no un rótulo transcrito. Se conserva por ser descriptivamente correcto, pero queda constancia de que no es literal."
+   }
+  ],
+  "observaciones": "LECTURA DE LA IMAGEN: las tres barras y sus etiquetas se leen con nitidez total; no hay ningún carácter dudoso. Orden de arriba abajo: X (0,56 %), Instagram (6,80 %), TikTok (8,60 %). Verifiqué la proporcionalidad midiendo los píxeles de cada barra (X = 72 px, Instagram = 879 px, TikTok = 1112 px, todas desde x=233): la escala es exactamente 129,3 px por punto porcentual en las tres, lo que confirma que los valores dibujados son 0,56 / 6,80 / 8,60 y no otros redondeados.\n\nCOLORES (campo 'destaca'): muestreé los RGB reales. X está en rojo rgb(208,59,59) → lo codifiqué como \"B\" (color de alerta, la peor). TikTok está en verde rgb(27,175,122) → \"A\" (color de acento, la mejor). Instagram está en azul rgb(42,120,214), que es el color base del resto de gráficos del informe → cadena vacía. Esta asignación es una interpretación mía de la paleta, no algo rotulado en la imagen.\n\nTÍTULO: el título impreso es «La cuenta más grande es la que menos gente ve», que NO coincide con el título esperado que se me indicó («Alcance real como porcentaje de la audiencia potencial»). He transcrito literalmente el que aparece en la imagen. El texto esperado se parece más al subtítulo real, que sí habla de porcentaje sobre la base de seguidores.\n\nCOTEJO CON EL TEXTO: las seis cifras de los detalles se confirman una a una en el informe y en la matriz. 3.399 visualizaciones medias sobre 602.800 seguidores = 0,56 % (informe líneas 841 y 956; matriz líneas 442 y 1375). 16.600 reproducciones medianas por Reel sobre 244.000 = 6,8 % (informe líneas 317 y 375; matriz línea 169). 27.400 reproducciones medias sobre 319.200 = 8,6 % (informe línea 599; matriz línea 279). La tabla del propio M12 punto 9 recoge además ≈ 27.400, 16.600 y 3.399 como valores del módulo.\n\nDISCREPANCIA MENOR DETECTADA: la nota al pie del gráfico dice «De cada 1.000 seguidores de X, unos 6 ven lo que publica». El informe, en la línea 841, dice «de cada mil seguidores, cinco ven lo que publica», y la línea 1775 dice «de cada 100 seguidores, apenas 0,56 llegan a ver». El valor exacto es 5,6 por cada 1.000, de modo que el gráfico redondea hacia arriba (6) y el texto del informe trunca hacia abajo (5). Releí la nota ampliada al 200 % para descartar un error de lectura: el dígito impreso es inequívocamente un 6.\n\nMATIZ SOBRE LA COMPARABILIDAD: la propia nota del gráfico advierte que Instagram aporta una MEDIANA de Reels mientras X y TikTok aportan MEDIAS, y que cada plataforma cuenta una vista con criterio distinto. No es un error de transcripción, pero conviene no leer las tres barras como magnitudes homogéneas.\n\nNADA MÁS QUEDÓ ILEGIBLE: no hay eje de valores rotulado, ni cuadrícula, ni leyenda, ni marcas de referencia en la imagen. El gráfico es de un solo panel, como corresponde al tipo \"barh\"."
+ },
+ {
+  "id": "g4",
+  "titulo": "Cada plataforma, medida contra su propia referencia de sector",
+  "veredicto": "CONFIRMADO",
+  "correcciones": [
+   {
+    "ruta": "observaciones (descripción de la geometría de las barras)",
+    "antes": "«las barras de este gráfico son VERTICALES y crecen hacia abajo desde la línea superior de su zona, con la banda de referencia como rectángulo gris de fondo»",
+    "despues": "Las barras son verticales pero crecen HACIA ARRIBA desde una línea de base común situada en y=477 (el 0 % de cada panel). Las tres tienen su borde inferior exactamente en y=477 y su borde superior a distinta altura.",
+    "fuente": "Medición directa de píxeles sobre /…/graficos_png/g4.png: rectángulo verde x189-314 y312-477; rectángulo rojo Instagram x845-969 y442-477; rectángulo rojo X x1501-1625 y452-477. Los tres comparten borde inferior en y=477, y ninguno arranca en el borde superior de su banda gris (que está en y=273, y=273 y y=250 respectivamente)."
+   },
+   {
+    "ruta": "observaciones (control de escala / supuesta desviación de dibujo)",
+    "antes": "«Instagram ~31 px medidos frente a ~37 px teóricos; TikTok ~170 px frente a ~180 px teóricos; X ~25 px frente a ~26 px teóricos… hay una desviación de dibujo de hasta un 6 % en la barra de TikTok e Instagram»",
+    "despues": "No existe tal desviación. Alturas reales: TikTok 166 px, Instagram 36 px, X 26 px. Con la escala que fija cada banda (TikTok 34,5 px por punto porcentual; Instagram 138 px/pp; X 46 px/pp) esas alturas equivalen a 4,81 %, 0,261 % y 0,565 %, es decir, coinciden con las etiquetas impresas (4,87 / 0,264 / 0,56) dentro del ±1 %. El dibujo es fiel a los datos.",
+    "fuente": "Cálculo sobre la imagen: banda TikTok y273-341 = 69 px para 2 pp (4-6 %) → 34,5 px/pp, 166/34,5 = 4,81 %. Banda Instagram y273-410 = 138 px para 1 pp (0,5-1,5 %), 36/138 = 0,261 %. Banda X y250-387 = 138 px para 3 pp (2-5 %) → 46 px/pp, 26/46 = 0,565 %. En los tres casos el 0 % proyectado cae en y=477, la línea de base común."
+   },
+   {
+    "ruta": "(sin cambios) paneles[*].barras[*].valor, etiqueta_valor, banda, nombre, detalle, destaca, titulo_en_imagen, subtitulo_en_imagen, nota_en_imagen, tiles",
+    "antes": "—",
+    "despues": "Ninguna cifra ni etiqueta del gráfico ha tenido que enmendarse: las tres barras, las tres bandas, los tres títulos de panel, los tres veredictos, el título, el subtítulo, la nota vacía y los tiles vacíos se confirman tal como estaban.",
+    "fuente": "Lectura independiente de la imagen a 1947x571 px y con recortes ampliados 2x-4x, más cotejo con informe_texto.txt líneas 1773-1783 y matriz_texto.txt líneas 1375-1377 y 1471-1473."
+   }
+  ],
+  "corroboracion": [
+   {
+    "cat": "TikTok",
+    "valor": "4,87 % (interacciones / reproducciones; banda de referencia 4–6 %; veredicto SALUDABLE)",
+    "fuente": "informe_texto.txt línea 1779, tabla de «### 7.  Tasa de engagement por plataforma vs. benchmark del sector»: «TikTok | Interacciones sobre reproducciones (muestra de 14) | 4,87% | 4-6% se considera bueno | SALUDABLE — la mejor cifra del ecosistema». Corroborado además en informe_texto.txt línea 97 («Engagement TikTok (M12) | 4,87% | SALUDABLE — la mejor cifra del ecosistema»), línea 1496, línea 1816, línea 2818 y en matriz_texto.txt línea 1376 («4,87% interacciones sobre reproducciones — la mejor del ecosistema») y línea 1471 («Engagement TikTok (interacciones / reproducciones) | 4,87% | Muestra de 14 piezas»)."
+   },
+   {
+    "cat": "Instagram",
+    "valor": "0,264 % (me gusta / seguidores, agosto; banda de referencia 0,5–1,5 %; veredicto POR DEBAJO)",
+    "fuente": "informe_texto.txt línea 1781: «Instagram | Me gusta sobre seguidores (agosto) | 0,264% | ídem | POR DEBAJO, y en caída del 31% en un mes»; la referencia «0,5-1,5% en cuentas institucionales grandes» viene de la fila inmediatamente anterior (línea 1780), a la que apunta el «ídem». Corroborado en informe_texto.txt línea 98, línea 366 («del 0,382% en la ventana de julio … al 0,264% en la de agosto»), línea 2591 y línea 2819; y en matriz_texto.txt línea 1377 («0,264% en agosto (0,382% en julio) — caída del 31%») y línea 1472."
+   },
+   {
+    "cat": "X",
+    "valor": "0,56 % (visualizaciones / seguidores; banda de referencia 2–5 %; veredicto MUY POR DEBAJO)",
+    "fuente": "informe_texto.txt línea 1782: «X | Visualizaciones sobre seguidores | 0,56% | 2-5% en cuentas activas | MUY POR DEBAJO». Corroborado en informe_texto.txt línea 99 («MUY POR DEBAJO de la referencia de 2-5%»), línea 841 («602.800 seguidores y una media de 3.399 visualizaciones … un 0,56% de la audiencia propia»), línea 956, línea 2783 y línea 2820; y en matriz_texto.txt línea 1375 («0,56% de alcance sobre seguidores») y línea 1473."
+   },
+   {
+    "cat": "(verificación negativa) Instagram julio 0,382 %",
+    "valor": "NO SE DIBUJA como barra",
+    "fuente": "La cifra SÍ está en el texto —informe_texto.txt línea 1780: «Instagram | Me gusta sobre seguidores (julio) | 0,382% | 0,5-1,5% en cuentas institucionales grandes | POR DEBAJO»— pero NO APARECE EN LA IMAGEN: el análisis de píxeles solo encuentra tres rectángulos de color en todo el gráfico (uno verde y dos rojos). No debe añadirse como cuarta barra."
+   },
+   {
+    "cat": "(verificación negativa) X, me gusta medios 0,006 %",
+    "valor": "NO SE DIBUJA como barra",
+    "fuente": "En el texto sí: informe_texto.txt línea 1783: «X | Me gusta medios por publicación | 37 sobre 602.800 | — | Equivale al 0,006% de la audiencia». En la imagen NO APARECE: la tabla del informe tiene cinco filas y el gráfico solo pinta tres barras."
+   },
+   {
+    "cat": "(verificación negativa) caída del 31 % julio→agosto",
+    "valor": "NO SE DIBUJA ni se imprime en el gráfico",
+    "fuente": "En el texto: informe_texto.txt línea 1781 y línea 366. En la imagen NO APARECE ningún texto que mencione la caída; el panel de Instagram solo imprime «0,264 %», «me gusta / seguidores (agosto)» y «POR DEBAJO»."
+   },
+   {
+    "cat": "(verificación negativa) título del gráfico",
+    "valor": "«Cada plataforma, medida contra su propia referencia de sector»",
+    "fuente": "Leído literalmente en la imagen (cabecera ampliada). NO APARECE ASÍ EN EL TEXTO: el informe titula la sección «### 7.  Tasa de engagement por plataforma vs. benchmark del sector» (línea 1773) y el encargo esperaba «Engagement frente a la referencia de cada plataforma». El título transcrito es el impreso, que es lo correcto. El subtítulo impreso sí tiene eco textual en informe_texto.txt línea 1776: «MATIZ METODOLÓGICO: las tres métricas no son directamente comparables entre sí (TikTok mide sobre reproducciones y las otras dos sobre seguidores). La comparación válida es la de cada plataforma contra su propia referencia de sector»."
+   }
+  ],
+  "observaciones": "LECTURA DE LA IMAGEN: la leí a tamaño completo (1947x571 px) y además recorté y amplié 3x cada uno de los tres paneles y la cabecera. A esa resolución todo el texto es nítido y no hay ningún carácter que haya tenido que adivinar. Las tres etiquetas de valor («4,87 %», «0,264 %», «0,56 %»), las tres etiquetas de banda («referencia 4–6 %», «referencia 0,5–1,5 %», «referencia 2–5 %»), los tres títulos de panel y los tres veredictos («SALUDABLE», «POR DEBAJO», «MUY POR DEBAJO») se leen con certeza total.\n\nDISCREPANCIA DE TÍTULO (la única discrepancia relevante): el título esperado según el encargo era «Engagement frente a la referencia de cada plataforma», pero el título REALMENTE impreso en la imagen es «Cada plataforma, medida contra su propia referencia de sector». He transcrito el impreso, literal, como pide la instrucción 1. El subtítulo impreso es «Las tres métricas no son comparables entre sí: cada una se contrasta con el rango habitual de su plataforma.»\n\nVERIFICACIÓN CONTRA EL TEXTO: las tres cifras y las tres bandas coinciden EXACTAMENTE con el informe. La tabla de informe_texto.txt (líneas 1779-1782), dentro de «M12 punto 7 — Tasa de engagement por plataforma vs. benchmark del sector», dice: TikTok, interacciones sobre reproducciones (muestra de 14) = 4,87 %, «4-6 % se considera bueno», SALUDABLE; Instagram, me gusta sobre seguidores (agosto) = 0,264 %, «0,5-1,5 % en cuentas institucionales grandes», POR DEBAJO; X, visualizaciones sobre seguidores = 0,56 %, «2-5 % en cuentas activas», MUY POR DEBAJO. Corroborado también en matriz_texto.txt líneas 1375-1377 y 1471-1473. Cero discrepancias numéricas.\n\nDATO DEL TEXTO QUE NO ESTÁ EN EL GRÁFICO: el informe (línea 1780) incluye una cuarta fila, Instagram en la ventana de julio = 0,382 %, también POR DEBAJO. El gráfico NO la dibuja: solo pinta la barra de agosto (0,264 %). No la he inventado como cuarta barra. La caída del 31 % entre julio y agosto tampoco aparece impresa en el gráfico.\n\nORDEN DE LOS PANELES (izquierda a derecha, tal como aparecen): 1) TikTok, 2) Instagram, 3) X. Cada panel contiene UNA sola barra vertical. Ojo: pese al nombre del tipo, las barras de este gráfico son VERTICALES y crecen hacia abajo desde la línea superior de su zona, con la banda de referencia como rectángulo gris de fondo; la etiqueta de valor va impresa justo encima del arranque de la barra.\n\nCOLORES: la barra de TikTok es verde (acento positivo) → destaca «A». Las de Instagram y X son rojas (color de alerta) → destaca «B». Los veredictos van en el mismo color que su barra.\n\nCIFRA QUE NO ESTÁ IMPRESA Y NO HE INVENTADO: los valores numéricos de 'valor' los tomo de la etiqueta impresa (4,87 / 0,264 / 0,56), no de medir píxeles. Comprobé por control que las alturas de barra son coherentes con la escala que fija cada banda (Instagram ~31 px medidos frente a ~37 px teóricos; TikTok ~170 px frente a ~180 px teóricos; X ~25 px frente a ~26 px teóricos), es decir, hay una desviación de dibujo de hasta un 6 % en la barra de TikTok e Instagram. Eso es ruido de renderizado del gráfico, no una discrepancia de dato: la cifra válida es la etiqueta impresa, que coincide con el informe.\n\nNOTA AL PIE: el gráfico no lleva ninguna nota ni pie impreso bajo los paneles. El campo queda vacío deliberadamente.\n\nGUIONES: en las etiquetas de banda el separador de rango impreso es un guion corto tipo «en dash» (–), no un guion normal (-). Lo he respetado en 'etiqueta' de cada banda. En el texto del informe ese mismo rango se escribe con guion normal («4-6%»)."
+ },
+ {
+  "id": "g5",
+  "titulo": "Lo que más rinde es lo que menos se produce",
+  "veredicto": "CORREGIDO — pero que quede claro el alcance: NINGUNA CIFRA ESTABA MAL. Las ocho barras (categoría, valor, etiqueta_valor, detalle y destaca), el título, el subtítulo, el eje_valor y la nota vacía son todos correctos y se corroboran en tres fuentes de texto independientes. Las correcciones son a afirmaciones DESCRIPTIVAS del campo 'observaciones', más una duda que la primera lectura dejó abierta y que sí he podido cerrar con evidencia externa.",
+  "correcciones": [
+   {
+    "ruta": "observaciones → apartado «BARRA CERO»",
+    "antes": "«Seguridad con resultado verificable» no tiene barra dibujada (0 pp, 15 % → 15 %) y su etiqueta está impresa en gris claro, no en negro como las demás.",
+    "despues": "El gris afecta ÚNICAMENTE a la ETIQUETA DE VALOR de esa fila («0 pp (15 % → 15 %)», rgb(137,135,129)). La ETIQUETA DE CATEGORÍA «Seguridad con resultado verificable» NO está atenuada: está impresa exactamente en el mismo gris oscuro rgb(82,81,78) que las otras siete categorías. Redactado como estaba, induce a atenuar también el nombre del pilar al redibujar el gráfico.",
+    "fuente": "Medición de píxeles sobre /scratchpad/graficos_png/g5.png. Píxel más oscuro por fila, zona de categorías (x 100-1160): las OCHO filas dan rgb(82,81,78), incluida la de Seguridad. Zona de etiquetas de valor (x 1200-2019): siete filas dan rgb(11,11,11) y solo la fila de 0 pp da rgb(137,135,129)."
+   },
+   {
+    "ruta": "observaciones → omisión: jerarquía tipográfica de las etiquetas de valor",
+    "antes": "No se menciona. La extracción describe solo dos tratamientos (negro para siete filas, gris claro para la de 0 pp), lo que implica que las siete etiquetas negras son iguales entre sí.",
+    "despues": "Hay TRES tratamientos, no dos. NEGRITA: «+10 pp», «+8 pp», «−7 pp», «−8 pp», «−8 pp» (cinco filas). REDONDA en negro: «+4 pp» y «+1 pp». REDONDA en gris: «0 pp». Es decir, el gráfico realza cinco filas, y ese realce NO coincide con la partición por color (4 rojas / 3 azules): dos barras rojas están realzadas y otras dos no.",
+    "fuente": "Densidad de tinta medida dentro del rectángulo delimitador de cada etiqueta (píxeles de texto / área del bbox), sobre g5.png: +10 → 0,275; +8 → 0,259; −8 (10 %→18 %) → 0,265; −8 (7 %→15 %) → 0,249; −7 → 0,248 || frente a +4 → 0,181; +1 → 0,177; 0 pp → 0,172. Separación bimodal limpia, sin valores intermedios."
+   },
+   {
+    "ruta": "observaciones → duda abierta sobre el campo 'destaca' (A/B)",
+    "antes": "«Este mapeo es una interpretación mía de la semántica del esquema, no algo escrito en la imagen: si el convenio del informe es el inverso (rojo como acento principal), hay que invertir A y B.»",
+    "despues": "La duda queda CERRADA y el mapeo de la extracción es CORRECTO: rojo = \"B\", el otro color de acento = \"A\". No hay que invertir nada. Se elimina la advertencia condicional, que habría llevado al maquetador a plantearse una inversión innecesaria.",
+    "fuente": "Extracción hermana ya cerrada del mismo encargo, /scratchpad/g4_final.json: las barras marcadas \"destaca\": \"B\" son Instagram y X, y el muestreo de sus rectángulos en /scratchpad/graficos_png/g4.png devuelve rgb(208,59,59) — exactamente el mismo rojo que las cuatro barras positivas de g5; la barra marcada \"destaca\": \"A\" (TikTok) es verde rgb(27,175,122). El convenio de la serie es, por tanto, rojo = B."
+   }
+  ],
+  "corroboracion": [
+   {
+    "cat": "Gestión operativa (obras, servicios, vialidad)",
+    "valor": "+10 pp (35 % → 25 %)",
+    "fuente": "TRIPLE. informe_texto.txt, línea 2002 (M13 · punto 8): «Gestión operativa (obras, servicios, vialidad) | ≈ 35% | 25% | SOBREPRODUCIDO». informe_texto.txt, línea 1442 (M10 · punto 2): «Gestión operativa (obras, servicios, vialidad) | ≈ 35% | 25% | SOBREPRODUCIDO — rinde de forma media, no es el motor de alcance». matriz_texto.txt, línea 1440 (hoja «4. Contenido y calendario»): «Gestión operativa (obras, servicios, vialidad) | 35% | 25% | SOBREPRODUCIDO — rinde de forma media, no es el motor de alcance». Brecha 35 − 25 = +10. Barra medida: 473 px de ancho."
+   },
+   {
+    "cat": "Política institucional y actos de partido",
+    "valor": "+8 pp (15 % → 7 %)",
+    "fuente": "TRIPLE. informe_texto.txt, línea 2007: «Política institucional y actos de partido | ≈ 15% | 7% | SOBREPRODUCIDO — peor rendimiento consistente». informe_texto.txt, línea 1447: «... | ≈ 15% | 7% | SOBREPRODUCIDO — el pilar de peor rendimiento consistente». matriz_texto.txt, línea 1445: «Política institucional y actos de partido | 15% | 7% | SOBREPRODUCIDO — el pilar de peor rendimiento consistente». Brecha 15 − 7 = +8. Barra medida: 378 px."
+   },
+   {
+    "cat": "Vocabulario y efemérides doctrinales",
+    "valor": "+4 pp (7 % → 3 %)",
+    "fuente": "TRIPLE. informe_texto.txt, línea 2008: «Vocabulario y efemérides doctrinales | ≈ 7% | 3% | SOBREPRODUCIDO — reservar al programa de radio». informe_texto.txt, línea 1448: «... | ≈ 7% | 3% | SOBREPRODUCIDO — reservar para el programa de radio propio». matriz_texto.txt, línea 1446: «Vocabulario y efemérides doctrinales | 7% | 3% | SOBREPRODUCIDO — reservar para el programa de radio propio». Brecha 7 − 3 = +4. Barra medida: 188 px."
+   },
+   {
+    "cat": "Fechas festivas y estacionales",
+    "valor": "+1 pp (3 % → 2 %)",
+    "fuente": "TRIPLE. informe_texto.txt, línea 2009: «Fechas festivas y estacionales | ≈ 3% | 2% | BIEN CALIBRADO». informe_texto.txt, línea 1449: «... | ≈ 3% | 2% | BIEN CALIBRADO, uso oportunista correcto». matriz_texto.txt, línea 1447: «Fechas festivas y estacionales | 3% | 2% | BIEN CALIBRADO, uso oportunista correcto». Brecha 3 − 2 = +1. Barra medida: 45 px (frente a los ~47 px/pp del resto: es el redondeo de un rectángulo muy corto, no un valor distinto de 1)."
+   },
+   {
+    "cat": "Seguridad con resultado verificable",
+    "valor": "0 pp (15 % → 15 %)",
+    "fuente": "TRIPLE. informe_texto.txt, línea 2003: «Seguridad con resultado verificable | ≈ 15% | 15% | BIEN CALIBRADO». informe_texto.txt, línea 1443: «Seguridad con resultado verificable | ≈ 15% | 15% | BIEN CALIBRADO». matriz_texto.txt, línea 1441: «Seguridad con resultado verificable | 15% | 15% | BIEN CALIBRADO». Brecha 15 − 15 = 0; coherente con que el barrido de píxeles no encuentre ningún rectángulo de color en esa fila."
+   },
+   {
+    "cat": "Paz y frontera",
+    "valor": "−7 pp (8 % → 15 %)",
+    "fuente": "CUÁDRUPLE. informe_texto.txt, línea 2004: «Paz y frontera | ≈ 8% | 15% | INFRAPRODUCIDO — eje de mayor rendimiento». informe_texto.txt, línea 1444: «Paz y frontera | ≈ 8% | 15% | INFRAPRODUCIDO — es el eje de mayor rendimiento en TikTok». matriz_texto.txt, línea 1442: «Paz y frontera | 8% | 15% | INFRAPRODUCIDO — eje de mayor rendimiento del ecosistema». Y además en prosa, informe_texto.txt línea 1432 y matriz_texto.txt línea 667: «El M13 documenta que representa apenas el 8% del contenido total del ecosistema frente a un peso ideal propuesto del 15%». Brecha 8 − 15 = −7. Barra medida: 332 px."
+   },
+   {
+    "cat": "Contenido humano-cotidiano",
+    "valor": "−8 pp (7 % → 15 %)",
+    "fuente": "TRIPLE. informe_texto.txt, línea 2006: «Contenido humano-cotidiano | ≈ 7% | 15% | INFRAPRODUCIDO — segundo mejor y el más económico». informe_texto.txt, línea 1446: «... | ≈ 7% | 15% | INFRAPRODUCIDO — segundo eje de mayor rendimiento y el más económico». matriz_texto.txt, línea 1444: «Contenido humano-cotidiano | 7% | 15% | INFRAPRODUCIDO — segundo mejor y el más económico de generar». Brecha 7 − 15 = −8. Barra medida: 380 px."
+   },
+   {
+    "cat": "Identidad y cultura regional",
+    "valor": "−8 pp (10 % → 18 %)",
+    "fuente": "TRIPLE. informe_texto.txt, línea 2005: «Identidad y cultura regional | ≈ 10% | 18% | INFRAPRODUCIDO — barato y consistentemente exitoso». informe_texto.txt, línea 1445: «... | ≈ 10% | 18% | INFRAPRODUCIDO — barato de producir y consistentemente exitoso». matriz_texto.txt, línea 1443: «Identidad y cultura regional | 10% | 18% | INFRAPRODUCIDO — barato de producir y consistentemente exitoso». Brecha 10 − 18 = −8. Barra medida: 380 px, idéntica a la anterior: el empate en −8 pp es real pese a partir de pesos reales distintos (7 % y 10 %), porque los ideales también difieren (15 % y 18 %)."
+   },
+   {
+    "cat": "TÍTULO impreso",
+    "valor": "«Lo que más rinde es lo que menos se produce»",
+    "fuente": "NO APARECE EN EL TEXTO — solo legible en la imagen. Es un titular editorial propio del gráfico. Verificado carácter a carácter en recorte 2x de la cabecera. El título del encargo («Distribución de contenido por pilar: real frente a ideal») SÍ está en el texto pero es otra cosa: es el nombre de registro del gráfico en matriz_texto.txt, línea 1624, hoja «9. Gráficos». Prevalece lo impreso; la extracción acertó."
+   },
+   {
+    "cat": "SUBTÍTULO impreso",
+    "valor": "«Diferencia entre el peso real de cada pilar en la producción y el peso que su rendimiento medido justifica.»",
+    "fuente": "NO APARECE EN EL TEXTO — solo legible en la imagen. Verificado carácter a carácter en recorte 2x, punto final incluido. Su contenido es coherente con la prosa de informe_texto.txt línea 1997 («LA BRECHA MÁS ACCIONABLE DE TODO EL INFORME») y línea 1998 («NO HACE FALTA PRODUCIR MÁS: HACE FALTA INVERTIR LA PROPORCIÓN»), pero no es cita de ninguna de ellas."
+   },
+   {
+    "cat": "LEYENDA impresa (no forma parte de ningún campo del esquema)",
+    "valor": "«Sobreproducido» (rojo) · «Infraproducido — los tres ejes que dominan el top de viralidad» (azul)",
+    "fuente": "NO APARECE LITERAL EN EL TEXTO — solo legible en la imagen, verificada en recorte 2x. La afirmación de fondo sí está respaldada: informe_texto.txt línea 1997 y matriz_texto.txt línea 1437 hablan de «Tres pilares que juntos generan casi todo el top 20 de viralidad —paz y frontera, identidad regional y contenido humano—», que son exactamente las tres barras azules."
+   },
+   {
+    "cat": "NOTA AL PIE",
+    "valor": "no existe (nota_en_imagen vacío)",
+    "fuente": "Verificado por barrido de píxeles sobre g5.png (2019x844): el último elemento no blanco es la leyenda, filas y=779 a y=806; entre y=808 y y=843 no hay un solo píxel distinto de blanco. El campo vacío es correcto."
+   },
+   {
+    "cat": "COHERENCIA INTERNA (control aritmético propio)",
+    "valor": "reales suman 100 %; ideales suman 100 %; brechas suman 0; orden monótono",
+    "fuente": "Calculado sobre las cifras ya corroboradas. Reales: 35+15+7+3+15+8+7+10 = 100. Ideales: 25+7+3+2+15+15+15+18 = 100. Cada brecha es exactamente real − ideal en las ocho filas. Suma de brechas: +10+8+4+1+0−7−8−8 = 0, como exige una redistribución de suma cero. Orden de arriba abajo monótono decreciente: +10, +8, +4, +1, 0, −7, −8, −8. Escala del dibujo homogénea: 47,3 / 47,25 / 47,0 px por pp a la derecha y 47,43 / 47,5 / 47,5 px por pp a la izquierda, sobre un eje de cero en x≈1181."
+   }
+  ],
+  "observaciones": "LECTURA DE LA IMAGEN — todo legible, sin ningún valor dudoso. Amplié la columna de etiquetas a 2x (recorte 1160-2019 px) y las etiquetas de categoría por separado; los ocho pares se leen con nitidez total. Además verifiqué la geometría por píxeles con PIL en lugar de fiarme solo del texto impreso: la línea de cero está en x≈1181 y las barras miden 473, 378, 188, 45 px a la derecha y 332, 380, 380 px a la izquierda, es decir 47,3 / 47,25 / 47,0 / 45,0 / 47,4 / 47,5 / 47,5 px por pp. La proporcionalidad es consistente en las siete barras y confirma de forma independiente los valores +10, +8, +4, +1, −7, −8, −8. La barra de «+1 pp» sale a 45 px en vez de 47 por redondeo de un rectángulo tan corto; no implica un valor distinto de 1.\n\nBARRA CERO: «Seguridad con resultado verificable» no tiene barra dibujada (0 pp, 15 % → 15 %) y su etiqueta está impresa en gris claro, no en negro como las demás. La incluyo con valor 0 porque ocupa su fila en el eje; el barrido de píxeles confirma que no hay ningún rectángulo de color en esa fila.\n\nVERIFICACIÓN CONTRA EL TEXTO: coincidencia exacta, cifra por cifra, con la tabla de «M13 · punto 8 — Distribución real del contenido por pilar vs. distribución ideal» (informe_texto.txt, línea 1995 y ss.) y con la tabla gemela de «M10 · punto 2 — Ejes narrativos y pilares de contenido» (línea 1436 y ss.). Los ocho pares real→ideal del texto (35/25, 15/15, 8/15, 10/18, 7/15, 15/7, 7/3, 3/2) reproducen exactamente los ocho pares impresos en el gráfico, y las brechas derivadas coinciden con las etiquetas en pp. NO HAY NINGUNA DISCREPANCIA NUMÉRICA.\n\nDIFERENCIAS DE FORMA (no de dato), que señalo para que nadie las tome por error:\n1. TÍTULO. El título impreso es «Lo que más rinde es lo que menos se produce», NO el título esperado que me pasaron («Distribución de contenido por pilar: real frente a ideal»). Ese título esperado es el nombre de registro del gráfico en la hoja «9. Gráficos» de la matriz (matriz_texto.txt, línea 1624); el gráfico lleva impreso un titular editorial distinto. Transcribo el impreso, como se me pidió.\n2. ORDEN DE LAS BARRAS. El orden de arriba abajo del gráfico está ordenado por brecha descendente (+10, +8, +4, +1, 0, −7, −8, −8), que NO es el orden de la tabla del informe (allí es Gestión, Seguridad, Paz, Identidad, Humano, Política, Vocabulario, Fechas). He respetado el orden de la imagen, según la instrucción 4.\n3. SIGNO «≈». El informe escribe los pesos reales como «≈ 35%», «≈ 15%», etc.; el gráfico los imprime sin el signo de aproximación y con espacio fino antes del %: «(35 % → 25 %)». Transcribo lo impreso.\n4. EMPATE. «Contenido humano-cotidiano» e «Identidad y cultura regional» empatan en −8 pp pese a partir de pesos reales distintos (7 % y 10 %), porque sus ideales también difieren (15 % y 18 %). No es un error de lectura: las dos barras miden exactamente lo mismo, 380 px.\n\nSIGNO MENOS: las etiquetas negativas usan un guion largo y centrado, compatible con el menos tipográfico U+2212 («−»), no con un guion ASCII. Lo he transcrito como U+2212. Es la única cosa que no puedo certificar al 100 % desde un ráster, porque el códepoint exacto no es recuperable de los píxeles; el glifo es claramente más ancho y más alto que un hyphen-minus.\n\nCOLORES Y CAMPO 'destaca': muestreé los píxeles. Rojo = rgb(208,59,59), azul = rgb(42,120,214). La leyenda inferior dice «■ Sobreproducido» (rojo) y «■ Infraproducido — los tres ejes que dominan el top de viralidad» (azul). He mapeado azul → \"A\" (acento principal, destacado positivo: son los ejes que hay que producir MÁS y los que dominan la viralidad) y rojo → \"B\" (color de alerta: el problema, lo sobreproducido); la fila de 0 pp queda con cadena vacía. Este mapeo es una interpretación mía de la semántica del esquema, no algo escrito en la imagen: si el convenio del informe es el inverso (rojo como acento principal), hay que invertir A y B.\n\nLEYENDA: no hay pie ni nota al final del gráfico, por lo que 'nota_en_imagen' va vacío. Lo único bajo el área de trazado es la leyenda con dos muestras de color, cuyo texto completo es «Sobreproducido» y «Infraproducido — los tres ejes que dominan el top de viralidad» (con raya larga, U+2014). Lo dejo consignado aquí para que ese texto no se pierda en la transcripción."
+ },
+ {
+  "id": "g6",
+  "titulo": "En TikTok, la mejor franja horaria es la menos utilizada",
+  "veredicto": "CONFIRMADO",
+  "correcciones": [],
+  "corroboracion": [
+   {
+    "cat": "22:00–23:59 (panel izquierdo, reproducciones medias)",
+    "valor": "64.498",
+    "fuente": "informe_texto.txt línea 1969 (tabla M13 punto 6): «22:00 – 23:59 | 7 | 64.498 — MEJOR FRANJA | 7% | 9%». También informe línea 1964: «la franja 22:00-23:59 rinde una media de 64.498 reproducciones» y matriz_texto.txt línea 1424: «22:00 – 23:59 | 7 | 64.498 | 7% | 9% | MEJOR FRANJA en TikTok, y la menos explotada (7 de 63)». Etiqueta impresa verificada por mí en la imagen ampliada (recorte del panel izquierdo escalado x2): «64.498»."
+   },
+   {
+    "cat": "07:00–11:59 (panel izquierdo, reproducciones medias)",
+    "valor": "50.380",
+    "fuente": "informe_texto.txt línea 1970: «07:00 – 11:59 | 12 | 50.380 — segunda mejor | 26% | 26%»; informe línea 1964: «La franja 07:00-11:59 es la segunda mejor con 50.380»; matriz_texto.txt línea 1425: «07:00 – 11:59 | 12 | 50.380 | 26% | 26% | Segunda mejor franja en TikTok». Etiqueta impresa verificada en imagen: «50.380»."
+   },
+   {
+    "cat": "00:00–06:59 (panel izquierdo, reproducciones medias)",
+    "valor": "32.100",
+    "fuente": "informe_texto.txt línea 1971: «00:00 – 06:59 | 1 | 32.100 (muestra insuficiente) | 3% | 2%»; matriz_texto.txt línea 1426: «00:00 – 06:59 | 1 | 32.100 | 3% | 2% | Muestra insuficiente para conclusión firme». Etiqueta impresa verificada en imagen: «32.100»."
+   },
+   {
+    "cat": "12:00–16:59 (panel izquierdo, reproducciones medias)",
+    "valor": "19.837",
+    "fuente": "informe_texto.txt línea 1972: «12:00 – 16:59 | 14 | 19.837 — PEOR FRANJA en TikTok | 31% (la más cargada) | 33% (la más cargada)»; informe línea 1964: «frente a las 19.837 de la franja 12:00-16:59»; matriz_texto.txt línea 1427: «12:00 – 16:59 | 14 | 19.837 | 31% ... | PEOR FRANJA en TikTok». Etiqueta impresa verificada en imagen: «19.837»."
+   },
+   {
+    "cat": "17:00–21:59 (panel izquierdo, reproducciones medias)",
+    "valor": "16.048",
+    "fuente": "informe_texto.txt línea 1973: «17:00 – 21:59 | 29 (46% del volumen) | 16.048 — muy usada, bajo rendimiento | 32% | 30%»; informe línea 1965: «(17:00-21:59, con el 46% del volumen y 29 de las 63 publicaciones) rinde solo 16.048 de media»; matriz_texto.txt línea 1428: «17:00 – 21:59 | 29 (46% del volumen) | 16.048 ...». Etiqueta impresa verificada en imagen: «16.048»."
+   },
+   {
+    "cat": "22:00–23:59 (panel derecho, publicaciones)",
+    "valor": "7",
+    "fuente": "informe_texto.txt línea 1969: «22:00 – 23:59 | 7 | 64.498 — MEJOR FRANJA»; informe línea 1965: «La MEJOR franja real (22:00-23:59) es también la MENOS explotada, con solo 7 publicaciones de 63»; matriz_texto.txt línea 1424: «22:00 – 23:59 | 7 | ... (7 de 63)». Etiqueta impresa verificada en imagen: «7»."
+   },
+   {
+    "cat": "07:00–11:59 (panel derecho, publicaciones)",
+    "valor": "12",
+    "fuente": "informe_texto.txt línea 1970: «07:00 – 11:59 | 12 | 50.380 — segunda mejor»; matriz_texto.txt línea 1425: «07:00 – 11:59 | 12 | 50.380». Etiqueta impresa verificada en imagen: «12»."
+   },
+   {
+    "cat": "00:00–06:59 (panel derecho, publicaciones)",
+    "valor": "1",
+    "fuente": "informe_texto.txt línea 1971: «00:00 – 06:59 | 1 | 32.100 (muestra insuficiente)»; matriz_texto.txt línea 1426: «00:00 – 06:59 | 1 | 32.100 ... | Muestra insuficiente para conclusión firme». Etiqueta impresa verificada en imagen: «1» (barra mínima, ~17 px, coherente con la escala de 17,4 px por publicación medida en las otras cuatro barras)."
+   },
+   {
+    "cat": "12:00–16:59 (panel derecho, publicaciones)",
+    "valor": "14",
+    "fuente": "informe_texto.txt línea 1972: «12:00 – 16:59 | 14 | 19.837 — PEOR FRANJA en TikTok»; matriz_texto.txt línea 1427: «12:00 – 16:59 | 14 | 19.837». Etiqueta impresa verificada en imagen: «14»."
+   },
+   {
+    "cat": "17:00–21:59 (panel derecho, publicaciones)",
+    "valor": "29",
+    "fuente": "informe_texto.txt línea 1973: «17:00 – 21:59 | 29 (46% del volumen) | 16.048»; informe línea 1965: «29 de las 63 publicaciones»; matriz_texto.txt línea 1428: «17:00 – 21:59 | 29 (46% del volumen) | 16.048». Etiqueta impresa verificada en imagen: «29»."
+   },
+   {
+    "cat": "Título impreso",
+    "valor": "En TikTok, la mejor franja horaria es la menos utilizada",
+    "fuente": "Lectura literal de la imagen (recorte de cabecera 0-120 px). Eco parcial en matriz_texto.txt línea 1423: «HORARIO POR PLATAFORMA (hora de Venezuela) — la mejor franja de TikTok es la menos usada» (formulación distinta: «usada» en la matriz frente a «utilizada» en la imagen; la transcripción sigue a la imagen, que es la fuente para este campo)."
+   },
+   {
+    "cat": "Subtítulo impreso",
+    "valor": "Rendimiento medio por franja frente al volumen que se publica en cada una. Base: 63 publicaciones con hora verificada.",
+    "fuente": "Lectura literal de la imagen. La base de 63 se corrobora en informe_texto.txt línea 1964: «Medido sobre las 63 publicaciones recientes con hora verificada»; la frase completa NO APARECE EN EL TEXTO — es rótulo propio del gráfico."
+   },
+   {
+    "cat": "Nota al pie impresa",
+    "valor": "La franja de 22:00 a 23:59 triplica el rendimiento del mediodía y concentra solo 7 de 63 publicaciones. La de 17:00 a 21:59 reúne el 46 % del volumen con el rendimiento más bajo.",
+    "fuente": "Lectura literal de la imagen (recorte del pie, y=580-671). La frase como tal NO APARECE EN EL TEXTO, pero cada afirmación se corrobora: «triplica» → 64.498/19.837 = 3,25; «7 de 63» → informe línea 1965 «solo 7 publicaciones de 63»; «46 %» → informe línea 1965 «con el 46% del volumen» y 29/63 = 46,03 %."
+   },
+   {
+    "cat": "Rótulos de panel",
+    "valor": "«Reproducciones medias por publicación» / «Publicaciones realizadas en esa franja»",
+    "fuente": "NO APARECEN EN EL TEXTO — solo legibles en la imagen (y=138-157 de cada panel). Los conceptos equivalen a las columnas «TikTok: media de reproducciones» y «TikTok: publicaciones» de informe_texto.txt línea 1968 y matriz_texto.txt línea 1423."
+   },
+   {
+    "cat": "Ausencia de eje numérico y de marcas de escala en ambos paneles",
+    "valor": "sin eje dibujado; el valor solo aparece como etiqueta al final de cada barra",
+    "fuente": "NO APARECE EN EL TEXTO — comprobado por mí sobre el PNG: barrido de píxeles de y=120 a y=600 en ambos paneles; solo se detectan los rótulos de panel y las cinco barras, ninguna línea de eje ni marca de escala."
+   },
+   {
+    "cat": "Codificación de color (destacados A y B)",
+    "valor": "fila 1 verde (27,175,122) en ambos paneles; fila 5 roja (208,59,59) en ambos paneles; filas 2-4 azul (42,120,214) a la izquierda y gris (185,190,199) a la derecha",
+    "fuente": "NO APARECE EN EL TEXTO — medición directa de píxeles sobre g6.png. Confirma que «destaca» A/B está bien asignado y que las tres filas intermedias llevan el color neutro de cada panel, no un acento."
+   }
+  ],
+  "observaciones": "LEGIBILIDAD: ninguna cifra quedó en duda. Amplié la imagen (2074x671 px reales) recortando cada panel y escalándolo x2 antes de leer; las diez etiquetas de valor se leen sin ambigüedad, dígito a dígito. No he estimado ni redondeado nada: los valores numéricos que devuelvo son la lectura literal de las etiquetas impresas, con el punto como separador de millar del original (64.498 = sesenta y cuatro mil cuatrocientos noventa y ocho, etc.).\n\nCONFIRMACIÓN CONTRA EL TEXTO: las cinco medias coinciden EXACTAMENTE con la tabla de informe_texto.txt (líneas 1969-1973) y matriz_texto.txt (líneas 1424-1428): 22:00–23:59 → 7 pub. / 64.498; 07:00–11:59 → 12 / 50.380; 00:00–06:59 → 1 / 32.100; 12:00–16:59 → 14 / 19.837; 17:00–21:59 → 29 / 16.048. Los cinco recuentos del panel derecho también coinciden y suman 7+12+1+14+29 = 63, que es exactamente la base declarada en el subtítulo. Cero discrepancias entre imagen y texto.\n\nTÍTULO: el título impreso es «En TikTok, la mejor franja horaria es la menos utilizada», que NO es el título esperado que me indicaron («TikTok: rendimiento por franja horaria frente a volumen»). He transcrito el que realmente aparece en la imagen. El esperado parece ser una descripción interna del gráfico, no el rótulo publicado.\n\nORDEN DE LAS BARRAS: de arriba abajo el gráfico ordena por rendimiento descendente (64.498 → 16.048), no por hora del día. Ese orden es idéntico en los dos paneles, de modo que cada fila del panel derecho corresponde a la misma franja que la del izquierdo. El panel derecho NO lleva etiquetas de categoría propias: comparte las del panel izquierdo. Lo he respetado tal cual.\n\nCOLORES / DESTACADOS: fila 1 (22:00–23:59) en verde en AMBOS paneles → marcada \"A\". Fila 5 (17:00–21:59) en rojo en AMBOS paneles → marcada \"B\". Las tres filas intermedias usan el color base, que es distinto en cada panel (azul en el de rendimiento, gris en el de volumen); las he dejado con destaca vacío en los dos, porque en ambos casos es el color neutro del panel y no un acento.\n\nINCONSISTENCIA EN EL TEXTO FUENTE (no en el gráfico): el informe llama repetidamente «PEOR FRANJA en TikTok» a la de 12:00–16:59 con 19.837 (líneas 1964, 1972 del informe; 1427 de la matriz), pero 17:00–21:59 rinde menos aún (16.048). El gráfico resuelve esto pintando de rojo la de 17:00–21:59, que es la que de verdad tiene el rendimiento más bajo y además el mayor volumen, y su pie lo dice así: «reúne el 46 % del volumen con el rendimiento más bajo». Mi transcripción sigue a la imagen. Señalo la contradicción porque afecta a cómo se lee el gráfico, no a los números, que son idénticos en ambas fuentes.\n\nMATIZ SOBRE PORCENTAJES: el pie habla del «46 % del volumen» para 17:00–21:59, coherente con 29/63 = 46,0 %. En el plan de acción (informe línea 2903) se atribuye a la franja 22:00–23:59 un «11 % del volumen», coherente con 7/63 = 11,1 %. Ninguno de esos porcentajes está impreso dentro de las barras, así que no los he metido como etiqueta de valor ni como detalle.\n\nSIN TEXTO SECUNDARIO: ninguna barra lleva detalle impreso junto a ella (ni fecha, ni tema, ni anotación); por eso todos los campos 'detalle' van vacíos. Contexto conocido pero NO impreso en la imagen, y por tanto no transcrito: la media de 22:00–23:59 incluye un pico reciente de 346.200 reproducciones, y la franja 00:00–06:59 se apoya en una sola publicación (n=1, muestra insuficiente para conclusión firme según la matriz). Este último punto es relevante para interpretar la tercera barra, pero el gráfico no lo advierte.\n\nTIPOGRAFÍA: las etiquetas de categoría usan guion corto tipográfico (en dash, «–») entre las horas, p. ej. «22:00–23:59», mientras que el texto del informe usa guion normal («22:00-23:59»). He conservado el carácter de la imagen."
+ },
+ {
+  "id": "g7",
+  "titulo": "El martes concentra el mismo volumen que el jueves con un tercio del rendimiento",
+  "veredicto": "CONFIRMADO",
+  "correcciones": [],
+  "corroboracion": [
+   {
+    "cat": "Jueves — reproducciones medias",
+    "valor": "47.620",
+    "fuente": "informe_texto.txt línea 1988 (M13 punto 7, tabla): «Jueves | 36 — el más activo | 15 — el más activo | 11 | 47.620 — MEJOR»; y matriz_texto.txt línea 1434: «Jueves | 36 — el más activo | 15 — el más activo | 11 | 47.620 | MEJOR DÍA en las tres plataformas». También en prosa, informe_texto.txt línea 1981: «una media de reproducciones TRES VECES MENOR (15.006 frente a 47.620)». Etiqueta impresa en la imagen: 47.620."
+   },
+   {
+    "cat": "Miércoles — reproducciones medias",
+    "valor": "45.726",
+    "fuente": "informe_texto.txt línea 1987: «Miércoles | 29 | 4 — el más débil | 9 | 45.726 — segundo mejor»; matriz_texto.txt línea 1433: «Miércoles | 29 | 4 — el más débil | 9 | 45.726 | Segundo mejor en TikTok». Etiqueta impresa en la imagen: 45.726."
+   },
+   {
+    "cat": "Domingo — reproducciones medias",
+    "valor": "42.650",
+    "fuente": "informe_texto.txt línea 1991: «Domingo | 20 | 7 | 4 | 42.650»; matriz_texto.txt línea 1437: «Domingo | 20 | 7 | 4 | 42.650 | Infrautilizado en TikTok pese al buen rendimiento». Etiqueta impresa en la imagen: 42.650."
+   },
+   {
+    "cat": "Lunes — reproducciones medias",
+    "valor": "27.237",
+    "fuente": "informe_texto.txt línea 1985: «Lunes | 17 — el más débil | 6 | 10 | 27.237»; matriz_texto.txt línea 1431: «Lunes | 17 — el más débil | 6 | 10 | 27.237». Etiqueta impresa en la imagen: 27.237."
+   },
+   {
+    "cat": "Viernes — reproducciones medias",
+    "valor": "20.329",
+    "fuente": "informe_texto.txt línea 1989: «Viernes | 25 | 13 | 10 | 20.329»; matriz_texto.txt línea 1435: «Viernes | 25 | 13 | 10 | 20.329». Etiqueta impresa en la imagen: 20.329."
+   },
+   {
+    "cat": "Martes — reproducciones medias",
+    "valor": "15.006",
+    "fuente": "informe_texto.txt línea 1986: «Martes | 32 | 8 | 11 | 15.006 — ANOMALÍA»; matriz_texto.txt línea 1432: «Martes | 32 | 8 | 11 | 15.006 | ANOMALÍA: mismo volumen que el jueves, un tercio del rendimiento». Etiqueta impresa en la imagen: 15.006."
+   },
+   {
+    "cat": "Sábado — reproducciones medias",
+    "valor": "10.570",
+    "fuente": "informe_texto.txt línea 1990: «Sábado | 33 | 10 | 8 | 10.570 — el peor»; matriz_texto.txt línea 1436: «Sábado | 33 | 10 | 8 | 10.570 | El peor día de las tres plataformas sin excepción». Etiqueta impresa en la imagen: 10.570."
+   },
+   {
+    "cat": "Jueves — publicaciones TikTok",
+    "valor": "11",
+    "fuente": "informe_texto.txt línea 1988 (columna «TikTok (publicaciones)»): «Jueves | 36 ... | 15 ... | 11 | 47.620»; y prosa línea 1981: «el MARTES tiene el mismo volumen de publicación que el jueves (11 cada uno)». Etiqueta impresa en la imagen: 11."
+   },
+   {
+    "cat": "Miércoles — publicaciones TikTok",
+    "valor": "9",
+    "fuente": "informe_texto.txt línea 1987: «Miércoles | 29 | 4 — el más débil | 9 | 45.726»; matriz_texto.txt línea 1433, misma columna: 9. Etiqueta impresa en la imagen: 9."
+   },
+   {
+    "cat": "Domingo — publicaciones TikTok",
+    "valor": "4",
+    "fuente": "informe_texto.txt línea 1991: «Domingo | 20 | 7 | 4 | 42.650»; matriz_texto.txt línea 1437: «Domingo | 20 | 7 | 4 | 42.650». Etiqueta impresa en la imagen: 4. (Ojo: el 4 de la columna TikTok no debe confundirse con el 4 de Instagram del miércoles.)"
+   },
+   {
+    "cat": "Lunes — publicaciones TikTok",
+    "valor": "10",
+    "fuente": "informe_texto.txt línea 1985: «Lunes | 17 — el más débil | 6 | 10 | 27.237»; matriz_texto.txt línea 1431, misma columna: 10. Etiqueta impresa en la imagen: 10."
+   },
+   {
+    "cat": "Viernes — publicaciones TikTok",
+    "valor": "10",
+    "fuente": "informe_texto.txt línea 1989: «Viernes | 25 | 13 | 10 | 20.329»; matriz_texto.txt línea 1435, misma columna: 10. Etiqueta impresa en la imagen: 10."
+   },
+   {
+    "cat": "Martes — publicaciones TikTok",
+    "valor": "11",
+    "fuente": "informe_texto.txt línea 1986: «Martes | 32 | 8 | 11 | 15.006 — ANOMALÍA»; y prosa línea 1981: «el MARTES tiene el mismo volumen de publicación que el jueves (11 cada uno)». Etiqueta impresa en la imagen: 11."
+   },
+   {
+    "cat": "Sábado — publicaciones TikTok",
+    "valor": "8",
+    "fuente": "informe_texto.txt línea 1990: «Sábado | 33 | 10 | 8 | 10.570 — el peor»; matriz_texto.txt línea 1436, misma columna: 8. Etiqueta impresa en la imagen: 8."
+   },
+   {
+    "cat": "TÍTULO (literal en imagen)",
+    "valor": "El martes concentra el mismo volumen que el jueves con un tercio del rendimiento",
+    "fuente": "Leído literalmente en la cabecera de la imagen g7.png. Se corresponde con el encabezado de la matriz, matriz_texto.txt línea 1429: «DÍA DE LA SEMANA — el martes en TikTok concentra el mismo volumen que el jueves con un tercio del rendimiento». NO coincide con el título de encargo «TikTok: rendimiento por día de la semana frente a volumen»; se conserva el literal impreso, como manda la instrucción."
+   },
+   {
+    "cat": "SUBTÍTULO (literal en imagen)",
+    "valor": "Rendimiento medio por día de la semana frente al volumen publicado en cada uno.",
+    "fuente": "Leído literalmente bajo el título en g7.png. Confirmado carácter por carácter contra la imagen; no procede de ninguna frase del informe (es texto propio del gráfico)."
+   },
+   {
+    "cat": "NOTA AL PIE (literal en imagen)",
+    "valor": "El jueves es el mejor día en las tres plataformas y el sábado el más débil en todas ellas sin excepción.",
+    "fuente": "Leída literalmente al pie de g7.png. Respaldada por informe_texto.txt líneas 1977-1978 (M13 punto 7): «EL JUEVES ES EL MEJOR DÍA EN LAS TRES PLATAFORMAS... El sábado es el día más débil de las tres plataformas del ecosistema sin excepción.»"
+   },
+   {
+    "cat": "COLORES panel izquierdo (Jueves verde = A, Sábado rojo = B)",
+    "valor": "destaca A=Jueves, B=Sábado",
+    "fuente": "Verificado visualmente en g7.png: la barra de Jueves es verde y la de Sábado roja; las otras cinco son azul base. Coherente con informe_texto.txt líneas 1988 y 1990 («47.620 — MEJOR», «10.570 — el peor»)."
+   },
+   {
+    "cat": "COLORES panel derecho (solo Martes en rojo = B; Jueves en gris)",
+    "valor": "destaca B=Martes",
+    "fuente": "Verificado visualmente en g7.png: en el panel derecho todas las barras son grises salvo Martes, en rojo. Coherente con matriz_texto.txt línea 1432: «ANOMALÍA: mismo volumen que el jueves, un tercio del rendimiento». El rojo marca la anomalía, no un mínimo (el mínimo de publicaciones es Domingo con 4)."
+   },
+   {
+    "cat": "COHERENCIA INTERNA — longitudes de barra",
+    "valor": "verificada por medición de píxeles en ambos paneles",
+    "fuente": "Medición propia sobre g7.png. Panel izquierdo: longitudes ≈545/521/491/316/233/174/122 px frente a los ratios 47.620/45.726/42.650/27.237/20.329/15.006/10.570 normalizados a 545 → 545/523/488/312/233/172/121. Panel derecho: ≈540/440/200/487/487/538/397 px frente a 11/9/4/10/10/11/8 escalados (≈49 px por publicación) → 539/441/196/490/490/539/392. Las etiquetas son consistentes con las longitudes dibujadas en las 14 barras; ninguna cifra hubo que estimarla."
+   },
+   {
+    "cat": "COHERENCIA INTERNA — orden y monotonía",
+    "valor": "orden por rendimiento descendente; panel derecho no monótono",
+    "fuente": "Verificado en la imagen: las filas van Jueves, Miércoles, Domingo, Lunes, Viernes, Martes, Sábado, estrictamente decreciente en el panel izquierdo (47.620 > 45.726 > 42.650 > 27.237 > 20.329 > 15.006 > 10.570). El panel derecho comparte ese orden de filas, por lo que sus valores (11, 9, 4, 10, 10, 11, 8) no son monótonos: es correcto y es precisamente lo que el título denuncia. No hay porcentajes ni pares real/ideal en este gráfico, por lo que no aplica ninguna comprobación de suma ni de divergencia."
+   }
+  ],
+  "observaciones": "Lectura de la imagen nítida en todos los valores: las 7 etiquetas del panel izquierdo (47.620 / 45.726 / 42.650 / 27.237 / 20.329 / 15.006 / 10.570) y las 7 del derecho (11 / 9 / 4 / 10 / 10 / 11 / 8) están impresas y se leen sin ambigüedad. No hubo ningún valor que tuviera que estimarse midiendo la longitud de barra.\n\nVERIFICACIÓN CONTRA EL TEXTO: coincidencia total. La tabla de «M13 punto 7 — Mejor y peor día de la semana por plataforma» (informe_texto.txt líneas 1985-1991 y matriz_texto.txt líneas 1431-1437) da exactamente los mismos pares día → publicaciones de TikTok → media de reproducciones: Lunes 10 / 27.237; Martes 11 / 15.006; Miércoles 9 / 45.726; Jueves 11 / 47.620; Viernes 10 / 20.329; Sábado 8 / 10.570; Domingo 4 / 42.650. Cero discrepancias.\n\nTÍTULO: el título impreso en la imagen NO es el título esperado que figura en el encargo. En la imagen se lee «El martes concentra el mismo volumen que el jueves con un tercio del rendimiento»; el encargo anunciaba «TikTok: rendimiento por día de la semana frente a volumen». He transcrito el literal de la imagen, como pide la instrucción 1. El título impreso corresponde a la frase del informe: «el MARTES tiene el mismo volumen de publicación que el jueves (11 cada uno) pero una media de reproducciones TRES VECES MENOR (15.006 frente a 47.620)».\n\nORDEN: las barras NO están en orden de días de la semana sino ordenadas de mayor a menor rendimiento del panel izquierdo (Jueves, Miércoles, Domingo, Lunes, Viernes, Martes, Sábado); el panel derecho respeta ese mismo orden de filas, por lo que sus valores (11, 9, 4, 10, 10, 11, 8) NO son monótonos. Lo he conservado tal cual aparece de arriba abajo.\n\nCOLORES/DESTACADOS: panel izquierdo — Jueves en verde (acento positivo, marcado \"A\"), Sábado en rojo (alerta, marcado \"B\"), los cinco restantes en el azul base. Panel derecho — todas las barras en gris base salvo Martes en rojo (marcado \"B\"): el rojo ahí señala la anomalía (mismo volumen que el jueves con un tercio del rendimiento), no un mínimo. Nótese que en el panel derecho el Jueves NO está resaltado en verde: es gris como el resto.\n\nNOTA SOBRE UNIDADES: ambos paneles comparten la misma lista de categorías pero tienen escalas y unidades distintas (reproducciones vs. número de publicaciones); las barras de los dos paneles no son comparables en longitud entre sí. Además, el gráfico es exclusivamente de TikTok, pese a que el pie menciona «las tres plataformas» (esa frase resume el hallazgo del apartado, no los datos dibujados).\n\nNinguna barra lleva texto secundario o detalle impreso, y no hay ejes numéricos ni líneas de cuadrícula visibles: los valores solo están en las etiquetas al final de cada barra."
+ },
+ {
+  "id": "g8",
+  "titulo": "Los veinte contenidos de mayor alcance del ecosistema son, sin excepción, vídeos de TikTok",
+  "veredicto": "CORREGIDO",
+  "correcciones": [
+   {
+    "ruta": "observaciones (bloque «DISCREPANCIA REAL A SEÑALAR, EN EL PANEL DE COMPOSICIÓN»)",
+    "antes": "«El párrafo del informe usa una taxonomía distinta… Las dos versiones no son reconciliables cifra a cifra… el gráfico separa 'Paz y frontera' (6) de 'Seguridad con resultado' (2) y añade un cajón 'Otros' (3)», dando a entender que el reparto impreso no tiene respaldo textual.",
+    "despues": "El reparto impreso SÍ está corroborado literalmente por el informe: cinco de las seis barras son cita directa del M03 punto 13 (y de la misma frase en la matriz), que usa exactamente la taxonomía del gráfico. Lo único no impreso en ningún texto es «Otros» = 3, que es el residuo aritmético 20 − (6+4+3+2+2). La observación correcta es que el informe contiene DOS taxonomías distintas (M03 punto 13 y M13 punto 1) y que el gráfico sigue la primera; no que el gráfico carezca de fuente.",
+    "fuente": "informe_texto.txt, línea 562: «DISTRIBUCIÓN DEL TOP 20: seis puestos corresponden al eje de paz y frontera, cuatro a identidad y cultura regional, tres a contenido humano-familiar, dos a fechas festivas y dos a seguridad con resultado.» — idéntica en matriz_texto.txt, línea 267. La otra versión, la que sí funde paz y seguridad, está en informe_texto.txt línea 1882 y matriz_texto.txt línea 921."
+   },
+   {
+    "ruta": "observaciones (anotación exigible ausente en la extracción original)",
+    "antes": "No se señalaba ninguna inconsistencia del informe respecto del puesto 20 del ranking.",
+    "despues": "Debe advertirse que el encabezado del módulo M13 del informe da 226.500 como valor del puesto 20 de TikTok, cifra que contradice las tres tablas de la fuente (526,3 K). El gráfico imprime 526 K, que es lo correcto; el error está en el párrafo del informe, no en el gráfico.",
+    "fuente": "informe_texto.txt, línea 1875: «el mejor de X (72.356 vistas) queda muy por debajo del vigésimo puesto de TikTok (226.500)», frente a informe_texto.txt línea 585 «20 | 526,3 K | 14 nov 2023 (mar) | Ejercicio físico», informe_texto.txt línea 1904 «20 | TikTok | 526,3 K | Ejercicio físico» y matriz_texto.txt hoja «4. Rendimiento y horarios» «20 | TikTok | 526,3 K | 14 nov 2023 (mar) | Ejercicio físico»."
+   },
+   {
+    "ruta": "observaciones (bloque «SIN NOTA AL PIE»)",
+    "antes": "Solo se constataba que no hay pie de página.",
+    "despues": "Se añade que el informe sí incluye una advertencia metodológica relevante para este ranking —que «reproducciones» no significa lo mismo en TikTok, X e Instagram y que la comparación cruda exagera el peso de TikTok— y que esa advertencia NO está impresa en el gráfico, pese a que el título afirma que los veinte contenidos de mayor alcance «del ecosistema» son de TikTok.",
+    "fuente": "informe_texto.txt, línea 1876: «ADVERTENCIA METODOLÓGICA IMPORTANTE: «reproducciones» no significa lo mismo en las tres plataformas… Una comparación cruda de cifras absolutas EXAGERA el peso de TikTok frente a X.»"
+   }
+  ],
+  "corroboracion": [
+   {
+    "cat": "TÍTULO DEL GRÁFICO",
+    "valor": "Los veinte contenidos de mayor alcance del ecosistema son, sin excepción, vídeos de TikTok",
+    "fuente": "Transcripción literal verificada por recorte ampliado del PNG (y=20..70). Concuerda casi palabra por palabra con informe_texto.txt línea 1875: «Los veinte contenidos de mayor alcance de todo el ecosistema son, sin excepción, vídeos de TikTok» — la imagen omite «todo el». Se transcribe lo impreso."
+   },
+   {
+    "cat": "SUBTÍTULO DEL GRÁFICO",
+    "valor": "Ranking nativo «Popular», que ordena todo el histórico de la cuenta. El más antiguo es de octubre de 2021 y el más reciente de diciembre de 2025",
+    "fuente": "Transcripción literal verificada por recorte ampliado. Respaldado por informe_texto.txt línea 559: «Extraído del ranking nativo «Popular» de TikTok, que ordena todo el histórico desde la apertura de la cuenta» y línea 561: «el vídeo más antiguo del top 20 es de octubre de 2021 (recién asumido el cargo) y el más reciente de diciembre de 2025»."
+   },
+   {
+    "cat": "#seguridad #tachira #frontera",
+    "valor": "2.700.000 (etiqueta impresa «2,7 M»)",
+    "fuente": "informe_texto.txt línea 566: «1 | 2,7 M | 7 may 2023 (dom) | #seguridad #tachira #frontera»; matriz_texto.txt hoja 4: «1 | TikTok | 2,7 M | 7 may 2023 (dom) | #seguridad #tachira #frontera». Valor exacto en informe_texto.txt línea 1800: «TikTok | Vídeo más visto del histórico | 2.700.000»."
+   },
+   {
+    "cat": "#seguridad #tachira #electricidad",
+    "valor": "2.100.000 (etiqueta «2,1 M»)",
+    "fuente": "informe_texto.txt línea 567: «2 | 2,1 M | 27 jul 2024 (sáb) | #seguridad #tachira #electricidad»; informe_texto.txt línea 1886: «2 | TikTok | 2,1 M | #seguridad #tachira #electricidad»; matriz_texto.txt hoja 4, fila 2, idéntica."
+   },
+   {
+    "cat": "«Bienvenidos a Venezuela»",
+    "valor": "1.800.000 (etiqueta «1,8 M»)",
+    "fuente": "informe_texto.txt línea 568: «3 | 1,8 M | 13 ene 2025 (lun) | «Bienvenidos a Venezuela»»; matriz_texto.txt hoja 4, fila 3, idéntica."
+   },
+   {
+    "cat": "«Táchira, territorio de paz»",
+    "valor": "1.700.000 (etiqueta «1,7 M»)",
+    "fuente": "informe_texto.txt línea 569: «4 | 1,7 M | 30 jul 2024 (mar) | «Táchira, territorio de paz»»; matriz_texto.txt hoja 4, fila 4, idéntica."
+   },
+   {
+    "cat": "«Frontera de paz»",
+    "valor": "1.600.000 (etiqueta «1,6 M»)",
+    "fuente": "informe_texto.txt línea 570: «5 | 1,6 M | 12 may 2023 (vie) | «Frontera de paz»»; matriz_texto.txt hoja 4, fila 5, idéntica. Coherente con informe_texto.txt línea 607: «picos de 1,6 a 2,7 millones»."
+   },
+   {
+    "cat": "Trotar / ejercicio físico",
+    "valor": "1.300.000 (etiqueta «1,3 M»)",
+    "fuente": "informe_texto.txt línea 571: «6 | 1,3 M | 22 sep 2024 (dom) | Trotar / ejercicio físico»; matriz_texto.txt hoja 4, fila 6, idéntica."
+   },
+   {
+    "cat": "«¿Cómo lo llaman en tu territorio?» — la esponjilla",
+    "valor": "1.200.000 (etiqueta «1,2 M»)",
+    "fuente": "informe_texto.txt línea 572: «7 | 1,2 M | 22 jul 2023 (sáb) | «¿Cómo lo llaman en tu territorio?» — la esponjilla»; matriz_texto.txt línea 1405, idéntica. En prosa, informe_texto.txt línea 1546: «la esponjilla alcanzó 1,2 millones de reproducciones»."
+   },
+   {
+    "cat": "Felicitación navideña",
+    "valor": "1.100.000 (etiqueta «1,1 M»)",
+    "fuente": "informe_texto.txt línea 573: «8 | 1,1 M | 22 nov 2025 (sáb) | Felicitación navideña»; matriz_texto.txt hoja 4, fila 8, idéntica."
+   },
+   {
+    "cat": "Visita del cantante Jorge Celedón",
+    "valor": "956.200 (etiqueta impresa «956 K»)",
+    "fuente": "informe_texto.txt línea 574: «9 | 956,2 K | 5 jul 2024 (vie) | Visita del cantante Jorge Celedón»; matriz_texto.txt línea 1407, idéntica. En prosa, informe_texto.txt línea 535 y matriz_texto.txt línea 249: «la visita del cantante Jorge Celedón alcanzó 956,2 K de reproducciones»."
+   },
+   {
+    "cat": "«Venezuela es tierra de paz»",
+    "valor": "720.200 (etiqueta impresa «720 K»)",
+    "fuente": "informe_texto.txt línea 575: «10 | 720,2 K | 13 ene 2025 (lun) | «Venezuela es tierra de paz»»; matriz_texto.txt hoja 4, fila 10, idéntica."
+   },
+   {
+    "cat": "Contenido de familia",
+    "valor": "695.900 (etiqueta impresa «696 K»)",
+    "fuente": "informe_texto.txt línea 576: «11 | 695,9 K | 31 dic 2024 (mar) | Contenido de familia»; matriz_texto.txt hoja 4, fila 11, idéntica."
+   },
+   {
+    "cat": "«Soy un hombre de palabra, lo prometí y lo cumplí»",
+    "valor": "693.000 (etiqueta impresa «693 K»)",
+    "fuente": "informe_texto.txt línea 577: «12 | 693,0 K | 4 oct 2021 (lun) | «Soy un hombre de palabra, lo prometí y lo cumplí»»; matriz_texto.txt hoja 4, fila 12, idéntica. Es la pieza de octubre de 2021 que fija el extremo antiguo declarado en el subtítulo."
+   },
+   {
+    "cat": "Navidad",
+    "valor": "682.300 (etiqueta impresa «682 K»)",
+    "fuente": "informe_texto.txt línea 578: «13 | 682,3 K | 19 dic 2024 (jue) | Navidad»; matriz_texto.txt línea 1411, idéntica. La otra tabla del informe (línea 1897) escribe «Navidad, diciembre de 2024»; la imagen coincide con la versión corta de la matriz."
+   },
+   {
+    "cat": "«Amor por el Táchira»",
+    "valor": "649.200 (etiqueta impresa «649 K»)",
+    "fuente": "informe_texto.txt línea 579: «14 | 649,2 K | 5 ene 2025 (dom) | «Amor por el Táchira»»; matriz_texto.txt hoja 4, fila 14, idéntica."
+   },
+   {
+    "cat": "Táchira / Potosí, contenido territorial",
+    "valor": "628.600 (etiqueta impresa «629 K»)",
+    "fuente": "informe_texto.txt línea 580: «15 | 628,6 K | 10 mar 2024 (dom) | Táchira / Potosí, contenido territorial»; matriz_texto.txt línea 1413, idéntica."
+   },
+   {
+    "cat": "Despliegue de seguridad en Ureña",
+    "valor": "602.900 (etiqueta impresa «603 K»)",
+    "fuente": "informe_texto.txt línea 581: «16 | 602,9 K | 12 may 2023 (vie) | Despliegue de seguridad en Ureña»; matriz_texto.txt línea 1414, idéntica. En prosa, informe_texto.txt línea 1923 y matriz_texto.txt línea 933: «el despliegue en Ureña en TikTok (602.900)»."
+   },
+   {
+    "cat": "«Paz y alegría»",
+    "valor": "580.400 (etiqueta impresa «580 K»)",
+    "fuente": "informe_texto.txt línea 582: «17 | 580,4 K | 31 dic 2025 (mié) | «Paz y alegría»»; matriz_texto.txt hoja 4, fila 17, idéntica. Es la pieza de diciembre de 2025 que fija el extremo reciente declarado en el subtítulo."
+   },
+   {
+    "cat": "Seguridad",
+    "valor": "567.600 (etiqueta impresa «568 K»)",
+    "fuente": "informe_texto.txt línea 583: «18 | 567,6 K | 10 feb 2023 (vie) | Seguridad»; matriz_texto.txt hoja 4, fila 18, idéntica."
+   },
+   {
+    "cat": "Seboruco: humor y trabajo comunitario",
+    "valor": "530.400 (etiqueta impresa «530 K»)",
+    "fuente": "informe_texto.txt línea 584: «19 | 530,4 K | 18 may 2022 (mié) | Seboruco: humor y trabajo comunitario en dificultad»; matriz_texto.txt línea 1417, idéntica. La imagen rotula la categoría sin el sufijo «en dificultad»; la cifra coincide."
+   },
+   {
+    "cat": "Ejercicio físico",
+    "valor": "526.300 (etiqueta impresa «526 K»)",
+    "fuente": "informe_texto.txt línea 585: «20 | 526,3 K | 14 nov 2023 (mar) | Ejercicio físico»; informe_texto.txt línea 1904: «20 | TikTok | 526,3 K | Ejercicio físico»; matriz_texto.txt hoja 4, fila 20, idéntica. ATENCIÓN: informe_texto.txt línea 1875 da 226.500 para este mismo puesto — error del párrafo del informe, contradicho por sus propias tres tablas."
+   },
+   {
+    "cat": "Paz y frontera",
+    "valor": "6 puestos",
+    "fuente": "informe_texto.txt línea 562 y matriz_texto.txt línea 267: «seis puestos corresponden al eje de paz y frontera». Corroborado además en informe_texto.txt línea 1430: «[la palabra «paz»] ocupa 6 de los 20 mejores resultados históricos de la cuenta»."
+   },
+   {
+    "cat": "Identidad y cultura regional",
+    "valor": "4 puestos",
+    "fuente": "informe_texto.txt línea 562 y matriz_texto.txt línea 267: «cuatro a identidad y cultura regional». Misma cifra en informe_texto.txt línea 1882: «cuatro (20%) a identidad y cultura regional»."
+   },
+   {
+    "cat": "Otros",
+    "valor": "3 puestos",
+    "fuente": "NO APARECE EN EL TEXTO — solo legible en la imagen. Ninguna categoría llamada «Otros», ni la cifra 3 asociada a ella, figura en el informe ni en la matriz. Es un residuo aritmético calculado por el autor del gráfico: 20 − (6+4+3+2+2) = 3. El texto solo identifica UNO de esos tres puestos (informe_texto.txt línea 562: «Solo un puesto —la visita de Jorge Celedón— depende de una figura externa»); los otros dos quedan sin adscripción documentada."
+   },
+   {
+    "cat": "Contenido humano-familiar",
+    "valor": "3 puestos",
+    "fuente": "informe_texto.txt línea 562 y matriz_texto.txt línea 267: «tres a contenido humano-familiar». Misma cifra en informe_texto.txt línea 1882: «tres (15%) a contenido humano-familiar»."
+   },
+   {
+    "cat": "Fechas festivas",
+    "valor": "2 puestos",
+    "fuente": "informe_texto.txt línea 562 y matriz_texto.txt línea 267: «dos a fechas festivas». Misma cifra en informe_texto.txt línea 1882: «dos (10%) a fechas festivas»."
+   },
+   {
+    "cat": "Seguridad con resultado",
+    "valor": "2 puestos",
+    "fuente": "informe_texto.txt línea 562 y matriz_texto.txt línea 267: «y dos a seguridad con resultado». Esta barra NO tiene equivalente en la segunda taxonomía del informe (línea 1882), que absorbe la seguridad dentro del bloque de seis de «paz fronteriza y seguridad»."
+   },
+   {
+    "cat": "COHERENCIA INTERNA (comprobación propia del auditor)",
+    "valor": "Ranking monótono decreciente 2,7 M → 526,3 K; composición 6+4+3+3+2+2 = 20 puestos = 100% (30/20/15/15/10/10)",
+    "fuente": "Verificación aritmética sobre los valores auditados más medición de píxeles del PNG: barras del panel izquierdo 755/587/503/475/447/363/335/307/267/201/195/194/191/181/176/169/162/159/148/147 px; escala k = 526.300/147 = 3.580 reproducciones/px reproduce las 20 cifras de la tabla con error < 0,5%. Panel derecho: 282/188/141/141/94/94 px con k = 47 px por puesto → 6/4/3/3/2/2. No hay panel real-vs-ideal en este gráfico, luego no aplica la comprobación de valores divergentes."
+   },
+   {
+    "cat": "NOTA AL PIE",
+    "valor": "ninguna",
+    "fuente": "Verificación propia sobre el PNG (2105 × 1044): cero píxeles no blancos por debajo de y = 975. Confirmado que el gráfico no lleva pie ni advertencia, pese a que el informe sí incluye una salvedad metodológica pertinente (informe_texto.txt línea 1876: «ADVERTENCIA METODOLÓGICA IMPORTANTE: «reproducciones» no significa lo mismo en las tres plataformas… Una comparación cruda de cifras absolutas EXAGERA el peso de TikTok frente a X»), que NO está impresa en la imagen."
+   }
+  ],
+  "observaciones": "LECTURA DE LA IMAGEN: todo el gráfico es legible sin ambigüedad. No hubo ningún valor que no pudiera leer con certeza. Verifiqué además cada barra midiendo su longitud en píxeles (el panel izquierdo escala de forma consistente: barra 1 = 755 px, barra 9 = 267 px → 267/755 × V1 = 956.200 implica V1 ≈ 2.704.000, lo que confirma que el valor subyacente de la barra 1 es 2,7 M y no otro).\n\nTÍTULO ESPERADO ≠ TÍTULO IMPRESO: el encargo anunciaba «Top 20 histórico del ecosistema y su composición», pero el título realmente impreso en la imagen es «Los veinte contenidos de mayor alcance del ecosistema son, sin excepción, vídeos de TikTok». He transcrito el impreso, literal.\n\nETIQUETAS REDONDEADAS EN LA IMAGEN vs. CIFRA EXACTA DEL TEXTO: la imagen imprime las etiquetas redondeadas a tres cifras («956 K», «696 K», «629 K», «603 K», «568 K»), mientras que la tabla del informe (M13, punto 1) y la matriz (hoja «4. Rendimiento y horarios») dan el decimal exacto: 956,2 K · 720,2 K · 695,9 K · 693,0 K · 682,3 K · 649,2 K · 628,6 K · 602,9 K · 580,4 K · 567,6 K · 530,4 K · 526,3 K. No es una discrepancia de datos, solo de formato de etiqueta. En 'etiqueta_valor' he puesto lo IMPRESO en la imagen; en 'valor' he puesto la cifra exacta de la fuente, que es la que reproduce la longitud real de la barra. Los ocho primeros puestos (2,7 M a 1,1 M) coinciden literalmente entre imagen y texto.\n\nDOS ETIQUETAS DE CATEGORÍA ACORTADAS EN LA IMAGEN: (a) puesto 13, la imagen dice «Navidad» mientras el informe dice «Navidad, diciembre de 2024» — la matriz, en cambio, dice solo «Navidad» y pone la fecha en columna aparte (19 dic 2024), así que la imagen coincide con la matriz; (b) puesto 19, la imagen dice «Seboruco: humor y trabajo comunitario» mientras informe y matriz dicen «Seboruco: humor y trabajo comunitario en dificultad». He transcrito lo impreso en la imagen.\n\nDISCREPANCIA REAL A SEÑALAR, EN EL PANEL DE COMPOSICIÓN: el gráfico reparte los 20 puestos en seis ejes que suman exactamente 20 (6+4+3+3+2+2). El párrafo del informe («DISTRIBUCIÓN TEMÁTICA DEL TOP 20») usa una taxonomía distinta: habla de «seis puestos (30%) al eje de paz fronteriza Y SEGURIDAD; cuatro (20%) identidad y cultura regional; tres (15%) contenido humano-familiar; dos (10%) fechas festivas», y del resto solo menciona «un puesto con una fotografía con una celebridad musical». Es decir, el texto FUNDE paz y seguridad en un único bloque de 6 y deja 5 puestos sin clasificar, mientras que el gráfico separa «Paz y frontera» (6) de «Seguridad con resultado» (2) y añade un cajón «Otros» (3). Las dos versiones no son reconciliables cifra a cifra; he transcrito la del gráfico, que es lo que hay impreso. Quien use este gráfico junto al párrafo debe saber que el «6» del gráfico no es el mismo «6» del texto.\n\nSIN DETALLE POR BARRA: la imagen no imprime ningún texto secundario junto a las barras (ni fechas ni plataforma), aunque la matriz sí tiene la fecha de cada pieza. Por eso 'detalle' va vacío en las 26 barras.\n\nCOLOR: solo hay dos colores de relleno en todo el PNG — azul RGB(42,120,214) en las 20 barras del ranking y verde RGB(27,175,122) en las 6 de composición. Ninguna barra está destacada respecto a las demás de su panel, así que 'destaca' va vacío en todas. El verde no es un acento por barra, es el color base del segundo panel.\n\nDEFECTO DE MAQUETACIÓN DEL PNG: los dos títulos de panel («Reproducciones» y «Composición del top 20 por eje temático») están dibujados a la misma altura que el subtítulo y se SUPERPONEN a su texto. Se leen igualmente los tres, pero conviene corregirlo si el gráfico se regenera.\n\nSIN NOTA AL PIE: revisé la franja inferior del PNG (y ≥ 930 px) y no hay pie ni nota; el gráfico termina en la barra «Ejercicio físico»."
+ },
+ {
+  "id": "g9",
+  "titulo": "Dónde se concentra lo urgente",
+  "veredicto": "CORREGIDO — pero por ESTRUCTURA, no por cifras: no encontré ni una sola cifra errónea. Los 21 totales, los 105 valores del desglose por prioridad y los 5 agregados resisten la refutación por tres vías independientes (medición de píxeles de la imagen, recuento fila a fila de la hoja 2 de la matriz, y tablas del informe). La única enmienda es que la extracción devolvía UN panel cuando la figura imprime DOS: faltaba el panel derecho «Total del diagnóstico» con sus 5 barras, sin el cual el gráfico se redibujaría incompleto.",
+  "correcciones": [
+   {
+    "ruta": "paneles[1]",
+    "antes": "AUSENTE — la extracción devolvía un único panel («Puntos por módulo»), dejando el segundo panel impreso solo mencionado en prosa dentro de 'observaciones'",
+    "despues": "Añadido el panel «Total del diagnóstico» con sus 5 barras: CRÍTICA 37 («37   (14 %)»), ALTA 110 («110   (41 %)»), MEDIA 77 («77   (29 %)»), BAJA 15 («15   (6 %)»), «Informativo (sin corrección)» 28 («28   (10 %)»)",
+    "fuente": "La imagen g9.png imprime el rótulo de panel «Total del diagnóstico» a la derecha (x≈1480, y≈180) con cinco barras propias y sus etiquetas. Medición de píxeles de esas cinco barras: rojo 124 px, naranja 369 px, azul 259 px, verde 51 px, gris 94 px; con la escala de 3,354 px/punto que fija la barra ALTA (369/110) dan 36,97 / 110 / 77,2 / 15,2 / 28,0 → 37, 110, 77, 15 y 28. La instrucción de auditoría exige devolver «TODOS los paneles y TODAS las barras»."
+   },
+   {
+    "ruta": "eje_valor",
+    "antes": "\"Número de puntos de análisis por módulo (267 en total), apilados por prioridad de la corrección: Crítica, Alta, Media, Baja e Informativo\"",
+    "despues": "Reescrito para describir los dos paneles y para dejar constancia de que el eje no lleva marcas ni números impresos, solo etiqueta numérica al final de cada barra",
+    "fuente": "Inspección de la imagen: entre y=180 y y=1000 no hay ninguna línea de rejilla ni número de eje; el único texto numérico son las etiquetas al final de cada barra y las del panel derecho. La descripción anterior solo cubría el panel izquierdo."
+   }
+  ],
+  "corroboracion": [
+   {
+    "cat": "M01",
+    "valor": "8 (Crítica 4 · Alta 2 · Media 1 · Baja 0 · Informativo 1)",
+    "fuente": "TOTAL: informe_texto.txt L51 «M01 | DIAGNÓSTICO GENERAL Y AUDITORÍA DE PRESENCIA DIGITAL | 8 | Inventario verificado en pantalla · 8 líneas de análisis»; matriz_texto.txt hoja «1. Módulos» L7 «M01 | ... | 8 | 0.0299625468164794 | 4 | 2 | DIAGNÓSTICO COMPLETO». DESGLOSE: recuento de las filas M01 de la hoja «2. Puntos de la cotización» por su columna «Prioridad» → 4/2/1/0/1; y medición de píxeles de la barra (y=269): rojo 171 px=4, naranja 83=2, azul 40=1, verde 0, gris 41=1 (escala ~43,4 px/punto). Las columnas «Críticos»=4 y «Alta prioridad»=2 de la hoja 1 lo confirman."
+   },
+   {
+    "cat": "M02",
+    "valor": "19 (1 · 7 · 8 · 1 · 2)",
+    "fuente": "TOTAL: informe L52 «M02 | ANÁLISIS DE INSTAGRAM | 19 | 127 publicaciones clasificadas · 24 Reels medidos · 14 destacadas · 19 líneas de análisis»; matriz hoja 1 L8 «M02 | ... | 19 | 0.0711610486891386 | 1 | 7». DESGLOSE: recuento hoja 2 → 1/7/8/1/2; píxeles (y=302): 40=1, 301=7, 345=8, 40=1, 86=2."
+   },
+   {
+    "cat": "M03",
+    "valor": "16 (1 · 7 · 6 · 1 · 1)",
+    "fuente": "TOTAL: informe L53 «M03 | ANÁLISIS DE TIKTOK | 16 | 63 publicaciones con hora exacta · histórico completo por ranking nativo · 16 líneas de análisis»; matriz hoja 1 L9 «M03 | ... | 16 | 0.0599250936329588 | 1 | 7». DESGLOSE: recuento hoja 2 → 1/7/6/1/1; píxeles (y=335): 40=1, 301=7, 258=6, 39=1, 42=1."
+   },
+   {
+    "cat": "M04",
+    "valor": "17 (0 · 7 · 6 · 2 · 2)",
+    "fuente": "TOTAL: informe L54 «M04 | ANÁLISIS DE YOUTUBE | 17 | Dos canales auditados · serie completa de 22 emisiones · 17 líneas de análisis»; matriz hoja 1 L10 «M04 | ... | 17 | 0.0636704119850187 | 0 | 7». DESGLOSE: recuento hoja 2 → 0/7/6/2/2; píxeles (y=368): rojo 0 (barra sin segmento rojo), 302=7, 257=6, 83=2, 84=2."
+   },
+   {
+    "cat": "M05",
+    "valor": "10 (1 · 4 · 3 · 2 · 0)",
+    "fuente": "TOTAL: informe L55 «M05 | ANÁLISIS DE FACEBOOK | 10 | Lectura directa de perfil · 10 líneas de análisis»; matriz hoja 1 L11 «M05 | ... | 10 | 0.0374531835205993 | 1 | 4». DESGLOSE: recuento hoja 2 → 1/4/3/2/0; píxeles (y=401): 40=1, 170=4, 127=3, 83=2, gris 2 px (ruido de antialias) = 0."
+   },
+   {
+    "cat": "M06",
+    "valor": "10 (3 · 5 · 1 · 0 · 1)",
+    "fuente": "TOTAL: informe L56 «M06 | ANÁLISIS DE X (TWITTER) | 10 | 193 publicaciones + 40 reposts + 108 respuestas recibidas · 10 líneas de análisis»; matriz hoja 1 L12 «M06 | ... | 10 | 0.0374531835205993 | 3 | 5». DESGLOSE: recuento hoja 2 → 3/5/1/0/1; píxeles (y=434): 127=3, 214=5, 40=1, 0, 40=1."
+   },
+   {
+    "cat": "M07",
+    "valor": "14 (0 · 3 · 9 · 1 · 1)",
+    "fuente": "TOTAL: informe L57 «M07 | GOOGLE, SEO Y REPUTACIÓN EN BUSCADORES | 14 | Primera pantalla, panel de conocimiento y estado de entidad verificados · 14 líneas de análisis»; matriz hoja 1 L13 «M07 | ... | 14 | 0.052434456928839 | 0 | 3». DESGLOSE: recuento hoja 2 → 0/3/9/1/1; píxeles (y=467): rojo 0, 127=3, 389=9, 39=1, 40=1."
+   },
+   {
+    "cat": "M08",
+    "valor": "23 (0 · 10 · 9 · 4 · 0)",
+    "fuente": "TOTAL: informe L58 «M08 | ANÁLISIS DE CONTENIDO AUDIOVISUAL (VIDEO) | 23 | Tres piezas reproducidas con enlace de comprobación + grilla completa · 23 líneas de análisis»; matriz hoja 1 L14 «M08 | ... | 23 | 0.0861423220973783 | 0 | 10». DESGLOSE: recuento hoja 2 → 0/10/9/4/0; píxeles (y=499): rojo 0, 432=10, 389=9, 170=4, gris 1 px = 0. Es la barra más larga del panel (1040 px de trazo)."
+   },
+   {
+    "cat": "M09",
+    "valor": "12 (1 · 8 · 3 · 0 · 0)",
+    "fuente": "TOTAL: informe L59 «M09 | DISEÑO GRÁFICO E IDENTIDAD VISUAL | 12 | Valores cromáticos y tipográficos extraídos del código · 12 líneas de análisis»; matriz hoja 1 L15 «M09 | ... | 12 | 0.0449438202247191 | 1 | 8». DESGLOSE: recuento hoja 2 → 1/8/3/0/0; píxeles (y=532): 40=1, 345=8, 127=3, 0, 0."
+   },
+   {
+    "cat": "M10",
+    "valor": "14 (3 · 9 · 2 · 0 · 0)",
+    "fuente": "TOTAL: informe L60 «M10 | COPYWRITING, GUIONES Y NARRATIVA | 14 | 382 publicaciones analizadas en tres plataformas · 14 líneas de análisis»; matriz hoja 1 L16 «M10 | ... | 14 | 0.052434456928839 | 3 | 9». DESGLOSE: recuento hoja 2 → 3/9/2/0/0; píxeles (y=565): 127=3, 389=9, 83=2, 0, 0."
+   },
+   {
+    "cat": "M11",
+    "valor": "16 (0 · 3 · 5 · 1 · 7)",
+    "fuente": "TOTAL: informe L61 «M11 | ORATORIA, VOCABULARIO Y DESEMPEÑO ANTE CÁMARA | 16 | Tres registros de vídeo reproducidos con audio · 16 líneas de análisis»; matriz hoja 1 L17 «M11 | ... | 16 | 0.0599250936329588 | 0 | 3». DESGLOSE: recuento hoja 2 → 0/3/5/1/7; píxeles (y=598): rojo 0, 127=3, 214=5, 40=1, gris 302=7 (el segmento gris más largo del panel, coherente con 7 informativos)."
+   },
+   {
+    "cat": "M12",
+    "valor": "14 (1 · 6 · 4 · 0 · 3)",
+    "fuente": "TOTAL: informe L62 «M12 | MÉTRICAS Y CRECIMIENTO | 14 | Cifras verificadas en pantalla en las ocho cuentas · 14 líneas de análisis»; matriz hoja 1 L18 «M12 | ... | 14 | 0.052434456928839 | 1 | 6». DESGLOSE: recuento hoja 2 → 1/6/4/0/3; píxeles (y=631): 40=1, 258=6, 170=4, 0, 127=3."
+   },
+   {
+    "cat": "M13",
+    "valor": "10 (3 · 4 · 0 · 0 · 3)",
+    "fuente": "TOTAL: informe L63 «M13 | RENDIMIENTO DE CONTENIDO (VIRAL vs. NO VIRAL) | 10 | 382 publicaciones cruzadas entre tres plataformas · 10 líneas de análisis»; matriz hoja 1 L19 «M13 | ... | 10 | 0.0374531835205993 | 3 | 4». DESGLOSE: recuento hoja 2 → 3/4/0/0/3; píxeles (y=664): 127=3, 171=4, azul 0 (única barra sin segmento azul, coherente con Media 0), verde 0, 126=3."
+   },
+   {
+    "cat": "M14",
+    "valor": "9 (1 · 3 · 5 · 0 · 0)",
+    "fuente": "TOTAL: informe L64 «M14 | ESCUCHA SOCIAL — TÁCHIRA (LOCAL) | 9 | Ecosistema mediático y agenda local documentados con fuente y fecha · 9 líneas de análisis»; matriz hoja 1 L20 «M14 | ... | 9 | 0.0337078651685393 | 1 | 3». DESGLOSE: recuento hoja 2 → 1/3/5/0/0; píxeles (y=697): 40=1, 127=3, 214=5, 0, 3 px de ruido = 0."
+   },
+   {
+    "cat": "M15",
+    "valor": "10 (1 · 6 · 3 · 0 · 0)",
+    "fuente": "TOTAL: informe L65 «M15 | ESCUCHA SOCIAL — NACIONAL | 10 | Momentos de exposición nacional documentados con cita textual y fecha · 10 líneas de análisis»; matriz hoja 1 L21 «M15 | ... | 10 | 0.0374531835205993 | 1 | 6». DESGLOSE: recuento hoja 2 → 1/6/3/0/0; píxeles (y=730): 40=1, 258=6, 126=3, 0, 1 px = 0."
+   },
+   {
+    "cat": "M16",
+    "valor": "6 (2 · 3 · 1 · 0 · 0)",
+    "fuente": "TOTAL: informe L66 «M16 | ESCUCHA SOCIAL — INTERNACIONAL | 6 | Diez listas de sanciones, siete medios y seis organizaciones verificados · 6 líneas de análisis»; matriz hoja 1 L22 «M16 | ... | 6 | 0.0224719101123596 | 2 | 3». DESGLOSE: recuento hoja 2 → 2/3/1/0/0; píxeles (y=763): 84=2, 126=3, 40=1, 0, 1 px = 0. Es la barra más corta (278 px), coherente con ser el módulo de 6 puntos."
+   },
+   {
+    "cat": "M17",
+    "valor": "15 (2 · 2 · 5 · 3 · 3)",
+    "fuente": "TOTAL: informe L67 «M17 | ANÁLISIS DE COMPETIDORES DIRECTOS | 15 | Cinco competidores seleccionados y fichados · 15 líneas de análisis»; matriz hoja 1 L23 «M17 | ... | 15 | 0.0561797752808989 | 2 | 2». DESGLOSE: recuento hoja 2 → 2/2/5/3/3; píxeles (y=796): 84=2, 83=2, 214=5, 127=3, 126=3."
+   },
+   {
+    "cat": "M18",
+    "valor": "10 (2 · 5 · 1 · 0 · 2)",
+    "fuente": "TOTAL: informe L68 «M18 | BENCHMARK INTERNACIONAL DE POLÍTICOS DEL MISMO RANGO | 10 | Cinco referentes internacionales · 10 líneas de análisis»; matriz hoja 1 L24 «M18 | ... | 10 | 0.0374531835205993 | 2 | 5». DESGLOSE: recuento hoja 2 → 2/5/1/0/2; píxeles (y=829): 84=2, 214=5, 39=1, 0, 85=2. Esto refuta el riesgo que el primer agente señaló: el recuento correcto de M18 es 10, no 11; los falsos positivos de prosa que él descartó estaban bien descartados."
+   },
+   {
+    "cat": "M19",
+    "valor": "11 (3 · 6 · 2 · 0 · 0)",
+    "fuente": "TOTAL: informe L69 «M19 | AUDIENCIA Y COMUNIDAD | 11 | Muestras de comentarios de tres plataformas · 11 líneas de análisis»; matriz hoja 1 L25 «M19 | ... | 11 | 0.0411985018726592 | 3 | 6». DESGLOSE: recuento hoja 2 → 3/6/2/0/0; píxeles (y=862): 127=3, 258=6, 83=2, 0, 0."
+   },
+   {
+    "cat": "M20",
+    "valor": "11 (4 · 5 · 1 · 0 · 1)",
+    "fuente": "TOTAL: informe L70 «M20 | EQUIPO, PROCESOS Y TECNOLOGÍA | 11 | Capacidad de producción medida · estructura, flujo y cuestionario entregados · 11 líneas de análisis»; matriz hoja 1 L26 «M20 | ... | 11 | 0.0411985018726592 | 4 | 5». DESGLOSE: recuento hoja 2 → 4/5/1/0/1; píxeles (y=894): 171=4, 214=5, 39=1, 0, 40=1. Confirma que el total de M20 es 11 y no 13: el filtrado de falsos positivos del primer agente era correcto."
+   },
+   {
+    "cat": "M21",
+    "valor": "12 (4 · 5 · 2 · 0 · 1)",
+    "fuente": "TOTAL: informe L71 «M21 | ENTREGABLES ESTRATÉGICOS (CIERRE DEL DIAGNÓSTICO) | 12 | Informe técnico, FODA, KPIs y hoja de ruta entregados · 12 líneas de análisis»; matriz hoja 1 L27 «M21 | ... | 12 | 0.0449438202247191 | 4 | 5». DESGLOSE: recuento hoja 2 → 4/5/2/0/1; píxeles (y=927): 171=4, 214=5, 83=2, 0, 40=1."
+   },
+   {
+    "cat": "TOTAL panel izquierdo (suma de las 21 barras)",
+    "valor": "267",
+    "fuente": "informe_texto.txt L71 « | TOTAL — 21 módulos de análisis | 267 | 8 cuentas · 6 plataformas · 382 publicaciones clasificadas · 20 figuras de verificación»; matriz hoja 1 L28 « | TOTAL — 21 módulos de análisis | 267 | 1 | 37 | 110 | ...»; informe L7 «ALCANCE   21 módulos de análisis · 267 puntos auditados · 8 cuentas y 6 plataformas». Además, la hoja 2 de la matriz tiene exactamente 267 filas de punto (verificado por conteo)."
+   },
+   {
+    "cat": "CRÍTICA (panel derecho)",
+    "valor": "37   (14 %)",
+    "fuente": "Etiqueta impresa literal en la imagen: «37   (14 %)». Corroborada por matriz hoja 1 L28, fila TOTAL, columna «Críticos» = 37, y por el recuento de las 267 filas de la hoja 2 con Prioridad = «CRÍTICA» → 37. También en la nota al pie de la propia figura: «Los 37 puntos críticos...». 37/267 = 13,86 % → 14 %."
+   },
+   {
+    "cat": "ALTA (panel derecho)",
+    "valor": "110   (41 %)",
+    "fuente": "Etiqueta impresa literal: «110   (41 %)». Corroborada por matriz hoja 1 L28, fila TOTAL, columna «Alta prioridad» = 110, y por el recuento de la hoja 2 con Prioridad = «ALTA» → 110. También en la nota al pie: «...y los 110 de prioridad alta...». 110/267 = 41,20 % → 41 %."
+   },
+   {
+    "cat": "MEDIA (panel derecho)",
+    "valor": "77   (29 %)",
+    "fuente": "La cifra 77 NO APARECE ESCRITA EN NINGÚN TEXTO del informe ni de la matriz: la matriz solo desglosa por escrito las columnas «Críticos» y «Alta prioridad» (nota de la hoja 1, L29). Está respaldada por dos vías: (a) etiqueta impresa literal en la imagen «77   (29 %)», y (b) recuento propio de las 267 filas de la hoja «2. Puntos de la cotización» con Prioridad = «MEDIA» → 77. 77/267 = 28,84 % → 29 %."
+   },
+   {
+    "cat": "BAJA (panel derecho)",
+    "valor": "15   (6 %)",
+    "fuente": "La cifra 15 NO APARECE ESCRITA EN NINGÚN TEXTO del informe ni de la matriz. Respaldada por (a) la etiqueta impresa literal «15   (6 %)» y (b) el recuento propio de la hoja 2 con Prioridad = «BAJA» → 15. 15/267 = 5,62 % → 6 %."
+   },
+   {
+    "cat": "Informativo (sin corrección) (panel derecho)",
+    "valor": "28   (10 %)",
+    "fuente": "La cifra 28 NO APARECE ESCRITA EN NINGÚN TEXTO del informe ni de la matriz. Respaldada por (a) la etiqueta impresa literal «28   (10 %)» y (b) el recuento propio de la hoja 2 con Prioridad = «—» (guion, es decir, punto que no exige corrección) → 28. 28/267 = 10,49 % → 10 %. La propia etiqueta de la imagen glosa el sentido: «Informativo (sin corrección)»."
+   },
+   {
+    "cat": "TÍTULO impreso",
+    "valor": "«Dónde se concentra lo urgente»",
+    "fuente": "Leído en la imagen a 3× de aumento, y=30-70. El título esperado del encargo, «Distribución de los 267 puntos por prioridad», NO está impreso en la figura; aparece como último renglón del listado de la hoja «9. Gráficos» de matriz_texto.txt (L1628): «Distribución de los 267 puntos por prioridad». La transcripción del primer agente es correcta y su advertencia está justificada."
+   },
+   {
+    "cat": "SUBTÍTULO impreso",
+    "valor": "«Los 267 puntos del diagnóstico, clasificados por la prioridad de la corrección que exigen.»",
+    "fuente": "Leído literal en la imagen a 3× de aumento, y=95-120. Coincide carácter a carácter con la extracción, punto final incluido."
+   },
+   {
+    "cat": "NOTA al pie impresa",
+    "valor": "«Los 37 puntos críticos y los 110 de prioridad alta son los que ordenan la hoja de ruta de los primeros 45 días.»",
+    "fuente": "Leída literal en la imagen a 2× de aumento, y=1088-1104. Coincide carácter a carácter con la extracción. Su formulación se hace eco de la nota de la hoja 1 de la matriz (L29): «Las columnas «Críticos» y «Alta prioridad» ... son las que ordenan la hoja de ruta de la hoja 6»."
+   },
+   {
+    "cat": "LEYENDA impresa",
+    "valor": "Crítica · Alta · Media · Baja · Informativo",
+    "fuente": "Franja de leyenda en la imagen, y=1042-1072, con cinco marcadores de color muestreados: Crítica RGB(208,59,59) rojo; Alta RGB(235,104,52) naranja; Media RGB(42,120,214) azul; Baja RGB(27,175,122) verde; Informativo RGB(220,223,228) gris. Estos cinco colores son los que se usaron para decodificar por píxeles los 105 segmentos de las barras apiladas."
+   },
+   {
+    "cat": "COHERENCIA de porcentajes del panel derecho",
+    "valor": "14 + 41 + 29 + 6 + 10 = 100 %",
+    "fuente": "Cálculo propio sobre las cinco etiquetas impresas: 37/267=13,86→14; 110/267=41,20→41; 77/267=28,84→29; 15/267=5,62→6; 28/267=10,49→10. Los redondeos suman exactamente 100 y no hay que forzar ningún ajuste. Los cinco valores suman 37+110+77+15+28 = 267, igual al total declarado."
+   }
+  ],
+  "observaciones": "TÍTULO: el título impreso en la imagen es «Dónde se concentra lo urgente», NO «Distribución de los 267 puntos por prioridad» como indicaba el título esperado del encargo. El texto esperado no aparece en ninguna parte de la figura. Transcribo lo que está impreso.\n\nESTRUCTURA REAL DE LA FIGURA: son en realidad DOS paneles impresos, no uno. (a) Izquierda, «Puntos por módulo»: 21 barras horizontales apiladas M01…M21 en orden ascendente, cada una con su total impreso al final. (b) Derecha, «Total del diagnóstico»: cinco barras verticales/horizontales de agregado por prioridad, con estas etiquetas impresas literales: CRÍTICA 37 (14 %), ALTA 110 (41 %), MEDIA 77 (29 %), BAJA 15 (6 %), «Informativo (sin corrección)» 28 (10 %). Siguiendo la instrucción 4, devuelvo UN SOLO panel con una barra por módulo y dejo constancia aquí del panel derecho, que no cabe en la estructura pedida. Leyenda impresa al pie: Crítica · Alta · Media · Baja · Informativo.\n\nRECUENTO (instrucción 4, no lectura de la imagen): conté los puntos por prioridad módulo a módulo en /tmp/claude-0/-home-user-freddy-bernal/e99fd5b7-9e4f-5b28-a347-eb077c5a5ead/scratchpad/informe_texto.txt, contando exclusivamente las líneas que empiezan por «ESTADO» y contienen «PRIORIDAD  <valor>», con el módulo vigente determinado por el encabezado «##### Mxx —». Descarté 3 falsos positivos de prosa narrativa que contienen la palabra PRIORIDAD sin ser fichas de punto (1 en M18 y 2 en M20); sin ese filtro M18 daba 11 y M20 daba 13, cifras erróneas. Con el filtro correcto el recuento es de 267 puntos exactos y los agregados salen CRÍTICA 37, ALTA 110, MEDIA 77, BAJA 15, INFORMATIVO («PRIORIDAD —») 28, que suman 267 y coinciden EXACTAMENTE con las cinco etiquetas del panel derecho de la imagen.\n\nTRIPLE VERIFICACIÓN DE LOS TOTALES POR MÓDULO: los 21 totales coinciden en las tres fuentes, sin una sola discrepancia. (1) Etiquetas impresas en la imagen; (2) tabla «Los 21 módulos de análisis» del informe (líneas 50-71 de informe_texto.txt); (3) hoja «1. Módulos» de matriz_texto.txt. Los valores son 8, 19, 16, 17, 10, 10, 14, 23, 12, 14, 16, 14, 10, 9, 10, 6, 15, 10, 11, 11, 12; suman 267, igual que la fila TOTAL de ambas tablas.\n\nVERIFICACIÓN DEL DESGLOSE CRÍTICA/ALTA: la hoja «1. Módulos» de la matriz trae columnas «Críticos» y «Alta prioridad» por módulo. Mi recuento coincide módulo a módulo con esas dos columnas en los 21 casos (4/2, 1/7, 1/7, 0/7, 1/4, 3/5, 0/3, 0/10, 1/8, 3/9, 0/3, 1/6, 3/4, 1/3, 1/6, 2/3, 2/2, 2/5, 3/6, 4/5, 4/5) y con sus totales 37 y 110. Las columnas Media, Baja e Informativo no aparecen desglosadas en la matriz, así que esas tres proceden únicamente de mi recuento sobre el cuerpo del informe; su suma cuadra con el total de cada módulo y con los agregados del panel derecho, lo que las respalda de forma indirecta.\n\nDUDAS Y LÍMITES HONESTOS: (1) No medí las longitudes de los segmentos de color de las barras apiladas; siguiendo la instrucción 4 no leí de la imagen ningún valor de prioridad, así que el desglose que va en 'detalle' es recuento del texto, NO transcripción de píxeles. Una comprobación visual de coherencia (p. ej. M08 sin segmento rojo, M04 sin rojo, M07 y M11 sin rojo, M11 con un segmento gris muy largo compatible con 7 informativos, M13 sin segmento azul compatible con Media 0) es consistente con el recuento, pero no es una medición. (2) El campo 'detalle' contiene ese desglose recalculado; en la imagen no hay ningún texto secundario impreso junto a cada barra más allá de la cifra del total, así que 'detalle' no es transcripción literal. (3) 'destaca' va vacío en todas las barras: en este gráfico el color codifica la prioridad dentro de cada barra apilada, no un realce por módulo, de modo que ninguna barra está «destacada» en el sentido del esquema. (4) Todas las etiquetas de valor son enteros de una o dos cifras sin separador de millar ni decimal; no hay ninguna ambigüedad tipográfica que resolver. (5) El eje de valores no lleva marcas ni números impresos: solo hay etiqueta numérica al final de cada barra."
+ },
+ {
+  "id": "g10",
+  "titulo": "La distancia con el referente del oficialismo no se explica por recursos",
+  "veredicto": "CONFIRMADO",
+  "correcciones": [],
+  "corroboracion": [
+   {
+    "cat": "Rafael Lacava",
+    "valor": "2.000.000",
+    "fuente": "informe_texto.txt, línea 1847 (M12 punto 13, «Benchmark de crecimiento vs. competidores directos»), tabla: «Instagram — seguidores | 244.000 | 2.000.000 | Lacava tiene 8,2 veces más». Corroborado además en matriz_texto.txt línea 1455 (hoja «5. Competidores y KPIs», MATRIZ COMPARATIVA DE COMPETIDORES (M17)): «Instagram — seguidores | 244.000 | 2.000.000 | 6.219 | Pendiente»; y en matriz_texto.txt línea 1030: «la brecha en Instagram es de 8 a 1 (244.000 frente a 2.000.000 de seguidores)». Y en matriz_texto.txt línea 1558: «Lacava tiene 2 millones de seguidores en Instagram frente a 244.000, ocho veces más». Lectura directa del PNG: etiqueta impresa «2.000.000» junto a la barra gris superior (leída a 4x de aumento, sin ambigüedad)."
+   },
+   {
+    "cat": "Freddy Bernal",
+    "valor": "244.000",
+    "fuente": "informe_texto.txt, línea 1847: «Instagram — seguidores | 244.000 | 2.000.000 | Lacava tiene 8,2 veces más». Corroborado en matriz_texto.txt línea 1455 (hoja 5): «Instagram — seguidores | 244.000 | 2.000.000 | ...»; matriz_texto.txt línea 1030: «(244.000 frente a 2.000.000 de seguidores)»; matriz_texto.txt línea 1558: «frente a 244.000, ocho veces más». Lectura directa del PNG: etiqueta impresa «244.000» junto a la barra azul inferior (leída a 4x de aumento, sin ambigüedad)."
+   },
+   {
+    "cat": "Nota al pie — «8,2 veces más audiencia»",
+    "valor": "8,2",
+    "fuente": "matriz_texto.txt línea 1465 (hoja 5, fila «Brecha en Instagram»): «Brecha en Instagram | — | 8,2 veces más audiencia | 39 veces menos que Bernal | —». También informe_texto.txt línea 1847 («Lacava tiene 8,2 veces más»). Verificación geométrica independiente sobre el PNG: 1213 px / 148 px = 8,196 → 8,2. Coherente."
+   },
+   {
+    "cat": "Nota al pie — «la tizana de El Mirador y el sapote entran en su top 15»",
+    "valor": "texto",
+    "fuente": "informe_texto.txt línea 1843: «La auditoría de contenido documentó que la tizana de El Mirador y el sapote entran en su top 15»; y línea 2436: «La tizana de El Mirador y el sapote entran en su top 15 sin ninguna carga política.» Idéntico en matriz_texto.txt línea 913."
+   },
+   {
+    "cat": "Subtítulo — «mismo partido, mismo cargo, reelecto en el mismo ciclo»",
+    "valor": "texto",
+    "fuente": "informe_texto.txt línea 1842: «El comparador más pertinente es Rafael Lacava, gobernador de Carabobo: mismo partido, mismo cargo, reelecto igual que él». El gráfico parafrasea el cierre («reelecto en el mismo ciclo» en vez de «reelecto igual que él»); se ha transcrito lo IMPRESO en la imagen, que es lo correcto."
+   },
+   {
+    "cat": "Título — «no se explica por recursos»",
+    "valor": "texto",
+    "fuente": "informe_texto.txt línea 1843: «LA LECCIÓN DEL BENCHMARK: la diferencia de 8 a 1 en Instagram no se explica por el tamaño del estado ni por los recursos.» El título impreso condensa esa frase. Transcrito literalmente del PNG."
+   }
+  ],
+  "observaciones": "LECTURA DE LA IMAGEN — certeza alta, sin ambigüedades tipográficas. El PNG mide 2386x538 px. Solo hay dos barras horizontales, en este orden de arriba abajo: (1) «Rafael Lacava» con etiqueta impresa «2.000.000» y (2) «Freddy Bernal» con etiqueta impresa «244.000». Ambas etiquetas usan punto de millar, sin decimales; se han transcrito literalmente. No hay eje numérico visible, ni rejilla, ni leyenda, ni banda de referencia: los valores solo constan en las etiquetas impresas junto a cada barra.\n\nVERIFICACIÓN GEOMÉTRICA (independiente del texto): midiendo píxeles, la barra gris de Lacava ocupa 1.213 px (x=397 a 1609) y la barra azul de Bernal 148 px (x=397 a 544), ambas arrancando en la misma línea base x=397. La razón de longitudes es 8,196. Si se fija Lacava = 2.000.000, la longitud de Bernal implica 244.023 seguidores, es decir 244.000 redondeado. La geometría confirma exactamente las dos etiquetas leídas y el «8,2 veces» del pie.\n\nCONTRASTE CON EL TEXTO — coincidencia total, sin discrepancias. informe_texto.txt, sección «### 13. Benchmark de crecimiento vs. competidores directos» (M12), tabla: «Instagram — seguidores | 244.000 | 2.000.000 | Lacava tiene 8,2 veces más». Lo mismo en matriz_texto.txt línea 1030 («244.000 frente a 2.000.000 de seguidores») y línea 1558 («Lacava tiene 2 millones de seguidores en Instagram frente a 244.000, ocho veces más»). El subtítulo del gráfico reproduce casi literalmente la frase del informe («mismo partido, mismo cargo, reelecto igual que él»), y el pie recoge la frase del informe sobre «la tizana de El Mirador y el sapote entran en su top 15».\n\nDISCREPANCIA MENOR DE TÍTULO (no de datos): el encargo anunciaba el título «Distancia con el referente del oficialismo», pero el título realmente impreso en la imagen es «La distancia con el referente del oficialismo no se explica por recursos». He transcrito el impreso, que es el que aparece en el PNG.\n\nCOLOR / CAMPO 'destaca': la barra de Rafael Lacava es gris base (RGB 185,190,199) → cadena vacía. La barra de Freddy Bernal es el azul de acento principal (RGB 42,120,214) → «A». Advertencia honesta: aquí el acento marca al SUJETO AUDITADO, que en este gráfico es el peor dato (8 veces menos audiencia), no un «mejor». He aplicado el criterio cromático que pide el esquema (azul de acento = «A»), pero semánticamente la barra destacada es la desfavorable; conviene no interpretar «A» como logro en este gráfico concreto.\n\nNADA ILEGIBLE: no hay ningún carácter, cifra ni etiqueta del gráfico que no haya podido leer con certeza. No hay textos secundarios por barra (campo 'detalle' vacío en ambas), ni tiles, ni paneles adicionales: es un barh simple de un solo panel."
+ }
+]

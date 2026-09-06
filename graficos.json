@@ -1,0 +1,1057 @@
+[
+ {
+  "id": "g1",
+  "tipo": "tiles+barh",
+  "modulo": null,
+  "punto": null,
+  "titulo": "La audiencia declarada y la comunidad real no son la misma cifra",
+  "subtitulo": "De 1.166.000 seguidores en las tres plataformas principales, unas 1.700 personas interactúan por ciclo de publicación.",
+  "nota": "Comunidad activa como porcentaje de la audiencia declarada · TikTok genera 17 veces más interacción que X con la mitad de seguidores.",
+  "eje": "Comunidad activa como porcentaje de la audiencia declarada (ratio interacciones/seguidores, en %)",
+  "tiles": [
+   {
+    "valor": "1.166.000",
+    "etiqueta": "seguidores en X, Instagram y TikTok",
+    "detalle": ""
+   },
+   {
+    "valor": "1.712",
+    "etiqueta": "personas que interactúan por ciclo",
+    "detalle": ""
+   },
+   {
+    "valor": "0,147 %",
+    "etiqueta": "de la audiencia es comunidad activa",
+    "detalle": ""
+   }
+  ],
+  "paneles": [
+   {
+    "nombre": "",
+    "unidad": "% de la audiencia declarada (comunidad activa / seguidores)",
+    "barras": [
+     {
+      "cat": "X",
+      "valor": 0.009,
+      "etiqueta": "0,009 %",
+      "detalle": "602.800 seg.",
+      "destaca": "B",
+      "color": "dim"
+     },
+     {
+      "cat": "Instagram",
+      "valor": 0.264,
+      "etiqueta": "0,264 %",
+      "detalle": "244.000 seg.",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "TikTok",
+      "valor": 0.32,
+      "etiqueta": "0,320 %",
+      "detalle": "319.200 seg.",
+      "destaca": "A",
+      "color": "aqua"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "g2",
+  "tipo": "barh",
+  "modulo": "M01",
+  "punto": 1,
+  "titulo": "Ocho cuentas, 1,22 millones de seguidores y una sola ruta de salida",
+  "subtitulo": "Solo X enlaza a un destino propio. Las siete cuentas restantes suman 618.000 seguidores sin ningún enlace en biografía.",
+  "nota": "Con enlace en biografía  ·  Sin ninguna ruta de salida — 618.000 personas, el 50,6 % de la audiencia",
+  "eje": "Seguidores por cuenta (número absoluto de seguidores; en YouTube, suscriptores). Eje horizontal sin marcas ni línea de base visible: la escala se deduce de las etiquetas impresas y es lineal desde 0 (todas las barras arrancan en x=397 y sus anchuras encajan con esa escala dentro de ±0,4 px).",
+  "tiles": [],
+  "paneles": [
+   {
+    "nombre": "",
+    "unidad": "seguidores",
+    "barras": [
+     {
+      "cat": "X",
+      "valor": 602800.0,
+      "etiqueta": "602.800",
+      "detalle": "49,3 %",
+      "destaca": "A",
+      "color": "blue"
+     },
+     {
+      "cat": "TikTok principal",
+      "valor": 319200.0,
+      "etiqueta": "319.200",
+      "detalle": "26,1 %",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "Instagram",
+      "valor": 244000.0,
+      "etiqueta": "244.000",
+      "detalle": "19,9 %",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "Facebook",
+      "valor": 32000.0,
+      "etiqueta": "32.000",
+      "detalle": "2,6 %",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "TikTok secundario",
+      "valor": 19400.0,
+      "etiqueta": "19.400",
+      "detalle": "1,6 %",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "Mastodon",
+      "valor": 2900.0,
+      "etiqueta": "2.900",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "Threads",
+      "valor": 2683.0,
+      "etiqueta": "2.683",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "YouTube",
+      "valor": 910.0,
+      "etiqueta": "910",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "g3",
+  "tipo": "barh",
+  "modulo": "M12",
+  "punto": 9,
+  "titulo": "La cuenta más grande es la que menos gente ve",
+  "subtitulo": "Alcance medio de una publicación como porcentaje de la propia base de seguidores.",
+  "nota": "De cada 1.000 seguidores de X, unos 6 ven lo que publica. La comparación entre plataformas es indicativa: cada una contabiliza una vista con criterio distinto.",
+  "eje": "Alcance medio de una publicación como porcentaje de la propia base de seguidores (%)",
+  "tiles": [],
+  "paneles": [
+   {
+    "nombre": "",
+    "unidad": "% de la base de seguidores",
+    "barras": [
+     {
+      "cat": "X",
+      "valor": 0.56,
+      "etiqueta": "0,56 %",
+      "detalle": "3.399 visualizaciones medias sobre 602.800 seguidores",
+      "destaca": "B",
+      "color": "red"
+     },
+     {
+      "cat": "Instagram",
+      "valor": 6.8,
+      "etiqueta": "6,80 %",
+      "detalle": "16.600 reproducciones medianas por Reel sobre 244.000",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "TikTok",
+      "valor": 8.6,
+      "etiqueta": "8,60 %",
+      "detalle": "27.400 reproducciones medias sobre 319.200 seguidores",
+      "destaca": "A",
+      "color": "aqua"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "g4",
+  "tipo": "panelesConBanda",
+  "modulo": "M12",
+  "punto": 7,
+  "titulo": "Cada plataforma, medida contra su propia referencia de sector",
+  "subtitulo": "Las tres métricas no son comparables entre sí: cada una se contrasta con el rango habitual de su plataforma.",
+  "nota": "",
+  "eje": "Tasa en porcentaje (%), pero cada panel tiene su propia métrica y su propia escala: TikTok mide interacciones sobre reproducciones, Instagram me gusta sobre seguidores y X visualizaciones sobre seguidores. No son comparables entre sí.",
+  "tiles": [],
+  "paneles": [
+   {
+    "nombre": "TikTok",
+    "unidad": "% de interacciones sobre reproducciones",
+    "barras": [
+     {
+      "cat": "TikTok",
+      "valor": 4.87,
+      "etiqueta": "4,87 %",
+      "detalle": "interacciones / reproducciones · SALUDABLE",
+      "destaca": "A",
+      "color": "aqua"
+     }
+    ],
+    "banda": {
+     "min": 4.0,
+     "max": 6.0,
+     "etiqueta": "referencia 4–6 %"
+    }
+   },
+   {
+    "nombre": "Instagram",
+    "unidad": "% de me gusta sobre seguidores",
+    "barras": [
+     {
+      "cat": "Instagram",
+      "valor": 0.264,
+      "etiqueta": "0,264 %",
+      "detalle": "me gusta / seguidores (agosto) · POR DEBAJO",
+      "destaca": "B",
+      "color": "red"
+     }
+    ],
+    "banda": {
+     "min": 0.5,
+     "max": 1.5,
+     "etiqueta": "referencia 0,5–1,5 %"
+    }
+   },
+   {
+    "nombre": "X",
+    "unidad": "% de visualizaciones sobre seguidores",
+    "barras": [
+     {
+      "cat": "X",
+      "valor": 0.56,
+      "etiqueta": "0,56 %",
+      "detalle": "visualizaciones / seguidores · MUY POR DEBAJO",
+      "destaca": "B",
+      "color": "red"
+     }
+    ],
+    "banda": {
+     "min": 2.0,
+     "max": 5.0,
+     "etiqueta": "referencia 2–5 %"
+    }
+   }
+  ]
+ },
+ {
+  "id": "g5",
+  "tipo": "divergente",
+  "modulo": "M13",
+  "punto": 8,
+  "titulo": "Lo que más rinde es lo que menos se produce",
+  "subtitulo": "Diferencia entre el peso real de cada pilar en la producción y el peso que su rendimiento medido justifica.",
+  "nota": "",
+  "eje": "Brecha en puntos porcentuales (pp) = peso real en la producción menos peso ideal propuesto. Positivo (rojo, a la derecha) = sobreproducido; negativo (azul, a la izquierda) = infraproducido.",
+  "tiles": [],
+  "paneles": [
+   {
+    "nombre": "",
+    "unidad": "pp (puntos porcentuales de brecha: real − ideal)",
+    "barras": [
+     {
+      "cat": "Gestión operativa (obras, servicios, vialidad)",
+      "valor": 10.0,
+      "etiqueta": "+10 pp",
+      "detalle": "(35 % → 25 %)",
+      "destaca": "B",
+      "color": "red"
+     },
+     {
+      "cat": "Política institucional y actos de partido",
+      "valor": 8.0,
+      "etiqueta": "+8 pp",
+      "detalle": "(15 % → 7 %)",
+      "destaca": "B",
+      "color": "red"
+     },
+     {
+      "cat": "Vocabulario y efemérides doctrinales",
+      "valor": 4.0,
+      "etiqueta": "+4 pp",
+      "detalle": "(7 % → 3 %)",
+      "destaca": "B",
+      "color": "red"
+     },
+     {
+      "cat": "Fechas festivas y estacionales",
+      "valor": 1.0,
+      "etiqueta": "+1 pp",
+      "detalle": "(3 % → 2 %)",
+      "destaca": "B",
+      "color": "red"
+     },
+     {
+      "cat": "Seguridad con resultado verificable",
+      "valor": 0.0,
+      "etiqueta": "0 pp",
+      "detalle": "(15 % → 15 %)",
+      "destaca": "",
+      "color": "base"
+     },
+     {
+      "cat": "Paz y frontera",
+      "valor": -7.0,
+      "etiqueta": "−7 pp",
+      "detalle": "(8 % → 15 %)",
+      "destaca": "A",
+      "color": "blue"
+     },
+     {
+      "cat": "Contenido humano-cotidiano",
+      "valor": -8.0,
+      "etiqueta": "−8 pp",
+      "detalle": "(7 % → 15 %)",
+      "destaca": "A",
+      "color": "blue"
+     },
+     {
+      "cat": "Identidad y cultura regional",
+      "valor": -8.0,
+      "etiqueta": "−8 pp",
+      "detalle": "(10 % → 18 %)",
+      "destaca": "A",
+      "color": "blue"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "g6",
+  "tipo": "barhDoble",
+  "modulo": "M13",
+  "punto": 6,
+  "titulo": "En TikTok, la mejor franja horaria es la menos utilizada",
+  "subtitulo": "Rendimiento medio por franja frente al volumen que se publica en cada una. Base: 63 publicaciones con hora verificada.",
+  "nota": "La franja de 22:00 a 23:59 triplica el rendimiento del mediodía y concentra solo 7 de 63 publicaciones. La de 17:00 a 21:59 reúne el 46 % del volumen con el rendimiento más bajo.",
+  "eje": "Dos ejes distintos, uno por panel: el izquierdo mide reproducciones medias por publicación en TikTok; el derecho mide el número de publicaciones realizadas en esa franja (recuento sobre una base de 63). Ninguno de los dos paneles lleva eje numérico dibujado ni marcas de escala: el valor solo aparece como etiqueta impresa al final de cada barra.",
+  "tiles": [],
+  "paneles": [
+   {
+    "nombre": "Reproducciones medias por publicación",
+    "unidad": "reproducciones medias por publicación",
+    "barras": [
+     {
+      "cat": "22:00–23:59",
+      "valor": 64498.0,
+      "etiqueta": "64.498",
+      "detalle": "",
+      "destaca": "A",
+      "color": "aqua"
+     },
+     {
+      "cat": "07:00–11:59",
+      "valor": 50380.0,
+      "etiqueta": "50.380",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "00:00–06:59",
+      "valor": 32100.0,
+      "etiqueta": "32.100",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "12:00–16:59",
+      "valor": 19837.0,
+      "etiqueta": "19.837",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "17:00–21:59",
+      "valor": 16048.0,
+      "etiqueta": "16.048",
+      "detalle": "",
+      "destaca": "B",
+      "color": "red"
+     }
+    ]
+   },
+   {
+    "nombre": "Publicaciones realizadas en esa franja",
+    "unidad": "publicaciones (recuento sobre 63)",
+    "barras": [
+     {
+      "cat": "22:00–23:59",
+      "valor": 7.0,
+      "etiqueta": "7",
+      "detalle": "",
+      "destaca": "A",
+      "color": "aqua"
+     },
+     {
+      "cat": "07:00–11:59",
+      "valor": 12.0,
+      "etiqueta": "12",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "00:00–06:59",
+      "valor": 1.0,
+      "etiqueta": "1",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "12:00–16:59",
+      "valor": 14.0,
+      "etiqueta": "14",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "17:00–21:59",
+      "valor": 29.0,
+      "etiqueta": "29",
+      "detalle": "",
+      "destaca": "B",
+      "color": "red"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "g7",
+  "tipo": "barhDoble",
+  "modulo": "M13",
+  "punto": 7,
+  "titulo": "El martes concentra el mismo volumen que el jueves con un tercio del rendimiento",
+  "subtitulo": "Rendimiento medio por día de la semana frente al volumen publicado en cada uno.",
+  "nota": "El jueves es el mejor día en las tres plataformas y el sábado el más débil en todas ellas sin excepción.",
+  "eje": "Dos ejes distintos: panel izquierdo = reproducciones medias por publicación en TikTok (número de reproducciones); panel derecho = publicaciones realizadas ese día en TikTok (número de publicaciones).",
+  "tiles": [],
+  "paneles": [
+   {
+    "nombre": "Reproducciones medias por publicación",
+    "unidad": "reproducciones medias por publicación (TikTok)",
+    "barras": [
+     {
+      "cat": "Jueves",
+      "valor": 47620.0,
+      "etiqueta": "47.620",
+      "detalle": "",
+      "destaca": "A",
+      "color": "aqua"
+     },
+     {
+      "cat": "Miércoles",
+      "valor": 45726.0,
+      "etiqueta": "45.726",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Domingo",
+      "valor": 42650.0,
+      "etiqueta": "42.650",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Lunes",
+      "valor": 27237.0,
+      "etiqueta": "27.237",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Viernes",
+      "valor": 20329.0,
+      "etiqueta": "20.329",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Martes",
+      "valor": 15006.0,
+      "etiqueta": "15.006",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Sábado",
+      "valor": 10570.0,
+      "etiqueta": "10.570",
+      "detalle": "",
+      "destaca": "B",
+      "color": "red"
+     }
+    ]
+   },
+   {
+    "nombre": "Publicaciones realizadas ese día",
+    "unidad": "publicaciones (TikTok)",
+    "barras": [
+     {
+      "cat": "Jueves",
+      "valor": 11.0,
+      "etiqueta": "11",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "Miércoles",
+      "valor": 9.0,
+      "etiqueta": "9",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "Domingo",
+      "valor": 4.0,
+      "etiqueta": "4",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "Lunes",
+      "valor": 10.0,
+      "etiqueta": "10",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "Viernes",
+      "valor": 10.0,
+      "etiqueta": "10",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "Martes",
+      "valor": 11.0,
+      "etiqueta": "11",
+      "detalle": "",
+      "destaca": "B",
+      "color": "red"
+     },
+     {
+      "cat": "Sábado",
+      "valor": 8.0,
+      "etiqueta": "8",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "g8",
+  "tipo": "barh+composicion",
+  "modulo": "M13",
+  "punto": 1,
+  "titulo": "Los veinte contenidos de mayor alcance del ecosistema son, sin excepción, vídeos de TikTok",
+  "subtitulo": "Ranking nativo «Popular», que ordena todo el histórico de la cuenta. El más antiguo es de octubre de 2021 y el más reciente de diciembre de 2025",
+  "nota": "",
+  "eje": "Panel izquierdo: reproducciones (vistas) del vídeo en TikTok. Panel derecho: número de puestos del top 20 que corresponden a cada eje temático (recuento sobre 20).",
+  "tiles": [],
+  "paneles": [
+   {
+    "nombre": "Reproducciones",
+    "unidad": "reproducciones (vistas de TikTok)",
+    "barras": [
+     {
+      "cat": "#seguridad #tachira #frontera",
+      "valor": 2700000.0,
+      "etiqueta": "2,7 M",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "#seguridad #tachira #electricidad",
+      "valor": 2100000.0,
+      "etiqueta": "2,1 M",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "«Bienvenidos a Venezuela»",
+      "valor": 1800000.0,
+      "etiqueta": "1,8 M",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "«Táchira, territorio de paz»",
+      "valor": 1700000.0,
+      "etiqueta": "1,7 M",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "«Frontera de paz»",
+      "valor": 1600000.0,
+      "etiqueta": "1,6 M",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Trotar / ejercicio físico",
+      "valor": 1300000.0,
+      "etiqueta": "1,3 M",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "«¿Cómo lo llaman en tu territorio?» — la esponjilla",
+      "valor": 1200000.0,
+      "etiqueta": "1,2 M",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Felicitación navideña",
+      "valor": 1100000.0,
+      "etiqueta": "1,1 M",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Visita del cantante Jorge Celedón",
+      "valor": 956200.0,
+      "etiqueta": "956 K",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "«Venezuela es tierra de paz»",
+      "valor": 720200.0,
+      "etiqueta": "720 K",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Contenido de familia",
+      "valor": 695900.0,
+      "etiqueta": "696 K",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "«Soy un hombre de palabra, lo prometí y lo cumplí»",
+      "valor": 693000.0,
+      "etiqueta": "693 K",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Navidad",
+      "valor": 682300.0,
+      "etiqueta": "682 K",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "«Amor por el Táchira»",
+      "valor": 649200.0,
+      "etiqueta": "649 K",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Táchira / Potosí, contenido territorial",
+      "valor": 628600.0,
+      "etiqueta": "629 K",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Despliegue de seguridad en Ureña",
+      "valor": 602900.0,
+      "etiqueta": "603 K",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "«Paz y alegría»",
+      "valor": 580400.0,
+      "etiqueta": "580 K",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Seguridad",
+      "valor": 567600.0,
+      "etiqueta": "568 K",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Seboruco: humor y trabajo comunitario",
+      "valor": 530400.0,
+      "etiqueta": "530 K",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     },
+     {
+      "cat": "Ejercicio físico",
+      "valor": 526300.0,
+      "etiqueta": "526 K",
+      "detalle": "",
+      "destaca": "",
+      "color": "blue"
+     }
+    ]
+   },
+   {
+    "nombre": "Composición del top 20 por eje temático",
+    "unidad": "número de puestos del top 20",
+    "barras": [
+     {
+      "cat": "Paz y frontera",
+      "valor": 6.0,
+      "etiqueta": "6",
+      "detalle": "",
+      "destaca": "",
+      "color": "aqua"
+     },
+     {
+      "cat": "Identidad y cultura regional",
+      "valor": 4.0,
+      "etiqueta": "4",
+      "detalle": "",
+      "destaca": "",
+      "color": "aqua"
+     },
+     {
+      "cat": "Otros",
+      "valor": 3.0,
+      "etiqueta": "3",
+      "detalle": "",
+      "destaca": "",
+      "color": "aqua"
+     },
+     {
+      "cat": "Contenido humano-familiar",
+      "valor": 3.0,
+      "etiqueta": "3",
+      "detalle": "",
+      "destaca": "",
+      "color": "aqua"
+     },
+     {
+      "cat": "Fechas festivas",
+      "valor": 2.0,
+      "etiqueta": "2",
+      "detalle": "",
+      "destaca": "",
+      "color": "aqua"
+     },
+     {
+      "cat": "Seguridad con resultado",
+      "valor": 2.0,
+      "etiqueta": "2",
+      "detalle": "",
+      "destaca": "",
+      "color": "aqua"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "g9",
+  "tipo": "apiladaPorModulo",
+  "modulo": null,
+  "punto": null,
+  "titulo": "Dónde se concentra lo urgente",
+  "subtitulo": "Los 267 puntos del diagnóstico, clasificados por la prioridad de la corrección que exigen.",
+  "nota": "Los 37 puntos críticos y los 110 de prioridad alta son los que ordenan la hoja de ruta de los primeros 45 días.",
+  "eje": "Número de puntos de análisis (267 en total). Panel izquierdo: puntos por módulo, barras apiladas por prioridad de la corrección (Crítica, Alta, Media, Baja, Informativo). Panel derecho: total del diagnóstico por prioridad, con porcentaje sobre 267. El eje no lleva marcas ni números impresos: solo hay etiqueta numérica al final de cada barra.",
+  "tiles": [],
+  "paneles": [
+   {
+    "nombre": "Puntos por módulo",
+    "unidad": "puntos de análisis",
+    "barras": [
+     {
+      "cat": "M01",
+      "valor": 8.0,
+      "etiqueta": "8",
+      "detalle": "Crítica 4 · Alta 2 · Media 1 · Baja 0 · Informativo 1",
+      "destaca": ""
+     },
+     {
+      "cat": "M02",
+      "valor": 19.0,
+      "etiqueta": "19",
+      "detalle": "Crítica 1 · Alta 7 · Media 8 · Baja 1 · Informativo 2",
+      "destaca": ""
+     },
+     {
+      "cat": "M03",
+      "valor": 16.0,
+      "etiqueta": "16",
+      "detalle": "Crítica 1 · Alta 7 · Media 6 · Baja 1 · Informativo 1",
+      "destaca": ""
+     },
+     {
+      "cat": "M04",
+      "valor": 17.0,
+      "etiqueta": "17",
+      "detalle": "Crítica 0 · Alta 7 · Media 6 · Baja 2 · Informativo 2",
+      "destaca": ""
+     },
+     {
+      "cat": "M05",
+      "valor": 10.0,
+      "etiqueta": "10",
+      "detalle": "Crítica 1 · Alta 4 · Media 3 · Baja 2 · Informativo 0",
+      "destaca": ""
+     },
+     {
+      "cat": "M06",
+      "valor": 10.0,
+      "etiqueta": "10",
+      "detalle": "Crítica 3 · Alta 5 · Media 1 · Baja 0 · Informativo 1",
+      "destaca": ""
+     },
+     {
+      "cat": "M07",
+      "valor": 14.0,
+      "etiqueta": "14",
+      "detalle": "Crítica 0 · Alta 3 · Media 9 · Baja 1 · Informativo 1",
+      "destaca": ""
+     },
+     {
+      "cat": "M08",
+      "valor": 23.0,
+      "etiqueta": "23",
+      "detalle": "Crítica 0 · Alta 10 · Media 9 · Baja 4 · Informativo 0",
+      "destaca": ""
+     },
+     {
+      "cat": "M09",
+      "valor": 12.0,
+      "etiqueta": "12",
+      "detalle": "Crítica 1 · Alta 8 · Media 3 · Baja 0 · Informativo 0",
+      "destaca": ""
+     },
+     {
+      "cat": "M10",
+      "valor": 14.0,
+      "etiqueta": "14",
+      "detalle": "Crítica 3 · Alta 9 · Media 2 · Baja 0 · Informativo 0",
+      "destaca": ""
+     },
+     {
+      "cat": "M11",
+      "valor": 16.0,
+      "etiqueta": "16",
+      "detalle": "Crítica 0 · Alta 3 · Media 5 · Baja 1 · Informativo 7",
+      "destaca": ""
+     },
+     {
+      "cat": "M12",
+      "valor": 14.0,
+      "etiqueta": "14",
+      "detalle": "Crítica 1 · Alta 6 · Media 4 · Baja 0 · Informativo 3",
+      "destaca": ""
+     },
+     {
+      "cat": "M13",
+      "valor": 10.0,
+      "etiqueta": "10",
+      "detalle": "Crítica 3 · Alta 4 · Media 0 · Baja 0 · Informativo 3",
+      "destaca": ""
+     },
+     {
+      "cat": "M14",
+      "valor": 9.0,
+      "etiqueta": "9",
+      "detalle": "Crítica 1 · Alta 3 · Media 5 · Baja 0 · Informativo 0",
+      "destaca": ""
+     },
+     {
+      "cat": "M15",
+      "valor": 10.0,
+      "etiqueta": "10",
+      "detalle": "Crítica 1 · Alta 6 · Media 3 · Baja 0 · Informativo 0",
+      "destaca": ""
+     },
+     {
+      "cat": "M16",
+      "valor": 6.0,
+      "etiqueta": "6",
+      "detalle": "Crítica 2 · Alta 3 · Media 1 · Baja 0 · Informativo 0",
+      "destaca": ""
+     },
+     {
+      "cat": "M17",
+      "valor": 15.0,
+      "etiqueta": "15",
+      "detalle": "Crítica 2 · Alta 2 · Media 5 · Baja 3 · Informativo 3",
+      "destaca": ""
+     },
+     {
+      "cat": "M18",
+      "valor": 10.0,
+      "etiqueta": "10",
+      "detalle": "Crítica 2 · Alta 5 · Media 1 · Baja 0 · Informativo 2",
+      "destaca": ""
+     },
+     {
+      "cat": "M19",
+      "valor": 11.0,
+      "etiqueta": "11",
+      "detalle": "Crítica 3 · Alta 6 · Media 2 · Baja 0 · Informativo 0",
+      "destaca": ""
+     },
+     {
+      "cat": "M20",
+      "valor": 11.0,
+      "etiqueta": "11",
+      "detalle": "Crítica 4 · Alta 5 · Media 1 · Baja 0 · Informativo 1",
+      "destaca": ""
+     },
+     {
+      "cat": "M21",
+      "valor": 12.0,
+      "etiqueta": "12",
+      "detalle": "Crítica 4 · Alta 5 · Media 2 · Baja 0 · Informativo 1",
+      "destaca": ""
+     }
+    ]
+   },
+   {
+    "nombre": "Total del diagnóstico",
+    "unidad": "puntos de análisis",
+    "barras": [
+     {
+      "cat": "CRÍTICA",
+      "valor": 37.0,
+      "etiqueta": "37   (14 %)",
+      "detalle": "14 % de los 267 puntos",
+      "destaca": ""
+     },
+     {
+      "cat": "ALTA",
+      "valor": 110.0,
+      "etiqueta": "110   (41 %)",
+      "detalle": "41 % de los 267 puntos",
+      "destaca": ""
+     },
+     {
+      "cat": "MEDIA",
+      "valor": 77.0,
+      "etiqueta": "77   (29 %)",
+      "detalle": "29 % de los 267 puntos",
+      "destaca": ""
+     },
+     {
+      "cat": "BAJA",
+      "valor": 15.0,
+      "etiqueta": "15   (6 %)",
+      "detalle": "6 % de los 267 puntos",
+      "destaca": ""
+     },
+     {
+      "cat": "Informativo (sin corrección)",
+      "valor": 28.0,
+      "etiqueta": "28   (10 %)",
+      "detalle": "10 % de los 267 puntos",
+      "destaca": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "g10",
+  "tipo": "barh",
+  "modulo": "M12",
+  "punto": 13,
+  "titulo": "La distancia con el referente del oficialismo no se explica por recursos",
+  "subtitulo": "Instagram, seguidores. Rafael Lacava, gobernador de Carabobo: mismo partido, mismo cargo, reelecto en el mismo ciclo.",
+  "nota": "8,2 veces más audiencia con el mismo registro humano y cotidiano que en el caso analizado aparece solo por excepción: la tizana de El Mirador y el sapote entran en su top 15 sin ninguna carga política.",
+  "eje": "Seguidores en Instagram (número absoluto de seguidores)",
+  "tiles": [],
+  "paneles": [
+   {
+    "nombre": "",
+    "unidad": "seguidores",
+    "barras": [
+     {
+      "cat": "Rafael Lacava",
+      "valor": 2000000.0,
+      "etiqueta": "2.000.000",
+      "detalle": "",
+      "destaca": "",
+      "color": "dim"
+     },
+     {
+      "cat": "Freddy Bernal",
+      "valor": 244000.0,
+      "etiqueta": "244.000",
+      "detalle": "",
+      "destaca": "A",
+      "color": "blue"
+     }
+    ]
+   }
+  ]
+ }
+]

@@ -733,11 +733,37 @@ function ejeMax(vals){
   return Math.ceil(m / paso) * paso;
 }
 
+/* Ancho aproximado de una cadena en unidades del viewBox. No hace falta
+   precision tipografica: solo dimensionar la columna de etiquetas. */
+function anchoTexto(s, tam){
+  let w = 0;
+  for (let i = 0; i < s.length; i++){
+    const ch = s[i];
+    if (/[A-ZÁÉÍÓÚÑÜ0-9@#%&]/.test(ch)) w += tam * 0.72;
+    else if (/[iljtfr.,'·:;!| ]/.test(ch)) w += tam * 0.34;
+    else if (/[mwMW]/.test(ch)) w += tam * 0.88;
+    else w += tam * 0.58;
+  }
+  return w;
+}
+function recortar(s, maxW, tam){
+  if (anchoTexto(s, tam) <= maxW) return s;
+  let t = s;
+  while (t.length > 3 && anchoTexto(t + '…', tam) > maxW) t = t.slice(0, -1);
+  return t.replace(/[\s·,.\-–—]+$/, '') + '…';
+}
+
+/* El color de cada barra se midio sobre el PNG original, pixel a pixel:
+   es el del grafico del informe, no una interpretacion. */
+const COLOR_BARRA = {
+  blue:'var(--blue)', orange:'var(--orange)', aqua:'var(--aqua)',
+  red:'var(--red)', dim:'var(--barra-base)', base:'var(--barra-base)',
+  navy:'var(--texto)'
+};
 function colorBarra(b){
+  if (b.color && COLOR_BARRA[b.color]) return COLOR_BARRA[b.color];
   if (b.destaca === 'A') return 'var(--aqua)';
-  if (b.destaca === 'B') return 'var(--orange)';
-  if (b.destaca === 'C') return 'var(--red)';
-  if (b.destaca === 'D') return 'var(--blue)';
+  if (b.destaca === 'B') return 'var(--red)';
   return 'var(--barra-base)';
 }
 
@@ -751,20 +777,36 @@ function tipAttrs(b, unidad){
 function panelBarras(panel, opts){
   opts = opts || {};
   const barras = panel.barras || [];
-  const anchoLbl = opts.anchoLbl != null ? opts.anchoLbl : 240;
+  const TAM_CAT = 13, TAM_DET = 11.5;
+  let anchoLbl = opts.anchoLbl;
+  if (anchoLbl == null){
+    let mx = 0;
+    barras.forEach(function(b){
+      mx = Math.max(mx, anchoTexto(b.cat || '', TAM_CAT));
+      if (b.detalle) mx = Math.max(mx, anchoTexto(b.detalle, TAM_DET));
+    });
+    anchoLbl = Math.min(opts.maxLbl != null ? opts.maxLbl : 360, Math.max(110, mx + 16));
+  }
   const x0 = opts.x0 != null ? opts.x0 : 0;
   const ancho = opts.ancho != null ? opts.ancho : VB;
   const rowH = opts.rowH != null ? opts.rowH : 30;
   const gap = opts.gap != null ? opts.gap : 9;
   const divergente = !!opts.divergente;
-  const finEtiqueta = 96;                       // hueco para la etiqueta de valor
+  /* hueco para la etiqueta de valor, segun la etiqueta mas larga del panel */
+  let finEtiqueta = 26;
+  barras.forEach(function(b){
+    finEtiqueta = Math.max(finEtiqueta, anchoTexto(b.etiqueta || '', 13) + 20);
+  });
+  finEtiqueta = Math.min(finEtiqueta, 130);
   const bx = x0 + anchoLbl;                      // inicio del área de barras
   const bw = ancho - anchoLbl - finEtiqueta;
 
   let y = opts.y0 || 0;
   let s = '';
 
-  const max = opts.max != null ? opts.max : ejeMax(barras.map(function(b){ return b.valor; }));
+  let dominio = barras.map(function(b){ return b.valor; });
+  if (panel.banda) dominio = dominio.concat([panel.banda.min, panel.banda.max]);
+  const max = opts.max != null ? opts.max : ejeMax(dominio);
   const cero = divergente ? bx + bw / 2 : bx;
   const escala = divergente ? (bw / 2) / max : bw / max;
 
@@ -815,8 +857,8 @@ function panelBarras(panel, opts){
          '" height="' + rowH + '" fill="' + colorBarra(b) + '" rx="1"/>';
 
     /* etiqueta de categoría */
-    s += '<text class="cat" x="' + (x0 + anchoLbl - 12) + '" y="' + (cy + 4.5) +
-         '" text-anchor="end">' + esc(b.cat) + '</text>';
+    s += '<text class="cat" data-max="' + (anchoLbl - 14).toFixed(0) + '" x="' + (x0 + anchoLbl - 12) +
+         '" y="' + (cy + 4.5) + '" text-anchor="end">' + esc(b.cat || '') + '</text>';
 
     /* etiqueta de valor, directamente sobre la barra */
     const vx = v < 0 ? bxi - 8 : bxi + w + 8;
@@ -825,8 +867,8 @@ function panelBarras(panel, opts){
          '" text-anchor="' + anc + '">' + esc(b.etiqueta) + '</text>';
 
     if (b.detalle){
-      s += '<text class="det" x="' + (x0 + anchoLbl - 12) + '" y="' + (cy + 17) +
-           '" text-anchor="end">' + esc(b.detalle) + '</text>';
+      s += '<text class="det" data-max="' + (anchoLbl - 14).toFixed(0) + '" x="' + (x0 + anchoLbl - 12) +
+           '" y="' + (cy + 17) + '" text-anchor="end">' + esc(b.detalle) + '</text>';
     }
     s += '</g>';
     y += rowH + gap;
@@ -846,28 +888,28 @@ function dibujarGrafico(g){
 
   if (g.tipo === 'barhDoble' && paneles.length >= 2){
     const anchoPanel = VB / 2 - 18;
-    const a = panelBarras(paneles[0], {x0:0, ancho:anchoPanel, anchoLbl:170, rowH:26, gap:8});
-    const b = panelBarras(paneles[1], {x0:VB/2 + 18, ancho:anchoPanel, anchoLbl:120, rowH:26, gap:8});
+    const a = panelBarras(paneles[0], {x0:0, ancho:anchoPanel, maxLbl:200, rowH:26, gap:8});
+    const b = panelBarras(paneles[1], {x0:VB/2 + 18, ancho:anchoPanel, maxLbl:160, rowH:26, gap:8});
     inner = a.svg + b.svg;
     alto = Math.max(a.alto, b.alto) + 12;
 
   } else if (g.tipo === 'panelesConBanda'){
     let y = 0;
     paneles.forEach(function(p){
-      const r = panelBarras(p, {x0:0, ancho:VB, anchoLbl:250, rowH:30, gap:9, y0:y});
+      const r = panelBarras(p, {x0:0, ancho:VB, maxLbl:380, rowH:30, gap:9, y0:y});
       inner += r.svg;
       y += r.alto + 34;
     });
     alto = y;
 
   } else if (g.tipo === 'barh+composicion' && paneles.length >= 2){
-    const a = panelBarras(paneles[0], {x0:0, ancho:VB*0.63, anchoLbl:210, rowH:22, gap:6});
-    const b = panelBarras(paneles[1], {x0:VB*0.63 + 26, ancho:VB*0.37 - 26, anchoLbl:150, rowH:26, gap:9});
+    const a = panelBarras(paneles[0], {x0:0, ancho:VB*0.63, maxLbl:250, rowH:22, gap:6});
+    const b = panelBarras(paneles[1], {x0:VB*0.63 + 26, ancho:VB*0.37 - 26, maxLbl:180, rowH:26, gap:9});
     inner = a.svg + b.svg;
     alto = Math.max(a.alto, b.alto) + 12;
 
   } else if (g.tipo === 'divergente'){
-    const r = panelBarras(paneles[0] || {barras:[]}, {x0:0, ancho:VB, anchoLbl:250, rowH:30, gap:10, divergente:true});
+    const r = panelBarras(paneles[0] || {barras:[]}, {x0:0, ancho:VB, maxLbl:330, rowH:30, gap:10, divergente:true});
     inner = r.svg; alto = r.alto + 12;
 
   } else if (g.tipo === 'apiladaPorModulo'){
@@ -876,7 +918,7 @@ function dibujarGrafico(g){
   } else {
     let y = 0;
     paneles.forEach(function(p){
-      const r = panelBarras(p, {x0:0, ancho:VB, anchoLbl:260, rowH:30, gap:10, y0:y});
+      const r = panelBarras(p, {x0:0, ancho:VB, maxLbl:380, rowH:30, gap:10, y0:y});
       inner += r.svg;
       y += r.alto + 30;
     });
@@ -886,52 +928,109 @@ function dibujarGrafico(g){
   return svgEnvoltorio(inner, alto);
 }
 
-/* g9 — barra apilada por módulo, contada sobre modulos[].puntos[].prioridad */
+/* g9 — dos paneles: la distribucion de prioridades modulo a modulo y el
+   total del diagnostico. Los recuentos NO vienen precalculados: se cuentan
+   aqui sobre modulos[].puntos[].prioridad. */
 function dibujarApilada(g){
-  const anchoLbl = 250, finEt = 70;
-  const bx = anchoLbl, bw = VB - anchoLbl - finEt;
-  const rowH = 22, gap = 7;
+  const ROW = 22, GAP = 7;
+  const ANCHO_IZQ = VB * 0.56, X_DER = VB * 0.615;
+  const LBL_IZQ = 52, FIN_IZQ = 52;
+  const bxI = LBL_IZQ, bwI = ANCHO_IZQ - LBL_IZQ - FIN_IZQ;
+  const total = DATA.modulos.reduce(function(a, m){ return a + m.puntos.length; }, 0);
   const maxTot = Math.max.apply(null, DATA.modulos.map(function(m){ return m.puntos.length; }));
-  let y = 0, s = '';
 
+  let s = '', y = 0;
+  s += '<text class="panel-tit" x="0" y="11">Puntos por módulo</text>';
+  s += '<text class="panel-tit" x="' + X_DER + '" y="11">Total del diagnóstico</text>';
+  y = 34;
+
+  const yTop = y;
   DATA.modulos.forEach(function(m){
     const c = CUENTA[m.id];
-    const tot = m.puntos.length;
-    let x = bx;
-    const cy = y + rowH/2;
-
-    s += '<text class="cat" x="' + (anchoLbl - 12) + '" y="' + (cy + 4.5) + '" text-anchor="end">' +
-         esc(m.id + ' · ' + m.titulo) + '</text>';
-
+    const n = m.puntos.length;
+    let x = bxI;
+    const cy = y + ROW / 2;
+    s += '<text class="cat" x="' + (LBL_IZQ - 12) + '" y="' + (cy + 4.5) +
+         '" text-anchor="end">' + esc(m.id) + '</text>';
     ORDEN_PRIORIDAD.forEach(function(pr){
-      const n = c[pr];
-      if (!n) return;
-      const w = (n / maxTot) * bw;
-      s += '<g class="barra" data-tip-t="' + esc(m.id + ' · ' + pr) + '" data-tip-v="' + n +
-           (n === 1 ? ' punto' : ' puntos') + '" data-tip-d="' + esc(m.titulo) + '">';
-      s += '<rect class="b" x="' + x.toFixed(1) + '" y="' + y + '" width="' + Math.max(w,1).toFixed(1) +
-           '" height="' + rowH + '" fill="' + COLOR_PRIORIDAD[pr] + '"/>';
-      s += '</g>';
+      const k = c[pr];
+      if (!k) return;
+      const w = (k / maxTot) * bwI;
+      s += '<g class="barra" data-tip-t="' + esc(m.id + ' · ' + m.titulo) + '"' +
+           ' data-tip-v="' + k + (k === 1 ? ' punto ' : ' puntos ') +
+           esc(pr === '—' ? 'informativos' : 'de prioridad ' + pr.toLowerCase()) + '"' +
+           ' data-tip-d="' + n + ' puntos en el módulo">' +
+           '<rect class="b" x="' + x.toFixed(1) + '" y="' + y + '" width="' + Math.max(w, 1).toFixed(1) +
+           '" height="' + ROW + '" fill="' + COLOR_PRIORIDAD[pr] + '"/></g>';
       x += w;
     });
-
-    s += '<text class="val" x="' + (x + 8).toFixed(1) + '" y="' + (cy + 4.5) + '">' + tot + '</text>';
-    y += rowH + gap;
+    s += '<text class="tick" x="' + (x + 9).toFixed(1) + '" y="' + (cy + 4.5) + '">' + n + '</text>';
+    y += ROW + GAP;
   });
+  const yFinIzq = y;
 
-  /* leyenda: aquí sí hace falta, porque hay cinco series apiladas */
-  y += 12;
-  let lx = bx;
+  /* panel derecho: el total por prioridad */
+  const LBL_DER = 104, FIN_DER = 104;
+  const bxD = X_DER + LBL_DER;
+  const bwD = VB - bxD - FIN_DER;
+  const maxPr = Math.max.apply(null, ORDEN_PRIORIDAD.map(function(pr){ return CUENTA_TOTAL[pr]; }));
+  const alto = 54, hueco = (yFinIzq - yTop - 5 * alto) / 4;
+  let yd = yTop;
   ORDEN_PRIORIDAD.forEach(function(pr){
-    const total = DATA.modulos.reduce(function(a,m){ return a + CUENTA[m.id][pr]; }, 0);
-    s += '<rect x="' + lx + '" y="' + (y - 8) + '" width="9" height="9" fill="' + COLOR_PRIORIDAD[pr] + '"/>';
-    s += '<text class="tick" x="' + (lx + 14) + '" y="' + y + '">' +
-         esc(pr === '—' ? 'informativo' : pr.toLowerCase()) + ' · ' + total + '</text>';
-    lx += 32 + (pr === '—' ? 96 : pr.length * 8.2 + 46);
+    const n = CUENTA_TOTAL[pr];
+    const w = (n / maxPr) * bwD;
+    const pct = Math.round(n / total * 100);
+    const cy = yd + alto / 2;
+    s += '<text class="cat" x="' + (bxD - 12) + '" y="' + (cy + 4.5) + '" text-anchor="end">' +
+         esc(pr === '—' ? 'Informativo' : pr) + '</text>';
+    s += '<g class="barra" data-tip-t="' + esc(pr === '—' ? 'Informativo · sin corrección' : pr) + '"' +
+         ' data-tip-v="' + n + ' de ' + total + ' puntos · ' + pct + ' %">' +
+         '<rect class="b" x="' + bxD + '" y="' + yd + '" width="' + Math.max(w, 1).toFixed(1) +
+         '" height="' + alto + '" fill="' + COLOR_PRIORIDAD[pr] + '"/></g>';
+    s += '<text class="val" x="' + (bxD + w + 10).toFixed(1) + '" y="' + (cy + 4.5) + '">' +
+         n + '   (' + pct + ' %)</text>';
+    yd += alto + hueco;
   });
-  y += 12;
 
-  return svgEnvoltorio(s, y);
+  /* leyenda: cinco series apiladas la hacen imprescindible */
+  y += 16;
+  let lx = 0;
+  ORDEN_PRIORIDAD.forEach(function(pr){
+    const et = pr === '—' ? 'Informativo' : pr.charAt(0) + pr.slice(1).toLowerCase();
+    s += '<rect x="' + lx + '" y="' + (y - 9) + '" width="10" height="10" fill="' +
+         COLOR_PRIORIDAD[pr] + '"/>';
+    s += '<text class="tick" x="' + (lx + 15) + '" y="' + y + '">' + esc(et) + '</text>';
+    lx += 25 + anchoTexto(et, 11) + 22;
+  });
+  y += 10;
+
+  return svgEnvoltorio(s, Math.max(y, yd + 6));
+}
+
+/* La estimacion de ancho sirve para dimensionar la columna; el recorte
+   definitivo se hace midiendo el texto ya renderizado, que es exacto. */
+function ajustarEtiquetas(raiz){
+  const textos = (raiz || document).querySelectorAll('figure.gr svg text[data-max]');
+  for (let i = 0; i < textos.length; i++){
+    const t = textos[i];
+    const max = parseFloat(t.getAttribute('data-max'));
+    const completo = t.getAttribute('data-full') || t.textContent;
+    t.setAttribute('data-full', completo);
+    t.textContent = completo;
+    let largo;
+    try { largo = t.getComputedTextLength(); } catch (e) { continue; }
+    if (largo <= max) continue;
+    let lo = 0, hi = completo.length;
+    while (lo < hi){
+      const mid = Math.ceil((lo + hi) / 2);
+      t.textContent = completo.slice(0, mid) + '…';
+      if (t.getComputedTextLength() <= max) lo = mid; else hi = mid - 1;
+    }
+    t.textContent = completo.slice(0, lo).replace(/[\s·,.\-–—]+$/, '') + '…';
+    /* la etiqueta recortada mantiene el texto integro en el tooltip */
+    const g = t.closest('g.barra');
+    if (g && !g.getAttribute('data-tip-d')) g.setAttribute('data-tip-d', completo);
+  }
 }
 
 function graficoHTML(g){
@@ -1182,6 +1281,7 @@ function render(){
   h += '</section>';
 
   $('#contenido').innerHTML = h;
+  ajustarEtiquetas();
 }
 
 const CUENTA_TOTAL = (function(){

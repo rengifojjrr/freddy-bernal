@@ -277,6 +277,24 @@ RE_FUENTE = re.compile(r"^FUENTE\s+(.+)$", re.S)
 RE_VALORACION = re.compile(r"^VALORACIÓN\s+(.+)$", re.S)
 RE_FIGURA = re.compile(r"^Figura\s+(\d+)\.\s+(.+)$", re.S)
 
+# Los diez graficos del informe original solo existen como PNG. Su identidad
+# (g1..g10) se establecio cruzando los SHA1 de las imagenes del DOCX con las
+# del XLSX y su posicion en el documento; el orden de la hoja "9. Graficos" de
+# la matriz da la numeracion. Aqui se vuelcan con ese nombre para que
+# muestrear_colores.py pueda medir el color real de cada barra.
+MAPA_GRAFICOS = {
+    ("RESUMEN", 1): "g1",
+    ("RESUMEN", 2): "g9",
+    ("M01", 1): "g2",
+    ("M12", 7): "g4",
+    ("M12", 9): "g3",
+    ("M12", 13): "g10",
+    ("M13", 1): "g8",
+    ("M13", 6): "g6",
+    ("M13", 7): "g7",
+    ("M13", 8): "g5",
+}
+
 
 def construir_modulo(mid, titulo, bloques, media, capturas, graficos_png):
     """Un modulo: cabecera + N puntos."""
@@ -373,10 +391,16 @@ def construir_modulo(mid, titulo, bloques, media, capturas, graficos_png):
                     open(os.path.join(AQUI, "capturas", nombre), "wb").write(datos)
                 else:
                     # imagen sin pie de figura = grafico rasterizado
-                    graficos_png.append({
-                        "modulo": mid, "punto": n,
-                        "sha": hashlib.sha1(media[arch]).hexdigest()[:12],
-                    })
+                    gid = MAPA_GRAFICOS.get((mid, n))
+                    if gid:
+                        open(os.path.join(AQUI, "graficos_png", gid + ".png"),
+                             "wb").write(media[arch])
+                        graficos_png.append({"id": gid, "modulo": mid, "punto": n})
+                    else:
+                        graficos_png.append({
+                            "modulo": mid, "punto": n, "id": None,
+                            "sha": hashlib.sha1(media[arch]).hexdigest()[:12],
+                        })
             else:
                 t = limpiar(b["texto"])
                 me = RE_ESTADO.match(t)
@@ -482,8 +506,20 @@ def main():
             elif b["tipo"] == "tabla" and tabla_modulos is None:
                 tabla_modulos = tabla(b)
 
-    # ---------------- modulos ----------------
+    # ---------------- graficos del resumen ejecutivo ----------------
     capturas, graficos_png = [], []
+    k = 0
+    for b in rb:
+        if b["tipo"] != "imagen":
+            continue
+        k += 1
+        gid = MAPA_GRAFICOS.get(("RESUMEN", k))
+        if gid:
+            open(os.path.join(AQUI, "graficos_png", gid + ".png"),
+                 "wb").write(media[b["imagenes"][0]])
+            graficos_png.append({"id": gid, "modulo": None, "punto": None})
+
+    # ---------------- modulos ----------------
     modulos = []
     for t, bl in secs:
         m = RE_MODULO.match(t)
@@ -629,6 +665,7 @@ def main():
     print("  puntos           ", n_puntos)
     print("  tablas de punto  ", n_tablas)
     print("  capturas         ", len(capturas))
+    print("  PNG de gráficos  ", len([g for g in graficos_png if g.get("id")]))
     print("  graficos (datos) ", len(graficos))
     print("  bloques del plan ", len(plan), "· acciones", n_acciones)
     print("  bloques de vacios", len(vacios["categorias"]))

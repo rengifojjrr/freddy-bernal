@@ -1,2 +1,5 @@
+# Regenerables por extraer_contenido.py
 graficos_png/
+# Intermedio de la medicion de color, lo reescribe muestrear_colores.py
+colores_graficos.json
 __pycache__/
