@@ -3,3 +3,5 @@ graficos_png/
 # Intermedio de la medicion de color, lo reescribe muestrear_colores.py
 colores_graficos.json
 __pycache__/
+# Variante para publicar: la reescribe build.py en cada pasada
+informe_artifact.html

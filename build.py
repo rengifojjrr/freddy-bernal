@@ -392,6 +392,8 @@ figcaption b{color:var(--texto2); font-weight:650}
 .gr .det{fill:var(--muted); font-size:11.5px}
 .gr .tick{fill:var(--muted); font-size:11px; font-variant-numeric:tabular-nums}
 .gr .panel-tit{fill:var(--texto); font-size:12px; font-weight:650}
+.gr .val-col{font-size:17px}
+.gr .veredicto{font-size:12px; font-weight:700; letter-spacing:.03em}
 .gr .banda{fill:var(--banda)}
 .gr .barra rect.b{transition:opacity .1s}
 .gr .barra:hover rect.b{opacity:.78}
@@ -546,6 +548,14 @@ mark{background:rgba(235,104,52,.26); color:inherit; border-radius:2px; padding:
   .punto-cab{padding:14px}
   .punto-cuerpo{padding:0 14px 14px}
   .hallazgo{padding:16px}
+}
+
+/* quien pide menos movimiento no lo tiene */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important; animation-iteration-count:1 !important;
+    transition-duration:.01ms !important; scroll-behavior:auto !important;
+  }
 }
 
 /* ---------- impresion ---------- */
@@ -877,6 +887,86 @@ function panelBarras(panel, opts){
   return { svg: s, alto: y - (opts.y0 || 0) - gap };
 }
 
+/* g4 — tres paneles con columna vertical y banda de referencia sombreada
+   detras, tal y como esta en la figura original. Cada panel lleva su propia
+   escala: las tres metricas no son comparables entre si. */
+function panelesConBanda(g){
+  const paneles = g.paneles || [];
+  const n = paneles.length || 1;
+  const HUECO = 38;
+  const ANCHO = (VB - HUECO * (n - 1)) / n;
+  const Y_TIT = 13, Y_TOP = 54, ALTO = 186;
+  const Y_BASE = Y_TOP + ALTO;
+  let s = '';
+
+  paneles.forEach(function(p, i){
+    const x0 = i * (ANCHO + HUECO);
+    const b = (p.barras || [])[0];
+    if (!b) return;
+    let dominio = [b.valor];
+    if (p.banda) dominio = dominio.concat([p.banda.min, p.banda.max]);
+    const max = ejeMax(dominio);
+    const k = ALTO / max;
+
+    s += '<text class="panel-tit" x="' + (x0 + ANCHO / 2).toFixed(1) + '" y="' + Y_TIT +
+         '" text-anchor="middle">' + esc(p.nombre) + '</text>';
+
+    /* banda de referencia, detras de la columna */
+    if (p.banda){
+      const yA = Y_BASE - p.banda.max * k;
+      const yB = Y_BASE - p.banda.min * k;
+      s += '<rect class="banda" x="' + x0.toFixed(1) + '" y="' + yA.toFixed(1) +
+           '" width="' + ANCHO.toFixed(1) + '" height="' + Math.max(yB - yA, 3).toFixed(1) + '"/>';
+      if (p.banda.etiqueta){
+        const m = p.banda.etiqueta.match(/^(\S+)\s+(.+)$/);
+        const yc = (yA + yB) / 2;
+        const xe = x0 + ANCHO - 12;
+        if (m){
+          s += '<text class="det" x="' + xe.toFixed(1) + '" y="' + (yc - 2).toFixed(1) +
+               '" text-anchor="end">' + esc(m[1]) + '</text>';
+          s += '<text class="det" x="' + xe.toFixed(1) + '" y="' + (yc + 14).toFixed(1) +
+               '" text-anchor="end">' + esc(m[2]) + '</text>';
+        } else {
+          s += '<text class="det" x="' + xe.toFixed(1) + '" y="' + (yc + 5).toFixed(1) +
+               '" text-anchor="end">' + esc(p.banda.etiqueta) + '</text>';
+        }
+      }
+    }
+
+    /* la columna */
+    const cw = ANCHO * 0.30;
+    const cx = x0 + ANCHO * 0.13;
+    const h = Math.max(b.valor * k, 3);
+    const cy = Y_BASE - h;
+    s += '<g class="barra"' + tipAttrs(b, p.unidad) + '>' +
+         '<rect class="b" x="' + cx.toFixed(1) + '" y="' + cy.toFixed(1) +
+         '" width="' + cw.toFixed(1) + '" height="' + h.toFixed(1) +
+         '" fill="' + colorBarra(b) + '"/></g>';
+
+    /* etiqueta de valor, justo encima de la columna */
+    s += '<text class="val val-col" x="' + cx.toFixed(1) + '" y="' + (cy - 11).toFixed(1) +
+         '">' + esc(b.etiqueta) + '</text>';
+
+    /* linea de base */
+    s += '<line class="eje" x1="' + x0.toFixed(1) + '" y1="' + Y_BASE +
+         '" x2="' + (x0 + ANCHO).toFixed(1) + '" y2="' + Y_BASE + '"/>';
+
+    /* bajo la base: que mide y como sale. El texto es literal; solo se parte
+       en dos lineas por el separador que ya trae. */
+    const partes = (b.detalle || '').split(' · ');
+    if (partes[0]){
+      s += '<text class="det" x="' + (x0 + ANCHO / 2).toFixed(1) + '" y="' + (Y_BASE + 21) +
+           '" text-anchor="middle">' + esc(partes[0]) + '</text>';
+    }
+    if (partes[1]){
+      s += '<text class="veredicto" x="' + (x0 + ANCHO / 2).toFixed(1) + '" y="' + (Y_BASE + 41) +
+           '" text-anchor="middle" fill="' + colorBarra(b) + '">' + esc(partes[1]) + '</text>';
+    }
+  });
+
+  return svgEnvoltorio(s, Y_BASE + 52);
+}
+
 function svgEnvoltorio(inner, alto){
   return '<svg viewBox="0 0 ' + VB + ' ' + Math.ceil(alto) + '" preserveAspectRatio="xMidYMid meet" ' +
          'role="img" xmlns="http://www.w3.org/2000/svg">' + inner + '</svg>';
@@ -894,13 +984,7 @@ function dibujarGrafico(g){
     alto = Math.max(a.alto, b.alto) + 12;
 
   } else if (g.tipo === 'panelesConBanda'){
-    let y = 0;
-    paneles.forEach(function(p){
-      const r = panelBarras(p, {x0:0, ancho:VB, maxLbl:380, rowH:30, gap:9, y0:y});
-      inner += r.svg;
-      y += r.alto + 34;
-    });
-    alto = y;
+    return panelesConBanda(g);
 
   } else if (g.tipo === 'barh+composicion' && paneles.length >= 2){
     const a = panelBarras(paneles[0], {x0:0, ancho:VB*0.63, maxLbl:250, rowH:22, gap:6});
@@ -1740,18 +1824,22 @@ def main():
         imgs[c["archivo"]] = "data:image/png;base64," + base64.b64encode(datos).decode("ascii")
 
     meta = contenido["meta"]
-    titulo = "%s · %s" % (meta["titulo"], meta["sujeto"])
+    # Nombre de la pestaña y de la ficha al publicarlo. Es rotulo de interfaz,
+    # no texto del informe.
+    titulo = "Diagnóstico Digital 360 · Freddy Bernal"
 
-    html = (
-        "<!DOCTYPE html>\n"
-        '<html lang="es">\n<head>\n'
-        '<meta charset="utf-8">\n'
-        '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-        '<meta name="description" content="' + meta.get("alcance", "") + '">\n'
+    # El mismo contenido se emite de dos formas:
+    #   informe.html           documento completo, para abrir con doble clic
+    #   informe_artifact.html  solo <title>, <style> y cuerpo, porque el
+    #                          servicio de publicacion aporta su propio
+    #                          <!doctype>, <html>, <head> y <body>.
+    cabeza = (
         "<title>" + titulo + "</title>\n"
         "<style>" + CSS + "</style>\n"
-        "</head>\n<body>\n"
-        '<a class="saltar" href="#contenido">Saltar al contenido</a>\n'
+    )
+
+    cuerpo = (
+'<a class="saltar" href="#contenido">Saltar al contenido</a>\n'
 
         '<header class="topbar">\n'
         '  <button class="btn menu-movil" id="btn-menu" aria-expanded="false" aria-controls="sidebar">'
@@ -1792,19 +1880,37 @@ def main():
         '  <img id="lb-img" alt="">\n'
         '  <figcaption id="lb-cap"></figcaption>\n'
         '</div>\n'
+    )
 
+    cola = (
         '<script type="application/json" id="datos">' + json_seguro(contenido) + "</script>\n"
         '<script type="application/json" id="capturas-b64">' + json_seguro(imgs) + "</script>\n"
         "<script>" + JS + "</script>\n"
-        "</body>\n</html>\n"
     )
+
+    html = (
+        "<!DOCTYPE html>\n"
+        '<html lang="es">\n<head>\n'
+        '<meta charset="utf-8">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        '<meta name="description" content="' + meta.get("alcance", "") + '">\n'
+        + cabeza +
+        "</head>\n<body>\n" + cuerpo + cola + "</body>\n</html>\n"
+    )
+    artefacto = cabeza + cuerpo + cola
 
     salida = os.path.join(AQUI, "informe.html")
     with open(salida, "w", encoding="utf-8") as fh:
         fh.write(html)
 
+    salida_art = os.path.join(AQUI, "informe_artifact.html")
+    with open(salida_art, "w", encoding="utf-8") as fh:
+        fh.write(artefacto)
+
     mb = os.path.getsize(salida) / 1024 / 1024
     print("informe.html escrito —", round(mb, 2), "MB")
+    print("informe_artifact.html escrito —",
+          round(os.path.getsize(salida_art) / 1024 / 1024, 2), "MB (para publicar)")
     print("  módulos    ", meta["total_modulos"])
     print("  puntos     ", meta["total_puntos"])
     print("  tablas     ", meta["total_tablas"])

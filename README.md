@@ -1,8 +1,19 @@
 # Diagnóstico Digital 360 — informe HTML interactivo
 
-`informe.html` es un único archivo autocontenido. Se abre haciendo doble clic:
-sin servidor, sin conexión y sin dependencias. Pesa unos 5 MB porque las diez
-capturas van incrustadas en base64.
+Hay dos formas del mismo informe, generadas en la misma pasada:
+
+- **`informe.html`** — archivo único autocontenido. Se abre haciendo doble clic:
+  sin servidor, sin conexión y sin dependencias. Unos 5 MB, porque las diez
+  capturas van incrustadas en base64.
+- **`informe_artifact.html`** — el mismo contenido sin `<!doctype>`, `<html>`,
+  `<head>` ni `<body>`, porque el servicio de publicación aporta ese envoltorio.
+  Es el que se publica para obtener un enlace compartible.
+
+Publicado en: <https://claude.ai/code/artifact/a4d342eb-a940-4d8e-9986-812ba9a5c3c4>
+
+La página publicada es **privada** hasta que se comparta desde su propio menú.
+Para sacar un PDF conviene usar el archivo local: dentro de un marco publicado,
+el botón de imprimir depende de lo que permita el navegador anfitrión.
 
 ## Qué contiene
 
@@ -71,8 +82,10 @@ anchuras de las barras detectadas tiene que seguir al orden de los valores— y
 avisa en vez de adivinar cuando algo no cuadra.
 
 Todos los gráficos se dibujan como SVG en línea, generados a mano. Sin
-librerías. El único que se recalcula en el navegador es `g9`, que cuenta las
-prioridades de los 267 puntos.
+librerías. `g4` va en columnas verticales con la banda de referencia detrás,
+como en la figura original, y con su propia escala por panel: las tres métricas
+no son comparables entre sí. El único que se recalcula en el navegador es `g9`,
+que cuenta las prioridades de los 267 puntos.
 
 ## Lo que hace el informe
 
@@ -110,7 +123,8 @@ En Chromium, sobre `file://`, sin servidor:
 
 | | |
 |---|---|
-| `informe.html` | el entregable |
+| `informe.html` | el entregable, para abrir con doble clic |
+| `informe_artifact.html` | el mismo informe listo para publicar (regenerable) |
 | `contenido.json` | fuente de verdad, derivada del DOCX y el XLSX |
 | `graficos.json` | series de los diez gráficos, con el color medido |
 | `graficos_trazabilidad.json` | de dónde sale cada cifra de cada gráfico |
