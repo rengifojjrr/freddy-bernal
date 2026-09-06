@@ -97,7 +97,7 @@ CSS = r"""
 
 /* ---------- base ---------- */
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%; max-width:100%; overflow-x:clip}
+html{-webkit-text-size-adjust:100%}
 body{
   margin:0; padding-top:var(--topbar);
   background:var(--bg); color:var(--texto);
@@ -499,11 +499,10 @@ figcaption b{color:var(--texto2); font-weight:650}
 /* ---------- filtros ---------- */
 .filtros{
   position:sticky; top:var(--topbar); z-index:50;
-  background:var(--bg); padding:12px 40px;
-  border-bottom:1px solid var(--linea);
-  transition:opacity .15s;
+  margin:0 -40px 22px; padding:12px 40px;
+  background:var(--bg);
+  border-top:1px solid var(--linea); border-bottom:1px solid var(--linea);
 }
-.filtros[hidden]{display:none !important}
 .filtro-fila{display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-bottom:7px}
 .filtro-fila:last-child{margin-bottom:0}
 .filtro-et{
@@ -612,6 +611,7 @@ mark{background:rgba(235,104,52,.26); color:inherit; border-radius:2px; padding:
   /* los filtros pasan a ser una hoja que sube desde abajo */
   .filtros{
     position:fixed; left:0; right:auto; bottom:0; top:auto; z-index:70;
+    margin:0; border-top:1px solid var(--linea2);
     width:100vw; max-width:100vw;
     max-height:72vh; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain;
     padding:18px 18px calc(18px + env(safe-area-inset-bottom, 0px));
@@ -1442,6 +1442,11 @@ function render(){
        '<td class="n">' + CUENTA_TOTAL['ALTA'] + '</td><td></td></tr>';
   h += '</tbody></table></div>';
 
+  /* Los filtros viven dentro de la sección de módulos y son sticky: aparecen
+     al entrar en ella y se van al salir, sin que ningún observador tenga que
+     decidirlo. Un control que aparece y desaparece por lógica en JS acaba
+     desapareciendo justo cuando se está usando. */
+  h += '<div class="filtros" id="filtros" role="group" aria-label="Filtros"></div>';
   h += '<div id="lista-modulos">';
   DATA.modulos.forEach(function(m, i){ h += moduloHTML(m, i, DATA.modulos); });
   h += '</div><div class="sin-resultados" id="sin-resultados" hidden>' +
@@ -1583,7 +1588,6 @@ function esMovil(){ return matchMedia('(max-width: 860px)').matches; }
 
 /* ---------------- búsqueda y filtrado ---------------- */
 const estado = { q:'', prioridad:new Set(), estado:new Set() };
-let enModulos = false;
 /* Filtrar oculta puntos y encoge el documento, así que el navegador recorta la
    posición de lectura y quitar la búsqueda te lanzaría al principio del
    informe. Se ancla a un elemento concreto —no a una coordenada, que no
@@ -1605,17 +1609,6 @@ function devuelveAncla(a){
   const el = document.getElementById(a.id);
   if (!el || el.hidden) return;
   scrollBy(0, el.getBoundingClientRect().top - a.off);
-}
-
-/* La barra de filtros aparece dentro de los módulos, pero también siempre que
-   haya algo filtrado: si no, una búsqueda que deja pocos resultados encoge la
-   página, saca los módulos de la vista y los controles desaparecen en mitad de
-   la selección. */
-function refrescaBarraFiltros(filtrando){
-  const barra = $('#filtros'), boton = $('#btn-filtros');
-  const procede = enModulos || filtrando;
-  if (boton) boton.hidden = !procede;
-  if (barra && !esMovil()) barra.hidden = !procede;
 }
 let tarjetas = null;
 const resaltadas = new Set();
@@ -1720,7 +1713,6 @@ function aplicar(){
   $('#contador').innerHTML = '<b>' + nP + '</b> de ' + DATA.meta.total_puntos + ' puntos' +
     (filtrando ? ' · ' + modulosVivos.size + ' de ' + DATA.meta.total_modulos + ' módulos' : '');
   $('#limpiar-todo').hidden = !filtrando;
-  refrescaBarraFiltros(filtrando);
 
   /* cuántos filtros hay puestos, para el botón del móvil */
   const nf = fp.size + fe.size;
@@ -2011,7 +2003,6 @@ function init(){
     colocaControles();
     if (esMovil()){
       /* la hoja de filtros existe siempre; lo que la muestra es .abierta */
-      barraFiltros.hidden = false;
       if (!sb.dataset.abiertoPorElUsuario){
         sb.hidden = true;
         bm.setAttribute('aria-expanded', 'false');
@@ -2032,21 +2023,6 @@ function init(){
       e.preventDefault(); inp.focus(); inp.select();
     }
   });
-
-  /* filtrar solo tiene sentido dentro de la sección de módulos */
-  const secModulos = $('#modulos');
-  if (secModulos && 'IntersectionObserver' in window){
-    /* La barra de escritorio se oculta fuera de los módulos. La hoja del móvil
-       NO: es fija y la cierra el usuario, no el desplazamiento — si no, un
-       simple scroll la cerraría en mitad de una selección. */
-    new IntersectionObserver(function(ents){
-      enModulos = ents[0].isIntersecting;
-      refrescaBarraFiltros(!!(estado.q.trim() || estado.prioridad.size || estado.estado.size));
-      if (esMovil()) barraFiltros.hidden = false;
-    }, { threshold: 0 }).observe(secModulos);
-    barraFiltros.hidden = !esMovil();
-    bf.hidden = true;
-  }
 
   $('#imprimir').addEventListener('click', function(){ print(); });
 
@@ -2145,7 +2121,6 @@ def main():
         '<div class="shell">\n'
         '  <nav class="sidebar" id="sidebar" aria-label="Índice del informe"></nav>\n'
         '  <main id="contenido-wrap">\n'
-        '    <div class="filtros" id="filtros" role="group" aria-label="Filtros"></div>\n'
         '    <div id="contenido"></div>\n'
         '  </main>\n'
         '</div>\n'
