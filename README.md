@@ -1,19 +1,29 @@
 # Diagnóstico Digital 360 — informe HTML interactivo
 
-Hay dos formas del mismo informe, generadas en la misma pasada:
+## Dónde está
 
-- **`informe.html`** — archivo único autocontenido. Se abre haciendo doble clic:
-  sin servidor, sin conexión y sin dependencias. Unos 5 MB, porque las diez
-  capturas van incrustadas en base64.
-- **`informe_artifact.html`** — el mismo contenido sin `<!doctype>`, `<html>`,
-  `<head>` ni `<body>`, porque el servicio de publicación aporta ese envoltorio.
-  Es el que se publica para obtener un enlace compartible.
+**Web pública:** <https://rengifojjrr.github.io/freddy-bernal/>
+Abre en cualquier dispositivo, sin instalar nada.
 
-Publicado en: <https://claude.ai/code/artifact/a4d342eb-a940-4d8e-9986-812ba9a5c3c4>
+**Página privada:** <https://claude.ai/code/artifact/a4d342eb-a940-4d8e-9986-812ba9a5c3c4>
+Solo la ve quien tenga el enlace y esté autorizado.
 
-La página publicada es **privada** hasta que se comparta desde su propio menú.
-Para sacar un PDF conviene usar el archivo local: dentro de un marco publicado,
-el botón de imprimir depende de lo que permita el navegador anfitrión.
+> ⚠️ El repositorio es **público**. Eso incluye `informe.docx` y `matriz.xlsx`,
+> que cualquiera puede descargar. Si el informe no debe ser público, hay que
+> poner el repositorio en privado — y entonces GitHub Pages deja de servirlo.
+
+## Tres formas del mismo informe
+
+Las tres se generan en la misma pasada de `build.py`, del mismo contenido:
+
+| archivo | para qué | peso |
+|---|---|---|
+| `index.html` | GitHub Pages. Las capturas van aparte y se piden al llegar a ellas | 0,55 MB (~175 KB comprimido) |
+| `informe.html` | doble clic, sin servidor ni conexión. Todo incrustado | 4,8 MB |
+| `informe_artifact.html` | publicar como página privada | 4,8 MB |
+
+Para sacar un PDF conviene usar `informe.html`: tiene la hoja de impresión
+probada y no depende de lo que permita el navegador anfitrión.
 
 ## Qué contiene
 
@@ -87,6 +97,22 @@ como en la figura original, y con su propia escala por panel: las tres métricas
 no son comparables entre sí. El único que se recalcula en el navegador es `g9`,
 que cuenta las prioridades de los 267 puntos.
 
+## En el teléfono
+
+Con 267 puntos densos, un móvil necesita otra cosa que un escritorio encogido:
+
+- **Los puntos llegan plegados.** Un módulo se recorre de un vistazo: enunciado
+  y distintivos. Se toca uno y se abre. En pantalla ancha siguen desplegados.
+- **Los 37 puntos críticos llevan un filo rojo** en el borde de la tarjeta: se
+  localizan sin leer.
+- **Los filtros suben desde abajo** en una hoja, en vez de comerse tres filas de
+  pantalla. El botón muestra cuántos hay puestos.
+- **El índice baja como panel**, con los controles de tema, compacto e impresión
+  dentro.
+- **Pasos entre módulos** al final de cada uno, para no volver al índice.
+- Campo de búsqueda a 16 px, que es lo que evita que Safari amplíe la página al
+  tocarlo.
+
 ## Lo que hace el informe
 
 - **Buscador global** sobre enunciado, hallazgo, tabla y acción de los 267
@@ -104,6 +130,9 @@ que cuenta las prioridades de los 267 puntos.
   y el conmutador manual gana sobre la preferencia del sistema.
 - **Impresión**: oculta navegación y controles, despliega todo el contenido y
   evita cortar tablas y figuras.
+- **La posición de lectura se conserva** al buscar y al limpiar: filtrar encoge
+  el documento y el navegador recorta el desplazamiento, así que se ancla a un
+  elemento y se devuelve.
 
 ## Comprobado
 
@@ -123,6 +152,7 @@ En Chromium, sobre `file://`, sin servidor:
 
 | | |
 |---|---|
+| `index.html` | el sitio de GitHub Pages |
 | `informe.html` | el entregable, para abrir con doble clic |
 | `informe_artifact.html` | el mismo informe listo para publicar (regenerable) |
 | `contenido.json` | fuente de verdad, derivada del DOCX y el XLSX |

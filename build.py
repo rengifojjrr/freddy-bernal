@@ -97,11 +97,12 @@ CSS = r"""
 
 /* ---------- base ---------- */
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%; max-width:100%; overflow-x:clip}
 body{
-  margin:0; background:var(--bg); color:var(--texto);
+  margin:0; padding-top:var(--topbar);
+  background:var(--bg); color:var(--texto);
   font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  font-size:15px; line-height:1.62;
+  font-size:15.5px; line-height:1.65;
   overflow-x:hidden;
 }
 h1,h2,h3,h4{margin:0; font-weight:600; line-height:1.25; letter-spacing:-.011em}
@@ -122,7 +123,7 @@ button,input{font:inherit; color:inherit}
 
 /* ---------- barra superior ---------- */
 .topbar{
-  position:sticky; top:0; z-index:60;
+  position:fixed; top:0; left:0; right:0; z-index:60;
   display:flex; align-items:center; gap:14px;
   height:var(--topbar); padding:0 18px;
   background:var(--card); border-bottom:1px solid var(--linea);
@@ -133,10 +134,10 @@ button,input{font:inherit; color:inherit}
 
 .buscador{position:relative; flex:1 1 auto; max-width:460px; min-width:0}
 .buscador input{
-  width:100%; padding:8px 30px 8px 32px;
+  width:100%; padding:9px 32px 9px 34px;
   background:var(--bg); color:var(--texto);
   border:1px solid var(--linea2); border-radius:var(--r);
-  font-size:13.5px;
+  font-size:14px;
 }
 .buscador input::placeholder{color:var(--muted)}
 .buscador .lupa{
@@ -168,7 +169,6 @@ button,input{font:inherit; color:inherit}
 .btn[aria-pressed="true"]{background:var(--tinte); color:var(--texto); border-color:var(--muted)}
 .btn svg{width:14px; height:14px; flex:none}
 
-.menu-movil{display:none}
 
 /* ---------- estructura ---------- */
 .shell{display:flex; align-items:flex-start}
@@ -209,10 +209,11 @@ button,input{font:inherit; color:inherit}
 }
 
 main{flex:1 1 auto; min-width:0; padding:0 0 120px}
-.seccion{padding:44px 40px 8px; scroll-margin-top:calc(var(--topbar) + 8px)}
-.seccion-cab{margin-bottom:28px; padding-bottom:14px; border-bottom:1px solid var(--linea2)}
-.seccion-cab h2{font-size:23px; letter-spacing:-.02em}
-.seccion-cab .sub{margin-top:6px; font-size:13.5px; color:var(--texto2); max-width:var(--lectura)}
+.seccion{padding:56px 40px 8px; scroll-margin-top:calc(var(--topbar) + 12px)}
+.seccion + .seccion{border-top:1px solid var(--linea)}
+.seccion-cab{margin-bottom:32px; padding-bottom:16px; border-bottom:1px solid var(--linea2)}
+.seccion-cab h2{font-size:25px; letter-spacing:-.024em; text-wrap:balance}
+.seccion-cab .sub{margin-top:8px; font-size:14px; color:var(--texto2); max-width:var(--lectura)}
 .eyebrow{
   font-size:10.5px; font-weight:650; letter-spacing:.09em;
   text-transform:uppercase; color:var(--muted); margin-bottom:7px;
@@ -294,28 +295,60 @@ tbody tr.total td{font-weight:650; color:var(--texto); background:var(--tinte)}
 .pill.cero{background:transparent; color:var(--muted); font-weight:400}
 
 /* ---------- modulo ---------- */
-.modulo{margin:0 0 52px; scroll-margin-top:calc(var(--topbar) + 8px)}
-.modulo-cab{padding-bottom:15px; border-bottom:2px solid var(--texto); margin-bottom:20px}
+.modulo{margin:0 0 68px; scroll-margin-top:calc(var(--topbar) + 12px)}
+.modulo-cab{padding-bottom:18px; border-bottom:2px solid var(--texto); margin-bottom:24px}
 .modulo-cab .id{
-  font-size:11px; font-weight:700; letter-spacing:.1em; color:var(--blue);
+  font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--blue);
 }
-.modulo-cab h2{font-size:21px; margin-top:5px; letter-spacing:-.02em}
+.modulo-cab h2{font-size:22px; margin-top:6px; letter-spacing:-.022em; text-wrap:balance}
+.modulo-cifras{display:flex; flex-wrap:wrap; gap:7px; margin-top:14px}
+.mp{
+  display:inline-flex; align-items:baseline; gap:6px;
+  padding:3px 10px; border-radius:12px; font-size:11.5px;
+  background:var(--tinte); color:var(--texto2); border:1px solid var(--linea);
+  font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+.mp b{font-weight:700; color:var(--texto)}
+.mp.c{border-color:var(--red); color:var(--red)} .mp.c b{color:var(--red)}
+.mp.a{border-color:var(--orange); color:var(--orange)} .mp.a b{color:var(--orange)}
 .modulo-meta{
-  display:flex; flex-wrap:wrap; gap:8px 22px; margin-top:12px; font-size:12px; color:var(--texto2);
+  display:grid; gap:9px 22px; margin-top:16px; font-size:12.5px; color:var(--texto2);
+  grid-template-columns:max-content 1fr; align-items:baseline;
 }
-.modulo-meta div{display:flex; gap:7px; align-items:baseline}
-.modulo-meta span{
-  font-size:10px; font-weight:650; letter-spacing:.08em;
-  text-transform:uppercase; color:var(--muted); flex:none;
+.modulo-meta dt{
+  font-size:10px; font-weight:650; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--muted); white-space:nowrap;
 }
-.modulo-resumen{margin:16px 0 26px}
+.modulo-meta dd{margin:0}
+.modulo-resumen{margin:20px 0 30px}
+
+/* pasar al modulo anterior o siguiente sin volver al indice */
+.modulo-pasos{
+  display:flex; gap:10px; margin-top:26px; padding-top:18px;
+  border-top:1px solid var(--linea);
+}
+.paso{
+  flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:3px;
+  padding:12px 14px; text-decoration:none; border-radius:var(--r);
+  border:1px solid var(--linea2); background:var(--card); color:var(--texto);
+}
+.paso:hover{border-color:var(--muted); background:var(--tinte)}
+.paso span{font-size:10px; font-weight:650; letter-spacing:.09em; text-transform:uppercase; color:var(--muted)}
+.paso b{font-size:13px; font-weight:600; line-height:1.3;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+.paso.sig{text-align:right}
+.paso.vacio{visibility:hidden}
 
 /* ---------- punto ---------- */
 .punto{
+  position:relative;
   background:var(--card); border:1px solid var(--linea); border-radius:var(--r);
-  margin-bottom:14px; box-shadow:var(--sombra);
-  scroll-margin-top:calc(var(--topbar) + 8px);
+  margin-bottom:18px; box-shadow:var(--sombra);
+  scroll-margin-top:calc(var(--topbar) + 12px);
 }
+/* los 37 puntos criticos se localizan sin leer: un filo rojo en el borde */
+.punto[data-prioridad="CRÍTICA"]{border-left:3px solid var(--red)}
+.punto[data-prioridad="CRÍTICA"] .punto-cab{padding-left:17px}
 .punto-cab{
   display:flex; gap:14px; align-items:flex-start;
   padding:16px 20px; width:100%; text-align:left;
@@ -434,9 +467,10 @@ figcaption b{color:var(--texto2); font-weight:650}
 .tarea{display:flex; gap:13px; padding:13px 2px; border-bottom:1px solid var(--linea)}
 .tarea:last-child{border-bottom:0}
 .tarea input{
-  flex:none; width:16px; height:16px; margin-top:2px; cursor:pointer;
+  flex:none; width:18px; height:18px; margin-top:1px; cursor:pointer;
   accent-color:var(--aqua);
 }
+.tarea label{padding:2px 0}
 .tarea .cont{flex:1; min-width:0}
 .tarea .fila{display:flex; align-items:baseline; gap:9px; flex-wrap:wrap}
 .tarea .num{font-size:11px; font-weight:650; color:var(--muted); font-variant-numeric:tabular-nums}
@@ -510,44 +544,143 @@ mark{background:rgba(235,104,52,.26); color:inherit; border-radius:2px; padding:
   font-size:19px; cursor:pointer; line-height:1;
 }
 
+/* ---------- piezas que solo existen en el móvil ---------- */
+.solo-movil{display:none !important}
+.zona-controles{display:none}
+
+.fondo-sheet{
+  position:fixed; top:var(--topbar); left:0; width:100vw; bottom:0;
+  z-index:69; background:rgba(8,9,11,.5);
+  opacity:0; pointer-events:none; transition:opacity .18s;
+}
+.fondo-sheet.abierto{opacity:1; pointer-events:auto}
+
+#btn-filtros .n{
+  min-width:16px; padding:0 4px; border-radius:8px; font-size:10px; font-weight:700;
+  background:var(--blue); color:#fff; line-height:16px; text-align:center;
+}
+
+.fab{
+  position:fixed; right:12px; bottom:14px; z-index:58;
+  width:40px; height:40px; border-radius:50%;
+  background:var(--card); color:var(--texto2);
+  border:1px solid var(--linea2); box-shadow:0 3px 12px rgba(0,0,0,.16);
+  cursor:pointer; display:none; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .16s;
+}
+.fab svg{width:17px; height:17px}
+.fab{backdrop-filter:saturate(1.2) blur(6px)}
+.fab.visible{opacity:1; pointer-events:auto}
+
 /* ---------- responsive ---------- */
 @media (max-width:1040px){
-  :root{--sidebar:246px}
+  :root{--sidebar:250px}
   .seccion,.filtros,.portada{padding-left:28px; padding-right:28px}
 }
-@media (max-width:700px){
-  .btn .et{display:none}
-  .btn{padding:6px 8px}
-  .menu-movil .et{display:none}
-  .topbar{gap:8px; padding:0 12px}
-  .acciones{gap:4px}
-}
+
 @media (max-width:860px){
-  .menu-movil{display:inline-flex}
+  :root{--topbar:56px; --lectura:none}
+
+  .solo-movil{display:inline-flex !important}
+  .topbar{z-index:75}
+  .topbar .btn{min-height:38px; padding:8px 10px}
+  .acciones .btn .et{display:none}
+  .marca,.contador,.chev{display:none}
+  .topbar{gap:8px; padding:0 12px}
+
   .shell{display:block}
+
+  /* el índice baja como panel desplegable */
   .sidebar{
-    position:static; width:auto; height:auto; max-height:66vh;
-    border-right:0; border-bottom:1px solid var(--linea2); padding:14px 0 20px;
+    position:fixed; top:var(--topbar); left:0; right:auto; z-index:68;
+    width:100vw; max-width:100vw; max-height:calc(100vh - var(--topbar));
+    overflow-x:hidden;
+    border-right:0; border-bottom:1px solid var(--linea2);
+    box-shadow:0 10px 28px rgba(0,0,0,.16);
+    padding:14px 0 24px;
   }
   .sidebar[hidden]{display:none !important}
-  .seccion,.filtros,.portada{padding-left:18px; padding-right:18px}
-  .seccion{padding-top:32px}
-  .filtros{position:static}
-  .punto-cuerpo{padding-left:20px}
-  .marca{display:none}
-  .buscador{max-width:none}
-  .contador{display:none}
-  .portada h1{font-size:26px}
-  .ficha{grid-template-columns:1fr}
-  .ficha dt{border-bottom:0; padding-bottom:0}
-  .ficha dd{padding-top:2px}
-  .filtro-et{width:auto}
+  .zona-controles{
+    display:flex; gap:8px; padding:0 18px 16px; margin-bottom:14px;
+    border-bottom:1px solid var(--linea);
+  }
+  .zona-controles .btn{flex:1; justify-content:center; padding:11px 8px; min-height:42px}
+  .zona-controles .btn .et{display:inline}
+  .nav-a{padding:11px 18px; font-size:14px}
+  .nav-titulo{padding-left:18px; padding-right:18px}
+
+  /* los filtros pasan a ser una hoja que sube desde abajo */
+  .filtros{
+    position:fixed; left:0; right:auto; bottom:0; top:auto; z-index:70;
+    width:100vw; max-width:100vw;
+    max-height:72vh; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain;
+    padding:18px 18px calc(18px + env(safe-area-inset-bottom, 0px));
+    background:var(--card); border-top:1px solid var(--linea2); border-bottom:0;
+    border-radius:14px 14px 0 0; box-shadow:0 -8px 30px rgba(0,0,0,.2);
+    transform:translateY(101%); transition:transform .2s ease;
+  }
+  .filtros[hidden]{display:block !important}
+  .filtros.abierta{transform:none}
+  .filtros::before{
+    content:""; display:block; width:38px; height:4px; border-radius:2px;
+    background:var(--linea2); margin:-6px auto 16px;
+  }
+  .filtro-fila{margin-bottom:14px}
+  .filtro-et{width:auto; display:block; margin-bottom:2px}
+  .chip{padding:8px 13px; font-size:13px; border-radius:16px}
+  #cerrar-filtros{
+    position:sticky; bottom:0; z-index:2;
+    display:block; width:100%; margin-top:10px; padding:14px;
+    background:var(--texto); color:var(--card); border:0; border-radius:var(--r);
+    font-size:15px; font-weight:650; cursor:pointer;
+    box-shadow:0 -10px 16px -6px var(--card);
+  }
+  .filtros{padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px))}
+  .chip{padding:9px 14px}
+
+  .fab{display:flex}
+
+  .seccion{padding:36px 18px 8px}
+  .portada{padding:34px 18px 8px}
+  .seccion + .seccion{border-top:0}
+  .seccion-cab h2{font-size:21px}
+  .portada h1{font-size:27px}
+  .ficha{grid-template-columns:1fr; gap:0}
+  .ficha dt{border-bottom:0; padding:10px 0 0}
+  .ficha dd{padding:2px 0 10px}
+
+  .modulo{margin-bottom:48px}
+  .modulo-meta{grid-template-columns:1fr; gap:2px 0}
+  .modulo-meta dd{margin-bottom:10px}
+  .modulo-cab h2{font-size:19px}
+
+  /* en el móvil los puntos llegan plegados: se recorre el módulo de un vistazo */
+  .punto{margin-bottom:10px}
+  .punto-cab{padding:15px 16px; gap:12px}
+  .punto-tit h3{font-size:15px}
+  .punto-cuerpo{padding:0 16px 16px}
+  .punto[data-prioridad="CRÍTICA"] .punto-cab{padding-left:13px}
+  .compacto .chev{display:block}
+  .hallazgo{padding:17px 16px; gap:13px}
+  .cat{padding:17px 16px}
+  .accion{padding:13px 14px}
+  .tarea{padding:16px 2px}
+  .tarea input{width:24px; height:24px; margin-top:0}
+  .tarea label{font-size:15px; line-height:1.45}
+  .modulo-pasos{flex-direction:column}
 }
+
 @media (max-width:420px){
-  .seccion,.filtros,.portada{padding-left:14px; padding-right:14px}
+  .seccion,.portada{padding-left:14px; padding-right:14px}
   .punto-cab{padding:14px}
   .punto-cuerpo{padding:0 14px 14px}
-  .hallazgo{padding:16px}
+  .portada h1{font-size:24px}
+  .cifras{grid-template-columns:repeat(2,1fr)}
+}
+
+/* el iOS de Safari amplía la página si el campo baja de 16 px */
+@media (max-width:860px){
+  .buscador input{font-size:16px; padding:10px 34px 10px 36px}
 }
 
 /* quien pide menos movimiento no lo tiene */
@@ -562,7 +695,7 @@ mark{background:rgba(235,104,52,.26); color:inherit; border-radius:2px; padding:
 @media print{
   :root{--bg:#fff; --card:#fff; --texto:#000; --texto2:#222; --linea:#ccc; --linea2:#999; --tinte:#f4f4f4; --sombra:none}
   .topbar,.sidebar,.filtros,.acciones,.buscador,#lightbox,#tip,.saltar,.chev{display:none !important}
-  body{font-size:10.5pt; background:#fff}
+  body{font-size:10.5pt; background:#fff; padding-top:0}
   .shell{display:block}
   main{padding:0}
   .seccion,.portada{padding:0 0 6mm; break-before:page}
@@ -1145,9 +1278,11 @@ function figuraHTML(c){
   const src = IMGS[c.archivo];
   if (!src) return '';
   const alt = 'Figura ' + c.figura + '. ' + c.pie;
+  /* incrustadas van ya decodificadas; como archivo suelto se piden al llegar */
+  const diferida = DATA.meta.capturas_aparte ? ' loading="lazy" decoding="async"' : '';
   return '<figure id="figura-' + c.figura + '">' +
     '<img src="' + src + '" alt="' + esc(alt) + '" width="' + c.ancho + '" height="' + c.alto + '"' +
-    ' data-fig="' + c.figura + '">' +
+    ' data-fig="' + c.figura + '"' + diferida + '>' +
     '<figcaption><b>Figura ' + c.figura + '.</b> ' + esc(c.pie) + '</figcaption></figure>';
 }
 
@@ -1174,22 +1309,40 @@ function puntoHTML(m, p){
   return h;
 }
 
-function moduloHTML(m){
+function moduloHTML(m, i, todos){
   const c = CUENTA[m.id];
   let h = '<section class="modulo" id="' + m.id.toLowerCase() + '">';
   h += '<div class="modulo-cab"><div class="id">' + esc(m.id) + '</div><h2>' + esc(m.titulo) + '</h2>';
-  h += '<div class="modulo-meta">';
-  h += '<div><span>Puntos</span>' + m.puntos.length + '</div>';
-  if (c['CRÍTICA']) h += '<div><span>Críticos</span>' + c['CRÍTICA'] + '</div>';
-  if (c['ALTA']) h += '<div><span>Alta</span>' + c['ALTA'] + '</div>';
-  if (m.estado_modulo) h += '<div><span>Estado</span>' + esc(m.estado_modulo) + '</div>';
-  if (m.calificacion) h += '<div><span>Valoración</span>' + esc(m.calificacion) + '</div>';
+
+  h += '<div class="modulo-cifras">';
+  h += '<span class="mp"><b>' + m.puntos.length + '</b> puntos</span>';
+  if (c['CRÍTICA']) h += '<span class="mp c"><b>' + c['CRÍTICA'] + '</b> ' +
+    (c['CRÍTICA'] === 1 ? 'crítico' : 'críticos') + '</span>';
+  if (c['ALTA']) h += '<span class="mp a"><b>' + c['ALTA'] + '</b> alta</span>';
   h += '</div>';
-  if (m.alcance) h += '<div class="modulo-meta"><div><span>Alcance</span>' + esc(m.alcance) + '</div></div>';
-  if (m.fuente) h += '<div class="modulo-meta"><div><span>Fuente</span>' + esc(m.fuente) + '</div></div>';
-  h += '</div>';
+
+  h += '<dl class="modulo-meta">';
+  if (m.calificacion) h += '<dt>Valoración</dt><dd>' + esc(m.calificacion) + '</dd>';
+  if (m.estado_modulo) h += '<dt>Estado</dt><dd>' + esc(m.estado_modulo) + '</dd>';
+  if (m.alcance) h += '<dt>Alcance</dt><dd>' + esc(m.alcance) + '</dd>';
+  if (m.fuente) h += '<dt>Fuente</dt><dd>' + esc(m.fuente) + '</dd>';
+  h += '</dl></div>';
+
   if (m.resumen && m.resumen.length) h += '<div class="modulo-resumen">' + prosa(m.resumen) + '</div>';
   m.puntos.forEach(function(p){ h += puntoHTML(m, p); });
+
+  /* pasar al módulo contiguo sin volver al índice */
+  const ant = todos[i - 1], sig = todos[i + 1];
+  h += '<nav class="modulo-pasos" aria-label="Módulos contiguos">';
+  h += ant
+    ? '<a class="paso" href="#' + ant.id.toLowerCase() + '"><span>← ' + esc(ant.id) +
+      ' anterior</span><b>' + esc(ant.titulo) + '</b></a>'
+    : '<span class="paso vacio"></span>';
+  h += sig
+    ? '<a class="paso sig" href="#' + sig.id.toLowerCase() + '"><span>' + esc(sig.id) +
+      ' siguiente →</span><b>' + esc(sig.titulo) + '</b></a>'
+    : '<span class="paso vacio"></span>';
+  h += '</nav>';
   return h + '</section>';
 }
 
@@ -1290,7 +1443,7 @@ function render(){
   h += '</tbody></table></div>';
 
   h += '<div id="lista-modulos">';
-  DATA.modulos.forEach(function(m){ h += moduloHTML(m); });
+  DATA.modulos.forEach(function(m, i){ h += moduloHTML(m, i, DATA.modulos); });
   h += '</div><div class="sin-resultados" id="sin-resultados" hidden>' +
        'Ningún punto coincide con la búsqueda y los filtros activos.</div>';
   h += '</section>';
@@ -1378,7 +1531,7 @@ const CUENTA_TOTAL = (function(){
 
 /* ---------------- barra lateral ---------------- */
 function renderSidebar(){
-  let h = '';
+  let h = '<div class="zona-controles" id="zona-controles"></div>';
   h += '<div class="nav-grupo"><div class="nav-titulo">Informe</div>';
   [['portada','Portada y resumen ejecutivo'],
    ['como-leer','Cómo leer este informe'],
@@ -1422,11 +1575,48 @@ function renderFiltros(){
       esc(e) + '<span class="c">' + estados[e] + '</span></button>';
   });
   h += '<button class="chip limpiar" id="limpiar-todo">Limpiar todo</button></div>';
+  h += '<button id="cerrar-filtros" class="solo-movil">Ver los puntos</button>';
   $('#filtros').innerHTML = h;
 }
 
+function esMovil(){ return matchMedia('(max-width: 860px)').matches; }
+
 /* ---------------- búsqueda y filtrado ---------------- */
 const estado = { q:'', prioridad:new Set(), estado:new Set() };
+let enModulos = false;
+/* Filtrar oculta puntos y encoge el documento, así que el navegador recorta la
+   posición de lectura y quitar la búsqueda te lanzaría al principio del
+   informe. Se ancla a un elemento concreto —no a una coordenada, que no
+   sobrevive al cambio de altura— y se devuelve al limpiar. */
+let filtrandoAntes = false, anclaGuardada = null;
+
+function anclaVisible(){
+  const els = $$('.modulo, .punto');
+  for (let i = 0; i < els.length; i++){
+    const el = els[i];
+    if (el.hidden || !el.id) continue;
+    const r = el.getBoundingClientRect();
+    if (r.bottom > 90) return { id: el.id, off: r.top };
+  }
+  return null;
+}
+function devuelveAncla(a){
+  if (!a) return;
+  const el = document.getElementById(a.id);
+  if (!el || el.hidden) return;
+  scrollBy(0, el.getBoundingClientRect().top - a.off);
+}
+
+/* La barra de filtros aparece dentro de los módulos, pero también siempre que
+   haya algo filtrado: si no, una búsqueda que deja pocos resultados encoge la
+   página, saca los módulos de la vista y los controles desaparecen en mitad de
+   la selección. */
+function refrescaBarraFiltros(filtrando){
+  const barra = $('#filtros'), boton = $('#btn-filtros');
+  const procede = enModulos || filtrando;
+  if (boton) boton.hidden = !procede;
+  if (barra && !esMovil()) barra.hidden = !procede;
+}
 let tarjetas = null;
 const resaltadas = new Set();
 
@@ -1481,6 +1671,12 @@ function quitarResaltado(el){
 function aplicar(){
   const q = norm(estado.q.trim());
   const fp = estado.prioridad, fe = estado.estado;
+  const filtrando = !!(q || fp.size || fe.size);
+
+  /* el ancla se toma antes de ocultar nada: después el navegador ya ha
+     recortado la posición de lectura y no hay qué recuperar */
+  if (filtrando && !filtrandoAntes) anclaGuardada = anclaVisible();
+
   let nP = 0;
   const modulosVivos = new Set();
 
@@ -1512,11 +1708,24 @@ function aplicar(){
     tr.style.opacity = modulosVivos.has(tr.dataset.ir.toUpperCase()) ? '' : '.34';
   });
 
-  const filtrando = !!(q || fp.size || fe.size);
+  if (!filtrando && filtrandoAntes && anclaGuardada){
+    const a = anclaGuardada;
+    anclaGuardada = null;
+    /* dos cuadros: el primero deja que el navegador rehaga el alto */
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ devuelveAncla(a); }); });
+  }
+  filtrandoAntes = filtrando;
+
   $('#sin-resultados').hidden = nP !== 0 || !filtrando;
   $('#contador').innerHTML = '<b>' + nP + '</b> de ' + DATA.meta.total_puntos + ' puntos' +
     (filtrando ? ' · ' + modulosVivos.size + ' de ' + DATA.meta.total_modulos + ' módulos' : '');
   $('#limpiar-todo').hidden = !filtrando;
+  refrescaBarraFiltros(filtrando);
+
+  /* cuántos filtros hay puestos, para el botón del móvil */
+  const nf = fp.size + fe.size;
+  const marca = $('#n-filtros');
+  if (marca){ marca.hidden = !nf; marca.textContent = nf; }
 }
 
 /* ---------------- hoja de ruta ---------------- */
@@ -1703,16 +1912,26 @@ function init(){
     aplicar();
   });
 
-  /* modo compacto */
+  /* Modo compacto. En una pantalla estrecha es el estado POR DEFECTO: con 267
+     puntos abiertos, recorrer un módulo en el teléfono es interminable. Basta
+     con tocar un punto para desplegarlo. */
   const bc = $('#btn-compacto');
-  bc.addEventListener('click', function(){
-    const on = document.body.classList.toggle('compacto');
+  function pintaCompacto(on){
+    document.body.classList.toggle('compacto', on);
     bc.setAttribute('aria-pressed', String(on));
+    bc.querySelector('.et').textContent = on ? 'Desplegar' : 'Compacto';
     $$('.punto').forEach(function(p){
       p.classList.remove('abierto');
       const cab = $('.punto-cab', p);
       if (cab) cab.setAttribute('aria-expanded', String(!on));
     });
+  }
+  const elegido = Store.get('fb360.compacto', null);
+  pintaCompacto(elegido === null ? esMovil() : !!elegido);
+  bc.addEventListener('click', function(){
+    const on = !document.body.classList.contains('compacto');
+    Store.set('fb360.compacto', on);
+    pintaCompacto(on);
   });
 
   /* desplegar un punto */
@@ -1736,24 +1955,73 @@ function init(){
     if (tr){ e.preventDefault(); location.hash = '#' + tr.dataset.ir; }
   });
 
-  /* menú móvil */
-  const bm = $('#btn-menu');
-  bm.addEventListener('click', function(){
-    const sb = $('#sidebar');
-    const abierto = sb.hidden;
-    sb.hidden = !abierto;
-    bm.setAttribute('aria-expanded', String(abierto));
+  const barraFiltros = $('#filtros');
+
+  /* índice desplegable */
+  const bm = $('#btn-menu'), sb = $('#sidebar'), fondo = $('#fondo-sheet');
+  function abreMenu(v){
+    if (v) sb.dataset.abiertoPorElUsuario = '1'; else delete sb.dataset.abiertoPorElUsuario;
+    sb.hidden = !v;
+    bm.setAttribute('aria-expanded', String(v));
+    if (esMovil()) fondo.hidden = !(v || barraFiltros.classList.contains('abierta'));
+  }
+  bm.addEventListener('click', function(){ abreMenu(sb.hidden); });
+  sb.addEventListener('click', function(e){
+    if (e.target.closest('.nav-a') && esMovil()) abreMenu(false);
   });
-  $('#sidebar').addEventListener('click', function(e){
-    if (e.target.closest('.nav-a') && innerWidth <= 860){
-      $('#sidebar').hidden = true;
-      bm.setAttribute('aria-expanded','false');
-    }
+
+  /* hoja de filtros: en el móvil sube desde abajo en vez de ocupar la pantalla */
+  const bf = $('#btn-filtros');
+  function abreFiltros(v){
+    barraFiltros.classList.toggle('abierta', v);
+    bf.setAttribute('aria-expanded', String(v));
+    fondo.hidden = !(v || (esMovil() && !sb.hidden));
+  }
+  let ultimoFiltro = 0;
+  bf.addEventListener('click', function(e){
+    const t = e.timeStamp || 0;
+    if (t && t - ultimoFiltro < 350) return;   // toque duplicado
+    ultimoFiltro = t;
+    abreFiltros(!barraFiltros.classList.contains('abierta'));
   });
+  fondo.addEventListener('click', function(){ abreFiltros(false); abreMenu(false); });
+  document.addEventListener('click', function(e){
+    if (e.target.id === 'cerrar-filtros') abreFiltros(false);
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape'){ abreFiltros(false); if (esMovil()) abreMenu(false); }
+  });
+
+  /* botón flotante para volver arriba */
+  const fab = $('#btn-arriba');
+  fab.addEventListener('click', function(){
+    scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  });
+  addEventListener('scroll', function(){
+    fab.classList.toggle('visible', scrollY > 700);
+  }, { passive: true });
+
+  /* los controles viven en la barra superior, y en el móvil dentro del índice */
+  const acciones = $('.acciones'), topbar = $('.topbar'), zona = $('#zona-controles');
+  function colocaControles(){
+    const destino = esMovil() ? zona : topbar;
+    if (acciones.parentNode !== destino) destino.appendChild(acciones);
+  }
   function ajustaMenu(){
-    const movil = innerWidth <= 860;
-    $('#sidebar').hidden = movil;
-    bm.setAttribute('aria-expanded', String(!movil));
+    colocaControles();
+    if (esMovil()){
+      /* la hoja de filtros existe siempre; lo que la muestra es .abierta */
+      barraFiltros.hidden = false;
+      if (!sb.dataset.abiertoPorElUsuario){
+        sb.hidden = true;
+        bm.setAttribute('aria-expanded', 'false');
+      }
+    } else {
+      sb.hidden = false;
+      bm.setAttribute('aria-expanded', 'true');
+      abreFiltros(false);
+      fondo.hidden = true;
+    }
   }
   ajustaMenu();
   addEventListener('resize', ajustaMenu);
@@ -1765,14 +2033,19 @@ function init(){
     }
   });
 
-  /* la barra de filtros solo se muestra mientras se recorren los módulos */
-  const barraFiltros = $('#filtros');
+  /* filtrar solo tiene sentido dentro de la sección de módulos */
   const secModulos = $('#modulos');
   if (secModulos && 'IntersectionObserver' in window){
+    /* La barra de escritorio se oculta fuera de los módulos. La hoja del móvil
+       NO: es fija y la cierra el usuario, no el desplazamiento — si no, un
+       simple scroll la cerraría en mitad de una selección. */
     new IntersectionObserver(function(ents){
-      barraFiltros.hidden = !ents[0].isIntersecting;
+      enModulos = ents[0].isIntersecting;
+      refrescaBarraFiltros(!!(estado.q.trim() || estado.prioridad.size || estado.estado.size));
+      if (esMovil()) barraFiltros.hidden = false;
     }, { threshold: 0 }).observe(secModulos);
-    barraFiltros.hidden = true;
+    barraFiltros.hidden = !esMovil();
+    bf.hidden = true;
   }
 
   $('#imprimir').addEventListener('click', function(){ print(); });
@@ -1842,7 +2115,7 @@ def main():
 '<a class="saltar" href="#contenido">Saltar al contenido</a>\n'
 
         '<header class="topbar">\n'
-        '  <button class="btn menu-movil" id="btn-menu" aria-expanded="false" aria-controls="sidebar">'
+        '  <button class="btn solo-movil" id="btn-menu" aria-expanded="false" aria-controls="sidebar">'
         '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 3h14M1 8h14M1 13h14" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>'
         '<span class="et">Índice</span></button>\n'
         '  <div class="marca"><b>' + meta["titulo"] + '</b><span>' + meta["sujeto"] + '</span></div>\n'
@@ -1853,6 +2126,9 @@ def main():
         '    <button class="limpiar" id="q-limpiar" aria-label="Limpiar la búsqueda" hidden>&times;</button>\n'
         '  </div>\n'
         '  <div class="contador" id="contador" role="status" aria-live="polite"></div>\n'
+        '  <button class="btn solo-movil" id="btn-filtros" aria-expanded="false" aria-controls="filtros">'
+        '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 3h13M4 8h8M6.5 13h3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>'
+        '<span class="et">Filtros</span><span class="n" id="n-filtros" hidden>0</span></button>\n'
         '  <div class="acciones">\n'
         '    <button class="btn" id="btn-compacto" aria-pressed="false">'
         '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 4h14M1 8h14M1 12h14" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>'
@@ -1874,6 +2150,10 @@ def main():
         '  </main>\n'
         '</div>\n'
 
+        '<div class="fondo-sheet" id="fondo-sheet" hidden></div>\n'
+        '<button class="fab" id="btn-arriba" aria-label="Volver arriba">'
+        '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13V3M3.5 7.5L8 3l4.5 4.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        '</button>\n'
         '<div id="tip" role="tooltip" aria-hidden="true"></div>\n'
         '<div id="lightbox" role="dialog" aria-modal="true" aria-label="Captura ampliada">\n'
         '  <button class="cerrar" id="lb-cerrar" aria-label="Cerrar">&times;</button>\n'
@@ -1907,10 +2187,64 @@ def main():
     with open(salida_art, "w", encoding="utf-8") as fh:
         fh.write(artefacto)
 
+    # ---- index.html para GitHub Pages ----
+    # Aqui las capturas NO van incrustadas: se sirven como archivos y el
+    # navegador las pide solo al llegar a ellas. El HTML baja de 4,8 MB a
+    # menos de 1, que es la diferencia entre util e inutil en un movil.
+    contenido_web = dict(contenido)
+    contenido_web["meta"] = dict(meta, capturas_aparte=True)
+    rutas = {c["archivo"]: "capturas/" + c["archivo"]
+             for c in contenido.get("capturas", [])}
+
+    # icono en línea: la pestaña y el acceso directo del móvil quedan bien
+    # sin pedir un archivo aparte
+    icono = (
+        "data:image/svg+xml,"
+        "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E"
+        "%3Crect width='32' height='32' rx='7' fill='%231d2027'/%3E"
+        "%3Crect x='7' y='19' width='4' height='7' rx='1' fill='%232a78d6'/%3E"
+        "%3Crect x='14' y='13' width='4' height='13' rx='1' fill='%231baf7a'/%3E"
+        "%3Crect x='21' y='7' width='4' height='19' rx='1' fill='%23eb6834'/%3E"
+        "%3C/svg%3E"
+    )
+    cabeza_web = (
+        '<link rel="icon" href="' + icono + '">\n'
+        '<link rel="apple-touch-icon" href="' + icono + '">\n'
+        '<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">\n'
+        '<meta name="theme-color" content="#0d0f12" media="(prefers-color-scheme: dark)">\n'
+        '<meta name="apple-mobile-web-app-title" content="Diagnóstico 360">\n'
+        '<meta property="og:type" content="article">\n'
+        '<meta property="og:title" content="' + titulo + '">\n'
+        '<meta property="og:description" content="' + meta.get("alcance", "") + '">\n'
+        '<meta property="og:locale" content="es_ES">\n'
+        + cabeza
+    )
+    web = (
+        "<!DOCTYPE html>\n"
+        '<html lang="es">\n<head>\n'
+        '<meta charset="utf-8">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+        '<meta name="description" content="' + meta.get("alcance", "") + '">\n'
+        '<meta name="color-scheme" content="light dark">\n'
+        + cabeza_web +
+        "</head>\n<body>\n" + cuerpo +
+        '<script type="application/json" id="datos">' + json_seguro(contenido_web) + "</script>\n"
+        '<script type="application/json" id="capturas-b64">' + json_seguro(rutas) + "</script>\n"
+        "<script>" + JS + "</script>\n"
+        "</body>\n</html>\n"
+    )
+    salida_web = os.path.join(AQUI, "index.html")
+    with open(salida_web, "w", encoding="utf-8") as fh:
+        fh.write(web)
+    # sin esto, GitHub Pages pasa el sitio por Jekyll sin necesidad
+    open(os.path.join(AQUI, ".nojekyll"), "w").close()
+
     mb = os.path.getsize(salida) / 1024 / 1024
     print("informe.html escrito —", round(mb, 2), "MB")
     print("informe_artifact.html escrito —",
           round(os.path.getsize(salida_art) / 1024 / 1024, 2), "MB (para publicar)")
+    print("index.html escrito —",
+          round(os.path.getsize(salida_web) / 1024 / 1024, 2), "MB (GitHub Pages, capturas aparte)")
     print("  módulos    ", meta["total_modulos"])
     print("  puntos     ", meta["total_puntos"])
     print("  tablas     ", meta["total_tablas"])
