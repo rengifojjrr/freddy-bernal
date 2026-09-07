@@ -708,6 +708,15 @@ mark{background:rgba(235,104,52,.26); color:inherit; border-radius:2px; padding:
 }
 body:not(.puede-editar) .notas:not(.con-contenido){display:none}
 
+.modo{
+  display:inline-flex; align-items:center; gap:6px; flex:none;
+  padding:4px 10px; border-radius:12px; font-size:11px; font-weight:650;
+  letter-spacing:.04em; text-transform:uppercase; white-space:nowrap;
+  background:rgba(27,175,122,.14); color:var(--verde);
+  border:1px solid var(--verde);
+}
+.modo::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
+
 .zona{position:relative}
 .zona.vacia:empty::before,
 .zona.vacia > p:only-child:empty::before{
@@ -1446,7 +1455,9 @@ function moduloHTML(m, i, todos){
   if (m.fuente) h += '<dt>Fuente</dt><dd>' + esc(m.fuente) + '</dd>';
   h += '</dl></div>';
 
-  if (m.resumen && m.resumen.length) h += '<div class="modulo-resumen">' + prosa(m.resumen) + '</div>';
+  if (m.resumen && m.resumen.length)
+    h += '<div class="modulo-resumen"><div class="zona" data-edit="' + m.id.toLowerCase() +
+         '-res">' + prosa(m.resumen) + '</div></div>';
   m.puntos.forEach(function(p){ h += puntoHTML(m, p); });
 
   /* espacio propio del equipo al cierre del módulo */
@@ -1494,8 +1505,8 @@ function render(){
   h += '</dl>';
 
   if (por.descripcion && por.descripcion.length){
-    h += '<div class="prosa" style="margin-top:24px">' +
-         por.descripcion.map(function(t){ return '<p>' + esc(t) + '</p>'; }).join('') + '</div>';
+    h += '<div class="zona" data-edit="port-desc" style="margin-top:24px"><div class="prosa">' +
+         por.descripcion.map(function(t){ return '<p>' + esc(t) + '</p>'; }).join('') + '</div></div>';
   }
 
   h += '<div class="cifras">' +
@@ -1512,13 +1523,15 @@ function render(){
   h += '<section class="seccion" id="resumen">';
   h += '<div class="seccion-cab"><div class="eyebrow">Resumen ejecutivo</div>' +
        '<h2>Resumen ejecutivo consolidado</h2>';
-  if (DATA.resumen.intro) h += '<div class="sub">' + esc(DATA.resumen.intro.t) + '</div>';
+  if (DATA.resumen.intro)
+    h += '<div class="sub zona" data-edit="res-intro"><p>' + esc(DATA.resumen.intro.t) + '</p></div>';
   h += '</div>';
 
   h += '<div class="hallazgos">';
   DATA.resumen.hallazgos.forEach(function(hh, i){
-    h += '<div class="hallazgo"><div class="num">' + (i+1) + '</div><div>' +
-         '<h3>' + esc(hh[0]) + '</h3>' +
+    h += '<div class="hallazgo"><div class="num">' + (i+1) + '</div>' +
+         '<div class="zona" data-edit="res-h' + i + '">' +
+         '<h4>' + esc(hh[0]) + '</h4>' +
          (hh[1] ? '<p>' + esc(hh[1].t) + '</p>' : '') + '</div></div>';
   });
   h += '</div>';
@@ -1534,8 +1547,9 @@ function render(){
   h += '<section class="seccion" id="como-leer">';
   h += '<div class="seccion-cab"><div class="eyebrow">Guía de lectura</div>' +
        '<h2>Cómo leer este informe</h2></div>';
-  DATA.como_leer.forEach(function(sec){
-    h += '<div class="cat"><h3>' + esc(sec[0]) + '</h3>' + prosa(sec[1]) + '</div>';
+  DATA.como_leer.forEach(function(sec, i){
+    h += '<div class="cat"><h3>' + esc(sec[0]) + '</h3>' +
+         '<div class="zona" data-edit="leer-' + i + '">' + prosa(sec[1]) + '</div></div>';
   });
   h += '</section>';
 
@@ -1589,7 +1603,7 @@ function render(){
   DATA.plan.forEach(function(bl, bi){
     h += '<div class="bloque" id="bloque-' + bi + '">';
     h += '<div class="bloque-cab"><h3>' + esc(bl[0]) + '</h3>';
-    if (bl[1]) h += '<div class="desc">' + esc(bl[1].t) + '</div>';
+    if (bl[1]) h += '<div class="desc zona" data-edit="plan-b' + bi + '"><p>' + esc(bl[1].t) + '</p></div>';
     h += '<div class="mini"><div class="barra-p"><i data-bp="' + bi + '" style="width:0%"></i></div>' +
          '<div class="n" data-bn="' + bi + '">0 / ' + bl[2].length + '</div></div>';
     h += '</div>';
@@ -1601,7 +1615,8 @@ function render(){
         '<span class="num">' + String(ac[3]).padStart(2,'0') + '</span>' +
         '<label for="' + id + '">' + esc(ac[0]) + '</label>' +
         '<span class="mods">' + esc(ac[1]) + '</span></div>' +
-        (ac[2] ? '<div class="det">' + esc(ac[2].t) + '</div>' : '') +
+        '<div class="det zona" data-edit="plan-a' + String(ac[3]).padStart(2,'0') + '"><p>' +
+        (ac[2] ? esc(ac[2].t) : '') + '</p></div>' +
         '</div></div>';
     });
     h += '</div>';
@@ -1612,10 +1627,12 @@ function render(){
   h += '<section class="seccion" id="profundizacion">';
   h += '<div class="seccion-cab"><div class="eyebrow">Qué falta</div>' +
        '<h2>Fase de profundización</h2>';
-  if (DATA.vacios.intro) h += '<div class="sub">' + esc(DATA.vacios.intro.t) + '</div>';
+  if (DATA.vacios.intro)
+    h += '<div class="sub zona" data-edit="prof-int"><p>' + esc(DATA.vacios.intro.t) + '</p></div>';
   h += '</div>';
-  DATA.vacios.categorias.forEach(function(cat){
-    h += '<div class="cat"><h3>' + esc(cat[0]) + '</h3><ul>';
+  DATA.vacios.categorias.forEach(function(cat, ci){
+    h += '<div class="cat"><h3>' + esc(cat[0]) + '</h3>' +
+         '<div class="zona" data-edit="prof-' + ci + '"><ul>';
     let esf = '';
     cat[1].forEach(function(l){
       if (/^ESFUERZO/i.test(l.t)) { esf = l; return; }
@@ -1625,7 +1642,7 @@ function render(){
     });
     h += '</ul>';
     if (esf) h += '<div class="esfuerzo">' + esc(esf.t) + '</div>';
-    h += '</div>';
+    h += '</div></div>';
   });
   h += '</section>';
 
@@ -1635,14 +1652,15 @@ function render(){
        '<h2>Fuentes y metodología</h2></div>';
   h += '<h3 style="font-size:15px;margin-bottom:4px">Componentes del análisis</h3>';
   h += tablaHTML({ headers: DATA.fuentes.documentos_headers, rows: DATA.fuentes.documentos });
-  DATA.fuentes.grupos.forEach(function(g){
+  DATA.fuentes.grupos.forEach(function(g, gi){
     if (!g[1].length) return;
-    h += '<h3 style="font-size:15px;margin:26px 0 8px">' + esc(g[0]) + '</h3><ul class="lista-fuentes">';
+    h += '<h3 style="font-size:15px;margin:26px 0 8px">' + esc(g[0]) + '</h3>' +
+         '<div class="zona" data-edit="fuen-' + gi + '"><ul class="lista-fuentes">';
     g[1].forEach(function(l){ h += '<li>' + esc(l.t) + '</li>'; });
-    h += '</ul>';
+    h += '</ul></div>';
   });
   h += '<h3 style="font-size:15px;margin:30px 0 8px">Nota metodológica y trazabilidad</h3>';
-  h += prosa(DATA.nota);
+  h += '<div class="zona" data-edit="nota-0">' + prosa(DATA.nota) + '</div>';
   h += '</section>';
 
   $('#contenido').innerHTML = h;
@@ -2321,7 +2339,10 @@ function modoEdicion(on){
     const et = btn.querySelector('.et');
     if (et) et.textContent = on ? 'Salir' : 'Editar';
   }
-  if (!on){
+  if (on){
+    avisa('Todo lo que salga con borde punteado se puede escribir. ' +
+          $$('.zona').length + ' bloques.');
+  } else {
     const f = document.getElementById('formato');
     if (f) f.classList.remove('visible');
     guardar();
@@ -2386,6 +2407,17 @@ async function initEdicion(){
 }
 
 function montaEditor(){
+  /* Que se vea de un vistazo en qué modo se está: el token queda recordado en
+     el navegador, así que el enlace normal también abre como editor una vez
+     usado el de edición. Sin esto, los dos enlaces parecen el mismo. */
+  const marca = document.createElement('span');
+  marca.className = 'modo';
+  marca.id = 'marca-modo';
+  marca.textContent = 'Editor';
+  marca.title = 'Este navegador recuerda el enlace de edición';
+  const cont = $('#contador');
+  cont.parentNode.insertBefore(marca, cont);
+
   const acciones = $('.acciones');
   const btn = document.createElement('button');
   btn.className = 'btn'; btn.id = 'btn-editar'; btn.setAttribute('aria-pressed', 'false');
@@ -2399,6 +2431,7 @@ function montaEditor(){
     '<div class="estado" id="estado-edicion" role="status" aria-live="polite">Todo al día</div>' +
     '<button id="btn-imagen">Imagen</button>' +
     '<button id="btn-exportar">Descargar</button>' +
+    '<button id="btn-salir-editor">Salir del modo editor</button>' +
     '<button id="btn-guardar" class="primario">Guardar</button>';
   document.body.appendChild(barra);
 
@@ -2496,6 +2529,14 @@ function montaEditor(){
     inputImg.click();
   });
   document.getElementById('btn-exportar').addEventListener('click', exporta);
+
+  /* devolver este navegador a modo lectura: olvida el enlace de edición */
+  document.getElementById('btn-salir-editor').addEventListener('click', async function(){
+    if (SUCIAS.size && !confirm('Hay cambios sin guardar. ¿Salir igualmente?')) return;
+    await guardar().catch(function(){});
+    try { localStorage.removeItem(CLAVE_TOKEN); } catch (e){}
+    location.replace(location.href.split('#')[0]);
+  });
 
   addEventListener('beforeunload', function(e){
     if (SUCIAS.size){ e.preventDefault(); e.returnValue = ''; }

@@ -40,12 +40,21 @@ probada y no depende de lo que permita el navegador anfitrión.
 
 Al abrir el enlace de edición, la página guarda el token y **lo borra de la
 barra de direcciones**, para que no acabe en el historial ni en una captura.
-Queda recordado en ese navegador hasta que se borren los datos del sitio.
+
+Queda recordado en ese navegador: a partir de ahí, **el enlace normal también
+abre en modo editor en ese equipo**. Por eso la barra superior muestra un
+distintivo «Editor», y la barra de edición trae **Salir del modo editor**, que
+olvida el token y devuelve ese navegador a solo lectura. En un navegador que
+nunca ha visto el enlace de edición, el enlace normal es solo lectura y el
+botón de editar ni aparece.
 
 Qué se puede hacer:
 
-- **Texto**: hallazgo y acción de cada uno de los 267 puntos, más una zona de
-  **notas del equipo** al cierre de cada módulo. 555 regiones en total.
+- **Texto**: todo el informe. Portada, resumen ejecutivo, cómo leer, el
+  resumen de cada módulo, el hallazgo y la acción de los 267 puntos, las notas
+  del equipo por módulo, la descripción y el detalle de las 47 acciones del
+  plan, la fase de profundización, las fuentes y la nota metodológica.
+  **651 regiones.**
 - **Formato**: negrita, cursiva, listas, color de texto y resaltado, con la
   paleta del informe. La barra aparece sobre el texto seleccionado.
 - **Imágenes**: botón, **arrastrar y soltar**, o **pegar una captura** con
