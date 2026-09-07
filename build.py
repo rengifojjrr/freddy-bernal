@@ -23,6 +23,19 @@ import sys
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 
+# Servidor de las ediciones del equipo. La clave "anon" es publica por diseno:
+# no da permiso de escritura. Las tablas no admiten escritura directa —lo
+# comprobamos— y todo lo que se guarda pasa por la funcion fb360, que valida
+# el token del enlace de edicion antes de tocar nada.
+SERVIDOR = {
+    "url": "https://vajbsfgojtunamhrzrpf.supabase.co",
+    "anon": ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+             "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhamJzZmdvanR1bmFtaHJ6cnBmIiwicm9sZSI6"
+             "ImFub24iLCJpYXQiOjE3ODQzMDczODMsImV4cCI6MjA5OTg4MzM4M30."
+             "MuBFoms41X2mFl7q07H0MByEhNsPO239BcXZJNLHDnc"),
+    "deposito": "https://vajbsfgojtunamhrzrpf.supabase.co/storage/v1/object/public/fb360/",
+}
+
 
 # ==========================================================================
 #  CSS
@@ -823,6 +836,10 @@ JS = r"""
 'use strict';
 
 const DATA = JSON.parse(document.getElementById('datos').textContent);
+const SERVIDOR = (function(){
+  const el = document.getElementById('servidor');
+  try { return el ? JSON.parse(el.textContent) : null; } catch (e){ return null; }
+})();
 const IMGS = JSON.parse(document.getElementById('capturas-b64').textContent);
 
 /* ---------------- utilidades ---------------- */
@@ -1971,13 +1988,19 @@ function initTema(){
 /* =========================================================================
    EDICIÓN
    -------------------------------------------------------------------------
-   El informe original nunca se toca: sigue siendo el JSON incrustado. Lo que
-   se escribe aquí se guarda aparte, como una capa por encima, y cada región
-   editada puede devolverse a su texto original en cualquier momento.
+   El informe original nunca se toca: sigue siendo el JSON incrustado en esta
+   página. Lo que se escribe se guarda aparte, en una capa por encima, y cada
+   región editada puede devolverse a su texto original.
 
-   Solo se enciende donde hay dónde guardar. En el archivo local y en GitHub
-   Pages no hay almacén, así que ni siquiera aparece el botón.
+   Quién puede escribir lo decide el enlace: el de edición lleva un token
+   (#k=...) que la página guarda y manda con cada escritura. Sin token, la
+   página es de solo lectura y ni siquiera aparece el botón de editar. Las
+   tablas no admiten escritura directa: todo pasa por una función de servidor
+   que comprueba el token antes de tocar nada.
    ========================================================================= */
+
+const SB = SERVIDOR;   // lo inyecta build.py
+const CLAVE_TOKEN = 'fb360.token';
 
 const PALETA_TINTA = [
   ['var(--texto)',  'Normal',  ''],
@@ -1988,16 +2011,20 @@ const PALETA_TINTA = [
 ];
 const PALETA_FONDO = ['#fff2a8', '#ffd6c2', '#cfe3fb', '#c9f0dd'];
 
-let DB = null, PUEDE_EDITAR = false, EDITANDO = false;
+let TOKEN = null, PUEDE_EDITAR = false, EDITANDO = false;
+let PINTA_COMPACTO = null, COMPACTO_PREVIO = false;
 const SUCIAS = new Set();
-const IMAGENES = new Map();      // id -> data URI
 let guardando = false, pendiente = null, ultimoGuardado = null;
 
 /* ---------- limpieza del HTML que se guarda y se muestra ----------
-   Lo escriben personas de confianza, pero se guarda y se vuelve a pintar:
+   Lo escribe gente con el enlace, se guarda y se vuelve a pintar para todos:
    se filtra en ambos sentidos para que nada ejecutable sobreviva. */
 const ETIQUETAS_OK = new Set(['P','BR','B','STRONG','I','EM','U','SPAN','UL','OL','LI','IMG','MARK','DIV','H4']);
 const ESTILOS_OK = ['color', 'background-color', 'font-weight'];
+
+function esImagenNuestra(u){
+  return typeof u === 'string' && SB && u.indexOf(SB.deposito) === 0;
+}
 
 function limpiaHTML(html){
   const caja = document.createElement('div');
@@ -2012,12 +2039,12 @@ function limpiaHTML(html){
       const v = n.attributes[i].value;
       const conservar =
         (a === 'style') ||
-        (a === 'data-img') ||
         (a === 'class' && /^(lead|subida)$/.test(v)) ||
-        (n.tagName === 'IMG' && (a === 'alt' || a === 'width' || a === 'height')) ||
-        (n.tagName === 'IMG' && a === 'src' && /^data:image\//i.test(v));
+        (n.tagName === 'IMG' && (a === 'alt' || a === 'width' || a === 'height' || a === 'loading')) ||
+        (n.tagName === 'IMG' && a === 'src' && esImagenNuestra(v));
       if (!conservar) n.removeAttribute(a);
     }
+    if (n.tagName === 'IMG' && !esImagenNuestra(n.getAttribute('src'))){ fuera.push(n); continue; }
     if (n.hasAttribute('style')){
       const limpio = n.style.cssText.split(';').map(function(d){ return d.trim(); })
         .filter(function(d){ return d && ESTILOS_OK.indexOf(d.split(':')[0].trim().toLowerCase()) !== -1; })
@@ -2026,25 +2053,46 @@ function limpiaHTML(html){
     }
   }
   /* una etiqueta no permitida se sustituye por su contenido, no se borra:
-     nunca se pierde texto por culpa del filtro */
+     así el filtro nunca hace perder texto */
   fuera.forEach(function(el){
     if (!el.parentNode) return;
-    while (el.firstChild) el.parentNode.insertBefore(el.firstChild, el);
+    if (el.tagName !== 'IMG'){
+      while (el.firstChild) el.parentNode.insertBefore(el.firstChild, el);
+    }
     el.remove();
   });
   return caja.innerHTML;
 }
 
+/* ---------- hablar con el servidor ---------- */
+async function pide(ruta){
+  const r = await fetch(SB.url + '/rest/v1/' + ruta, {
+    headers: { apikey: SB.anon, Authorization: 'Bearer ' + SB.anon },
+  });
+  if (!r.ok) throw new Error('lectura ' + r.status);
+  return r.json();
+}
+
+async function manda(cuerpo){
+  const r = await fetch(SB.url + '/functions/v1/fb360', {
+    method: 'POST',
+    headers: { apikey: SB.anon, Authorization: 'Bearer ' + SB.anon, 'content-type': 'application/json' },
+    body: JSON.stringify(Object.assign({ token: TOKEN }, cuerpo)),
+  });
+  const d = await r.json().catch(function(){ return {}; });
+  if (!r.ok) { const e = new Error(d.error || ('error ' + r.status)); e.estado = r.status; throw e; }
+  return d;
+}
+
 /* ---------- imágenes ----------
-   Un documento del almacén no admite más de 256 KiB, así que la imagen se
-   reduce en el navegador hasta que cabe. Nunca se sube el original. */
-const LIMITE_IMG = 170000;
+   Se reducen aquí, en el navegador: nunca se sube el original de 4 MB. */
+const LIMITE_IMG = 420000;
 
 async function comprimeImagen(fichero){
   let bitmap;
   try { bitmap = await createImageBitmap(fichero); }
   catch (e) { return null; }
-  let escala = Math.min(1, 1500 / Math.max(bitmap.width, bitmap.height));
+  let escala = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
   for (let paso = 0; paso < 7; paso++){
     const w = Math.max(1, Math.round(bitmap.width * escala));
     const h = Math.max(1, Math.round(bitmap.height * escala));
@@ -2053,41 +2101,29 @@ async function comprimeImagen(fichero){
     const ctx = c.getContext('2d');
     ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
     ctx.drawImage(bitmap, 0, 0, w, h);
-    const calidades = [0.85, 0.72, 0.6, 0.46];
+    const calidades = [0.88, 0.78, 0.66, 0.5];
     for (let i = 0; i < calidades.length; i++){
       const url = c.toDataURL('image/jpeg', calidades[i]);
-      if (url.length <= LIMITE_IMG) return { src: url, w: w, h: h };
+      if (url.length <= LIMITE_IMG) return { datos: url, w: w, h: h };
     }
-    escala *= 0.72;
+    escala *= 0.74;
   }
   return null;
 }
 
-let contadorImg = 0;
-function nuevaClaveImagen(){
-  contadorImg++;
-  return 'i' + Date.now().toString(36) + '-' + contadorImg;
-}
-
 async function insertaFichero(fichero, zona){
   if (!fichero || !/^image\//.test(fichero.type)) return;
-  avisa('Procesando la imagen…');
+  if (!zona) { avisa('Pon el cursor donde quieras la imagen.'); return; }
+  avisa('Subiendo la imagen…');
   const img = await comprimeImagen(fichero);
   if (!img){ avisa('No se pudo leer esa imagen.'); return; }
-  const clave = nuevaClaveImagen();
-  IMAGENES.set(clave, img.src);
-  try {
-    await DB.doc('imagenes/' + clave).set({ src: img.src, w: img.w, h: img.h, ts: Date.now() });
-  } catch (e){
-    avisa(e && e.code === 'quota_exceeded'
-      ? 'El almacén está lleno: borra alguna imagen antes de añadir otra.'
-      : 'No se pudo guardar la imagen.');
-    return;
-  }
+  let res;
+  try { res = await manda({ accion: 'imagen', datos: img.datos, ancho: img.w, alto: img.h }); }
+  catch (e){ avisa('No se pudo subir: ' + e.message); return; }
   const el = document.createElement('img');
   el.className = 'subida';
-  el.src = img.src;
-  el.setAttribute('data-img', clave);
+  el.src = res.url;
+  el.loading = 'lazy';
   el.alt = 'Imagen añadida por el equipo';
   insertaEnCursor(el, zona);
   marcaSucia(zona);
@@ -2116,39 +2152,27 @@ function marcaSucia(zona){
   const notas = zona.closest('.notas');
   if (notas) notas.classList.add('con-contenido');
   pintaEstado();
-  programaGuardado();
-}
-
-function programaGuardado(){
   clearTimeout(pendiente);
   pendiente = setTimeout(guardar, 1600);
 }
 
 async function guardar(){
-  if (!DB || !PUEDE_EDITAR || guardando || !SUCIAS.size) { pintaEstado(); return; }
+  if (!PUEDE_EDITAR || guardando || !SUCIAS.size) { pintaEstado(); return; }
   guardando = true; pintaEstado();
-  const claves = Array.from(SUCIAS);
-  let fallos = 0;
-  for (const clave of claves){
+  let fallos = 0, ultimo = '';
+  for (const clave of Array.from(SUCIAS)){
     const zona = document.querySelector('.zona[data-edit="' + clave + '"]');
     if (!zona) { SUCIAS.delete(clave); continue; }
-    const html = limpiaHTML(paraGuardar(zona));
     try {
-      await DB.doc('ediciones/' + clave).set({ html: html, ts: Date.now() });
+      await manda({ accion: 'guardar', clave: clave, html: limpiaHTML(zona.innerHTML) });
       SUCIAS.delete(clave);
-    } catch (e){ fallos++; }
+      zona.dataset.guardado = '1';
+    } catch (e){ fallos++; ultimo = e.message; }
   }
   guardando = false;
-  ultimoGuardado = new Date();
-  pintaEstado(fallos ? 'No se pudieron guardar ' + fallos + ' bloques. Se reintenta solo.' : '');
-  if (fallos) programaGuardado();
-}
-
-/* las imágenes se guardan aparte: en el bloque queda solo su referencia */
-function paraGuardar(zona){
-  const copia = zona.cloneNode(true);
-  copia.querySelectorAll('img[data-img]').forEach(function(im){ im.removeAttribute('src'); });
-  return copia.innerHTML;
+  if (!fallos) ultimoGuardado = new Date();
+  pintaEstado(fallos ? ('No se guardaron ' + fallos + ': ' + ultimo) : '');
+  if (fallos){ clearTimeout(pendiente); pendiente = setTimeout(guardar, 6000); }
 }
 
 function pintaEstado(extra){
@@ -2168,7 +2192,7 @@ function avisa(texto){
   el.textContent = texto;
   el.classList.add('visible');
   clearTimeout(avisa._t);
-  avisa._t = setTimeout(function(){ el.classList.remove('visible'); }, 2600);
+  avisa._t = setTimeout(function(){ el.classList.remove('visible'); }, 3000);
 }
 
 /* ---------- pintar una edición sobre el informe ---------- */
@@ -2176,13 +2200,11 @@ function aplicaEdicion(clave, html){
   const zona = document.querySelector('.zona[data-edit="' + clave + '"]');
   if (!zona) return;
   if (document.activeElement === zona) return;      // se está escribiendo ahí
+  if (SUCIAS.has(clave)) return;                    // hay cambios propios sin guardar
   if (!zona.dataset.original) zona.dataset.original = zona.innerHTML;
-  zona.innerHTML = limpiaHTML(html);
-  zona.querySelectorAll('img[data-img]').forEach(function(im){
-    const src = IMAGENES.get(im.getAttribute('data-img'));
-    if (src) im.src = src;
-    im.classList.add('subida');
-  });
+  const limpio = limpiaHTML(html);
+  if (zona.innerHTML === limpio) return;
+  zona.innerHTML = limpio;
   zona.classList.add('editada');
   zona.classList.remove('vacia');
   const notas = zona.closest('.notas');
@@ -2190,18 +2212,19 @@ function aplicaEdicion(clave, html){
   refrescaIndice(zona);
 }
 
-function revierte(zona){
-  if (!zona.dataset.original) return;
+async function revierte(zona){
+  if (!zona.dataset.original) { avisa('Este bloque ya está como el original.'); return; }
   zona.innerHTML = zona.dataset.original;
   zona.classList.remove('editada');
   if (zona.dataset.edit.slice(-2) === '-n') zona.classList.add('vacia');
   const notas = zona.closest('.notas');
   if (notas && !notas.querySelector('.zona.editada')) notas.classList.remove('con-contenido');
   refrescaIndice(zona);
-  if (DB && PUEDE_EDITAR){
-    DB.doc('ediciones/' + zona.dataset.edit).delete().catch(function(){});
-    SUCIAS.delete(zona.dataset.edit);
-    pintaEstado();
+  SUCIAS.delete(zona.dataset.edit);
+  pintaEstado();
+  if (PUEDE_EDITAR){
+    try { await manda({ accion: 'borrar', clave: zona.dataset.edit }); avisa('Devuelto al original'); }
+    catch (e){ avisa('No se pudo borrar en el servidor: ' + e.message); }
   }
 }
 
@@ -2252,7 +2275,7 @@ function colocaFormato(barra){
     return;
   }
   const r = sel.getRangeAt(0).getBoundingClientRect();
-  if (!r.width && !r.height){ return; }
+  if (!r.width && !r.height) return;
   barra.classList.add('visible');
   const cb = barra.getBoundingClientRect();
   let x = r.left + r.width / 2 - cb.width / 2;
@@ -2265,11 +2288,27 @@ function colocaFormato(barra){
 
 function zonaActiva(){
   const a = document.activeElement;
-  return a && a.classList && a.classList.contains('zona') ? a : null;
+  if (a && a.classList && a.classList.contains('zona')) return a;
+  const sel = getSelection();
+  if (sel && sel.anchorNode && sel.anchorNode.parentElement){
+    const z = sel.anchorNode.parentElement.closest('.zona');
+    if (z) return z;
+  }
+  return null;
 }
 
 /* ---------- encender y apagar el modo edición ---------- */
 function modoEdicion(on){
+  /* No se puede editar lo que no se ve: en el móvil los puntos llegan
+     plegados, así que entrar en edición los despliega, y al salir se
+     devuelve el modo compacto si estaba puesto. */
+  if (PINTA_COMPACTO){
+    if (on && document.body.classList.contains('compacto')){
+      COMPACTO_PREVIO = true; PINTA_COMPACTO(false);
+    } else if (!on && COMPACTO_PREVIO){
+      COMPACTO_PREVIO = false; PINTA_COMPACTO(true);
+    }
+  }
   EDITANDO = on;
   document.body.classList.toggle('editando', on);
   $$('.zona').forEach(function(z){
@@ -2289,59 +2328,64 @@ function modoEdicion(on){
   }
 }
 
+/* ---------- traer lo que hay guardado ---------- */
+async function traeEdiciones(){
+  try {
+    const filas = await pide('fb360_ediciones?select=clave,html');
+    const vistas = new Set();
+    filas.forEach(function(f){ vistas.add(f.clave); aplicaEdicion(f.clave, f.html); });
+    /* lo que ya no está en el servidor vuelve a su original */
+    $$('.zona.editada').forEach(function(z){
+      const k = z.dataset.edit;
+      if (!vistas.has(k) && z.dataset.original && !SUCIAS.has(k) && document.activeElement !== z){
+        z.innerHTML = z.dataset.original;
+        z.classList.remove('editada');
+        if (k.slice(-2) === '-n') z.classList.add('vacia');
+        const notas = z.closest('.notas');
+        if (notas && !notas.querySelector('.zona.editada')) notas.classList.remove('con-contenido');
+      }
+    });
+    return true;
+  } catch (e){ return false; }
+}
+
 /* ---------- arranque ---------- */
 async function initEdicion(){
-  if (!window.claude || typeof window.claude.use !== 'function') return;
-  let db = null;
-  try { db = await window.claude.use('db'); } catch (e) { return; }
-  if (!db) return;
-  DB = db;
+  if (!SB || !SB.url) return;
 
-  /* 1. las imágenes primero, para que las ediciones puedan pintarlas */
-  try {
-    const snap = await DB.collection('imagenes').limit(300).get();
-    snap.docs.forEach(function(d){
-      const v = d.data() || {};
-      if (v.src) IMAGENES.set(d.id, v.src);
-    });
-  } catch (e){}
+  /* el token viaja en el enlace: se guarda y se quita de la barra de
+     direcciones, para que no acabe en el historial ni en una captura */
+  const m = (location.hash || '').match(/^#k=([A-Za-z0-9-]{8,80})$/);
+  if (m){
+    TOKEN = m[1];
+    try { localStorage.setItem(CLAVE_TOKEN, TOKEN); } catch (e){}
+    /* fuera de la barra de direcciones: que no acabe en el historial, en una
+       captura de pantalla ni en un enlace reenviado sin querer */
+    const sinHash = location.href.split('#')[0];
+    try { history.replaceState(null, '', sinHash); } catch (e){}
+    if (location.hash){ try { location.replace(sinHash); } catch (e){} }
+  } else {
+    try { TOKEN = localStorage.getItem(CLAVE_TOKEN); } catch (e){ TOKEN = null; }
+  }
 
-  /* 2. las ediciones, en vivo */
-  try {
-    DB.collection('ediciones').onSnapshot(function(snap){
-      snap.docChanges().forEach(function(c){
-        if (c.type === 'removed'){
-          const z = document.querySelector('.zona[data-edit="' + c.doc.id + '"]');
-          if (z && z.dataset.original && document.activeElement !== z){
-            z.innerHTML = z.dataset.original;
-            z.classList.remove('editada');
-          }
-        } else {
-          const v = c.doc.data() || {};
-          if (typeof v.html === 'string') aplicaEdicion(c.doc.id, v.html);
-        }
-      });
-    }, function(){ /* la propia suscripción se recupera sola */ });
-  } catch (e){}
+  const hay = await traeEdiciones();
+  if (!hay && !TOKEN) return;
+  setInterval(traeEdiciones, 30000);
+  addEventListener('focus', function(){ if (!EDITANDO) traeEdiciones(); });
 
-  /* 3. ¿esta persona puede escribir? Lo dice el servidor, no la página:
-        se intenta una escritura mínima y se mira si la acepta. */
-  try {
-    await DB.doc('_acceso/sonda').set({ ts: Date.now() });
-    PUEDE_EDITAR = true;
-  } catch (e){ PUEDE_EDITAR = false; }
-  document.body.classList.toggle('puede-editar', PUEDE_EDITAR);
-
-  if (!PUEDE_EDITAR){
-    const av = document.getElementById('aviso-lectura');
-    if (av){ av.textContent = 'Modo lectura: los cambios los hace el equipo editor.'; }
+  if (!TOKEN) return;
+  try { await manda({ accion: 'comprobar' }); PUEDE_EDITAR = true; }
+  catch (e){
+    PUEDE_EDITAR = false;
+    try { localStorage.removeItem(CLAVE_TOKEN); } catch (e2){}
+    avisa('El enlace de edición ya no es válido. Estás en modo lectura.');
     return;
   }
+  document.body.classList.add('puede-editar');
   montaEditor();
 }
 
 function montaEditor(){
-  /* botón en la barra superior */
   const acciones = $('.acciones');
   const btn = document.createElement('button');
   btn.className = 'btn'; btn.id = 'btn-editar'; btn.setAttribute('aria-pressed', 'false');
@@ -2349,13 +2393,12 @@ function montaEditor(){
   acciones.insertBefore(btn, acciones.firstChild);
   btn.addEventListener('click', function(){ modoEdicion(!EDITANDO); });
 
-  /* barra inferior de estado */
   const barra = document.createElement('div');
   barra.id = 'barra-edicion';
   barra.innerHTML =
     '<div class="estado" id="estado-edicion" role="status" aria-live="polite">Todo al día</div>' +
     '<button id="btn-imagen">Imagen</button>' +
-    '<button id="btn-exportar">Descargar cambios</button>' +
+    '<button id="btn-exportar">Descargar</button>' +
     '<button id="btn-guardar" class="primario">Guardar</button>';
   document.body.appendChild(barra);
 
@@ -2365,22 +2408,19 @@ function montaEditor(){
   document.body.appendChild(inputImg);
   let zonaDestino = null;
 
-  /* --- escritura --- */
   document.addEventListener('input', function(e){
     const z = e.target.closest && e.target.closest('.zona');
     if (z && EDITANDO) marcaSucia(z);
   });
 
-  /* --- selección: la barra de formato sigue al texto elegido --- */
   document.addEventListener('selectionchange', function(){
     if (!EDITANDO) return;
     requestAnimationFrame(function(){ colocaFormato(formato); });
   });
-  document.addEventListener('scroll', function(){
+  addEventListener('scroll', function(){
     if (EDITANDO && formato.classList.contains('visible')) colocaFormato(formato);
   }, { passive: true });
 
-  /* --- la barra de formato no debe robar el foco --- */
   formato.addEventListener('mousedown', function(e){ e.preventDefault(); });
   formato.addEventListener('click', function(e){
     const b = e.target.closest('button');
@@ -2391,26 +2431,24 @@ function montaEditor(){
     if (!z) return;
     try { document.execCommand('styleWithCSS', false, true); } catch (err){}
     if (b.dataset.cmd) document.execCommand(b.dataset.cmd);
-    else if (b.hasAttribute('data-tinta')){
-      const c = b.getAttribute('data-tinta');
-      document.execCommand('foreColor', false, c || '#0b0b0b');
-    } else if (b.hasAttribute('data-fondo')){
+    else if (b.hasAttribute('data-tinta')) document.execCommand('foreColor', false, b.getAttribute('data-tinta') || '#0b0b0b');
+    else if (b.hasAttribute('data-fondo')){
       const c = b.getAttribute('data-fondo');
       if (!document.execCommand('hiliteColor', false, c)) document.execCommand('backColor', false, c);
     }
     marcaSucia(z);
   });
 
-  /* --- atajos --- */
   document.addEventListener('keydown', function(e){
     if (!EDITANDO) return;
-    const z = zonaActiva();
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's'){ e.preventDefault(); guardar(); return; }
-    if (!z) return;
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b'){ e.preventDefault(); document.execCommand('bold'); marcaSucia(z); }
+    const z = zonaActiva();
+    if (z && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b'){
+      e.preventDefault(); document.execCommand('bold'); marcaSucia(z);
+    }
   });
 
-  /* --- pegar: texto sin formato ajeno, y capturas del portapapeles --- */
+  /* pegar: texto sin formato ajeno, y capturas del portapapeles */
   document.addEventListener('paste', function(e){
     const z = e.target.closest && e.target.closest('.zona');
     if (!z || !EDITANDO) return;
@@ -2423,17 +2461,15 @@ function montaEditor(){
       }
     }
     e.preventDefault();
-    const txt = (e.clipboardData && e.clipboardData.getData('text/plain')) || '';
-    document.execCommand('insertText', false, txt);
+    document.execCommand('insertText', false, (e.clipboardData && e.clipboardData.getData('text/plain')) || '');
     marcaSucia(z);
   });
 
-  /* --- arrastrar y soltar --- */
+  /* arrastrar y soltar */
   document.addEventListener('dragover', function(e){
     const z = e.target.closest && e.target.closest('.zona');
     if (!z || !EDITANDO) return;
-    e.preventDefault();
-    z.classList.add('soltando');
+    e.preventDefault(); z.classList.add('soltando');
   });
   document.addEventListener('dragleave', function(e){
     const z = e.target.closest && e.target.closest('.zona');
@@ -2442,19 +2478,17 @@ function montaEditor(){
   document.addEventListener('drop', function(e){
     const z = e.target.closest && e.target.closest('.zona');
     if (!z || !EDITANDO) return;
-    e.preventDefault();
-    z.classList.remove('soltando');
+    e.preventDefault(); z.classList.remove('soltando');
     const fs = (e.dataTransfer && e.dataTransfer.files) || [];
     for (let i = 0; i < fs.length; i++) insertaFichero(fs[i], z);
   });
 
   inputImg.addEventListener('change', function(){
     const f = inputImg.files && inputImg.files[0];
-    if (f) insertaFichero(f, zonaDestino || $$('.zona')[0]);
+    if (f) insertaFichero(f, zonaDestino);
     inputImg.value = '';
   });
 
-  /* --- botones de la barra inferior --- */
   document.getElementById('btn-guardar').addEventListener('click', guardar);
   document.getElementById('btn-imagen').addEventListener('click', function(){
     zonaDestino = zonaActiva();
@@ -2463,7 +2497,6 @@ function montaEditor(){
   });
   document.getElementById('btn-exportar').addEventListener('click', exporta);
 
-  /* --- no salir con cambios sin guardar --- */
   addEventListener('beforeunload', function(e){
     if (SUCIAS.size){ e.preventDefault(); e.returnValue = ''; }
   });
@@ -2472,26 +2505,16 @@ function montaEditor(){
 }
 
 async function exporta(){
-  if (!DB) return;
-  const salida = { informe: DATA.meta.titulo, generado: new Date().toISOString(), ediciones: {}, imagenes: {} };
-  try {
-    const snap = await DB.collection('ediciones').limit(1000).get();
-    snap.docs.forEach(function(d){ salida.ediciones[d.id] = (d.data() || {}).html || ''; });
-  } catch (e){}
-  IMAGENES.forEach(function(v, k){ salida.imagenes[k] = v; });
-  const texto = JSON.stringify(salida, null, 1);
-  let dl = null;
-  try { dl = await window.claude.use('downloads'); } catch (e){}
-  if (dl){
-    try {
-      await dl.save({ filename: 'ediciones-diagnostico-360.json', data: texto });
-      avisa('Archivo entregado');
-      return;
-    } catch (e){
-      if (e && e.code === 'cancelled') return;
-    }
-  }
-  avisa('La descarga no está disponible en esta vista.');
+  let filas = [];
+  try { filas = await pide('fb360_ediciones?select=clave,html,actualizado'); } catch (e){}
+  const salida = { informe: DATA.meta.titulo, generado: new Date().toISOString(), ediciones: filas };
+  const blob = new Blob([JSON.stringify(salida, null, 1)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ediciones-diagnostico-360.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  avisa('Descargando ' + filas.length + ' bloques editados');
 }
 
 /* ---------------- arranque ---------------- */
@@ -2551,6 +2574,7 @@ function init(){
       if (cab) cab.setAttribute('aria-expanded', String(!on));
     });
   }
+  PINTA_COMPACTO = pintaCompacto;
   const elegido = Store.get('fb360.compacto', null);
   pintaCompacto(elegido === null ? esMovil() : !!elegido);
   bc.addEventListener('click', function(){
@@ -2773,6 +2797,9 @@ def main():
         '</div>\n'
     )
 
+    servidor = ('<script type="application/json" id="servidor">'
+                + json_seguro(SERVIDOR) + "</script>\n")
+
     cola = (
         '<script type="application/json" id="datos">' + json_seguro(contenido) + "</script>\n"
         '<script type="application/json" id="capturas-b64">' + json_seguro(imgs) + "</script>\n"
@@ -2786,8 +2813,11 @@ def main():
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         '<meta name="description" content="' + meta.get("alcance", "") + '">\n'
         + cabeza +
-        "</head>\n<body>\n" + cuerpo + cola + "</body>\n</html>\n"
+        "</head>\n<body>\n" + cuerpo + servidor + cola + "</body>\n</html>\n"
     )
+    # El artefacto NO lleva servidor: dentro de claude.ai la politica de
+    # seguridad bloquea las llamadas a hosts externos, asi que alli el informe
+    # es de solo lectura y el editor ni se enciende.
     artefacto = cabeza + cuerpo + cola
 
     salida = os.path.join(AQUI, "informe.html")
@@ -2838,7 +2868,7 @@ def main():
         '<meta name="description" content="' + meta.get("alcance", "") + '">\n'
         '<meta name="color-scheme" content="light dark">\n'
         + cabeza_web +
-        "</head>\n<body>\n" + cuerpo +
+        "</head>\n<body>\n" + cuerpo + servidor +
         '<script type="application/json" id="datos">' + json_seguro(contenido_web) + "</script>\n"
         '<script type="application/json" id="capturas-b64">' + json_seguro(rutas) + "</script>\n"
         "<script>" + JS + "</script>\n"

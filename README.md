@@ -20,58 +20,82 @@ Las tres se generan en la misma pasada de `build.py`, del mismo contenido:
 |---|---|---|
 | `index.html` | GitHub Pages. Solo lectura. Las capturas van aparte | 0,58 MB (~184 KB comprimido) |
 | `informe.html` | doble clic, sin servidor ni conexión. Todo incrustado | 4,9 MB |
-| `informe_artifact.html` | la versión **editable**, publicada en claude.ai | 4,9 MB |
+| `informe_artifact.html` | copia privada en claude.ai, solo lectura | 4,9 MB |
 
-El editor va en los tres archivos, pero solo se enciende donde hay almacén.
-En el archivo local y en Pages no aparece: se detecta la ausencia y la página
-se comporta como antes.
+El editor va en `index.html` y en `informe.html`. En el artifact de claude.ai
+**no**: allí la política de seguridad de la página bloquea las llamadas a
+servidores externos, así que esa copia es de solo lectura a propósito.
 
 Para sacar un PDF conviene usar `informe.html`: tiene la hoja de impresión
 probada y no depende de lo que permita el navegador anfitrión.
 
 ## Edición
 
-La página publicada en claude.ai es **editable por el equipo**. La de GitHub
-Pages no: es un servidor de archivos estáticos, no tiene dónde guardar nada.
+**Cualquiera con el enlace de edición puede editar. No hace falta cuenta.**
 
-Qué se puede hacer, y dónde:
+| enlace | quién | qué puede |
+|---|---|---|
+| `…/freddy-bernal/` | cualquiera | leer |
+| `…/freddy-bernal/#k=TOKEN` | quien tenga el enlace | escribir, formatear, subir imágenes |
 
-- **Texto**: el hallazgo y la acción de cada uno de los 267 puntos, más una
-  zona de **notas del equipo** al cierre de cada módulo. 555 regiones en total.
+Al abrir el enlace de edición, la página guarda el token y **lo borra de la
+barra de direcciones**, para que no acabe en el historial ni en una captura.
+Queda recordado en ese navegador hasta que se borren los datos del sitio.
+
+Qué se puede hacer:
+
+- **Texto**: hallazgo y acción de cada uno de los 267 puntos, más una zona de
+  **notas del equipo** al cierre de cada módulo. 555 regiones en total.
 - **Formato**: negrita, cursiva, listas, color de texto y resaltado, con la
   paleta del informe. La barra aparece sobre el texto seleccionado.
-- **Imágenes**: botón de insertar, **arrastrar y soltar** un archivo, o **pegar
-  una captura** con Ctrl+V. Se reducen en el navegador hasta caber en un
-  documento del almacén (256 KiB): una captura de móvil de 3,9 MB acaba en
-  unos 165 KB sin dejar de leerse.
-- **Guardado**: automático 1,6 s después de dejar de escribir, más un botón
-  **Guardar** y Ctrl+S. El estado se ve abajo en todo momento.
-- **Descargar cambios**: exporta todas las ediciones y las imágenes a un JSON.
+- **Imágenes**: botón, **arrastrar y soltar**, o **pegar una captura** con
+  Ctrl+V. Se reducen en el navegador antes de subirlas.
+- **Guardado**: automático 1,6 s tras dejar de escribir, más botón y Ctrl+S,
+  con el estado siempre visible y aviso al salir con cambios pendientes.
+- **Descargar**: exporta todas las ediciones a un JSON.
+
+En el móvil, entrar en edición despliega los puntos plegados —no se puede
+editar lo que no se ve— y al salir vuelve el modo compacto.
 
 ### El original no se toca
 
 El texto del informe sigue siendo el JSON incrustado, literal. Lo que se
-escribe se guarda **aparte**, como una capa encima. Cada región editada lleva
-un filo verde y puede **devolverse a su texto original** con el botón ↺. El
-buscador reindexa lo que se escribe, así que encuentra también lo nuevo.
+escribe se guarda **aparte**. Cada región editada lleva un filo verde y puede
+devolverse a su texto original con ↺. El buscador reindexa lo escrito.
 
-### Quién puede editar
+### Cómo está montado
 
-Lo decide el servidor, no la página, según cómo esté compartido el informe:
+```
+página estática (GitHub Pages)
+   │  lee     →  REST con la clave pública  →  fb360_ediciones (solo SELECT)
+   └─ escribe →  función fb360              →  valida el token → escribe
+```
 
-| Compartido como | Puede |
-|---|---|
-| **Can edit** | Escribir, formatear, subir imágenes, revertir |
-| **Can view** | Solo leer. Ni siquiera aparece el botón de editar |
+Las tablas **no admiten escritura directa**: no tienen políticas de escritura,
+así que la clave pública no puede insertar ni modificar nada. Todo lo que se
+guarda pasa por la función de servidor, que compara el token contra
+`fb360_config` —una tabla sin políticas, que solo el servidor puede leer—
+antes de tocar nada. Las imágenes se suben por la misma vía a un depósito
+público; subir directamente al depósito también está cerrado.
 
-La página lo comprueba al abrir intentando una escritura mínima. Si el
-servidor la rechaza, entra en modo lectura. No hay usuario ni contraseña que
-repartir: el permiso va atado a la cuenta de claude.ai de cada persona.
+Comprobado: escritura anónima a la tabla → rechazada por RLS; lectura del
+token con la clave pública → vacío; subida directa al depósito → 403; token
+equivocado → 401.
 
-Declarar almacén hace que el informe sea **interno de la organización**: no se
-puede compartir públicamente, y todo el que lo abra es un miembro identificado.
+### Cambiar el token (revocar los enlaces repartidos)
 
-## Qué contiene
+```sql
+update public.fb360_config set token = 'nuevo-token-aqui' where id = 1;
+```
+
+Todos los enlaces antiguos dejan de editar al instante. Quien los tuviera
+guardados pasa a modo lectura con un aviso.
+
+> El enlace de edición es una llave: quien lo reciba puede editar, y puede
+> reenviarlo. No hay forma de saber quién escribió qué. Si eso importa, hay
+> que cambiar a cuentas con nombre — es otro trabajo.
+
+## Qué contiene## Qué contiene
 
 21 módulos · 267 puntos · 69 tablas de datos · 10 capturas · 10 gráficos ·
 47 acciones en la hoja de ruta a 90 días.
