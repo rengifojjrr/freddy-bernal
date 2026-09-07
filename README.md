@@ -18,12 +18,58 @@ Las tres se generan en la misma pasada de `build.py`, del mismo contenido:
 
 | archivo | para qué | peso |
 |---|---|---|
-| `index.html` | GitHub Pages. Las capturas van aparte y se piden al llegar a ellas | 0,55 MB (~175 KB comprimido) |
-| `informe.html` | doble clic, sin servidor ni conexión. Todo incrustado | 4,8 MB |
-| `informe_artifact.html` | publicar como página privada | 4,8 MB |
+| `index.html` | GitHub Pages. Solo lectura. Las capturas van aparte | 0,58 MB (~184 KB comprimido) |
+| `informe.html` | doble clic, sin servidor ni conexión. Todo incrustado | 4,9 MB |
+| `informe_artifact.html` | la versión **editable**, publicada en claude.ai | 4,9 MB |
+
+El editor va en los tres archivos, pero solo se enciende donde hay almacén.
+En el archivo local y en Pages no aparece: se detecta la ausencia y la página
+se comporta como antes.
 
 Para sacar un PDF conviene usar `informe.html`: tiene la hoja de impresión
 probada y no depende de lo que permita el navegador anfitrión.
+
+## Edición
+
+La página publicada en claude.ai es **editable por el equipo**. La de GitHub
+Pages no: es un servidor de archivos estáticos, no tiene dónde guardar nada.
+
+Qué se puede hacer, y dónde:
+
+- **Texto**: el hallazgo y la acción de cada uno de los 267 puntos, más una
+  zona de **notas del equipo** al cierre de cada módulo. 555 regiones en total.
+- **Formato**: negrita, cursiva, listas, color de texto y resaltado, con la
+  paleta del informe. La barra aparece sobre el texto seleccionado.
+- **Imágenes**: botón de insertar, **arrastrar y soltar** un archivo, o **pegar
+  una captura** con Ctrl+V. Se reducen en el navegador hasta caber en un
+  documento del almacén (256 KiB): una captura de móvil de 3,9 MB acaba en
+  unos 165 KB sin dejar de leerse.
+- **Guardado**: automático 1,6 s después de dejar de escribir, más un botón
+  **Guardar** y Ctrl+S. El estado se ve abajo en todo momento.
+- **Descargar cambios**: exporta todas las ediciones y las imágenes a un JSON.
+
+### El original no se toca
+
+El texto del informe sigue siendo el JSON incrustado, literal. Lo que se
+escribe se guarda **aparte**, como una capa encima. Cada región editada lleva
+un filo verde y puede **devolverse a su texto original** con el botón ↺. El
+buscador reindexa lo que se escribe, así que encuentra también lo nuevo.
+
+### Quién puede editar
+
+Lo decide el servidor, no la página, según cómo esté compartido el informe:
+
+| Compartido como | Puede |
+|---|---|
+| **Can edit** | Escribir, formatear, subir imágenes, revertir |
+| **Can view** | Solo leer. Ni siquiera aparece el botón de editar |
+
+La página lo comprueba al abrir intentando una escritura mínima. Si el
+servidor la rechaza, entra en modo lectura. No hay usuario ni contraseña que
+repartir: el permiso va atado a la cuenta de claude.ai de cada persona.
+
+Declarar almacén hace que el informe sea **interno de la organización**: no se
+puede compartir públicamente, y todo el que lo abra es un miembro identificado.
 
 ## Qué contiene
 
