@@ -16,6 +16,7 @@ Nada del texto del informe se reescribe aqui: build.py solo pinta.
 """
 
 import base64
+import datetime
 import json
 import os
 import struct
@@ -707,6 +708,31 @@ mark{background:rgba(235,104,52,.26); color:inherit; border-radius:2px; padding:
   text-transform:uppercase; color:var(--muted); margin-bottom:8px;
 }
 body:not(.puede-editar) .notas:not(.con-contenido){display:none}
+
+#diag{
+  display:inline-flex; align-items:center; gap:6px; flex:none; cursor:pointer;
+  padding:4px 10px; border-radius:12px; font-size:11px; font-weight:650;
+  letter-spacing:.03em; white-space:nowrap;
+  background:var(--tinte); color:var(--texto2); border:1px solid var(--linea2);
+}
+#diag::before{content:""; width:7px; height:7px; border-radius:50%; background:currentColor}
+#diag.ok{color:var(--verde); border-color:var(--verde); background:rgba(27,175,122,.12)}
+#diag.mal{color:var(--red); border-color:var(--red); background:rgba(208,59,59,.12)}
+#diag-panel{
+  position:fixed; z-index:130; right:14px; top:calc(var(--topbar) + 8px);
+  width:min(420px, calc(100vw - 24px)); max-height:70vh; overflow:auto;
+  padding:16px 18px; border-radius:var(--r);
+  background:var(--card); border:1px solid var(--linea2);
+  box-shadow:0 10px 34px rgba(0,0,0,.2); display:none;
+}
+#diag-panel.abierto{display:block}
+#diag-panel h4{font-size:13px; margin-bottom:10px}
+#diag-panel dl{display:grid; grid-template-columns:max-content 1fr; gap:6px 12px; font-size:12px}
+#diag-panel dt{color:var(--muted); white-space:nowrap}
+#diag-panel dd{margin:0; color:var(--texto2); word-break:break-word}
+#diag-panel dd.si{color:var(--verde); font-weight:600}
+#diag-panel dd.no{color:var(--red); font-weight:600}
+#diag-panel .pie{margin-top:12px; padding-top:10px; border-top:1px solid var(--linea); font-size:11.5px; color:var(--muted)}
 
 .modo{
   display:inline-flex; align-items:center; gap:6px; flex:none;
@@ -2031,6 +2057,56 @@ const PALETA_FONDO = ['#fff2a8', '#ffd6c2', '#cfe3fb', '#c9f0dd'];
 
 let TOKEN = null, PUEDE_EDITAR = false, EDITANDO = false;
 let PINTA_COMPACTO = null, COMPACTO_PREVIO = false;
+
+/* Qué está pasando de verdad. Si algo falla, tiene que verse en pantalla:
+   un fallo silencioso obliga a adivinar desde fuera. */
+const DIAG = {
+  servidor: null, lectura: '—', escritura: '—', token: 'no',
+  ediciones: 0, error: '', version: '',
+};
+
+function pintaDiag(){
+  const chip = document.getElementById('diag');
+  if (!chip) return;
+  const bien = DIAG.lectura === 'sí';
+  chip.className = bien ? 'ok' : 'mal';
+  chip.textContent = !DIAG.servidor ? 'Sin servidor'
+    : !bien ? 'Sin conexión'
+    : (PUEDE_EDITAR ? 'Editor' : 'Solo lectura');
+  const panel = document.getElementById('diag-panel');
+  if (!panel) return;
+  const fila = function(k, v, clase){
+    return '<dt>' + k + '</dt><dd' + (clase ? ' class="' + clase + '"' : '') + '>' + esc(v) + '</dd>';
+  };
+  panel.innerHTML = '<h4>Estado de la conexión</h4><dl>' +
+    fila('Servidor', DIAG.servidor || 'no configurado', DIAG.servidor ? 'si' : 'no') +
+    fila('Leer cambios', DIAG.lectura, DIAG.lectura === 'sí' ? 'si' : 'no') +
+    fila('Cambios cargados', String(DIAG.ediciones)) +
+    fila('Enlace de edición', DIAG.token) +
+    fila('Permiso de escritura', DIAG.escritura, DIAG.escritura === 'sí' ? 'si' : (DIAG.escritura === '—' ? '' : 'no')) +
+    fila('Bloques editables', String($$('.zona').length)) +
+    fila('Versión', DIAG.version || '—') +
+    (DIAG.error ? fila('Último error', DIAG.error, 'no') : '') +
+    '</dl><div class="pie">Si algo aquí sale en rojo, manda una captura de este panel.</div>';
+}
+
+function montaDiag(){
+  const cont = $('#contador');
+  if (!cont || document.getElementById('diag')) return;
+  const chip = document.createElement('button');
+  chip.id = 'diag';
+  chip.type = 'button';
+  chip.title = 'Estado de la conexión con el servidor de cambios';
+  cont.parentNode.insertBefore(chip, cont);
+  const panel = document.createElement('div');
+  panel.id = 'diag-panel';
+  document.body.appendChild(panel);
+  chip.addEventListener('click', function(){ panel.classList.toggle('abierto'); pintaDiag(); });
+  document.addEventListener('click', function(e){
+    if (!e.target.closest('#diag') && !e.target.closest('#diag-panel')) panel.classList.remove('abierto');
+  });
+  pintaDiag();
+}
 const SUCIAS = new Set();
 let guardando = false, pendiente = null, ultimoGuardado = null;
 
@@ -2185,7 +2261,7 @@ async function guardar(){
       await manda({ accion: 'guardar', clave: clave, html: limpiaHTML(zona.innerHTML) });
       SUCIAS.delete(clave);
       zona.dataset.guardado = '1';
-    } catch (e){ fallos++; ultimo = e.message; }
+    } catch (e){ fallos++; ultimo = e.message; DIAG.error = e.message; pintaDiag(); }
   }
   guardando = false;
   if (!fallos) ultimoGuardado = new Date();
@@ -2353,6 +2429,7 @@ function modoEdicion(on){
 async function traeEdiciones(){
   try {
     const filas = await pide('fb360_ediciones?select=clave,html');
+    DIAG.lectura = 'sí'; DIAG.ediciones = filas.length; DIAG.error = '';
     const vistas = new Set();
     filas.forEach(function(f){ vistas.add(f.clave); aplicaEdicion(f.clave, f.html); });
     /* lo que ya no está en el servidor vuelve a su original */
@@ -2366,13 +2443,30 @@ async function traeEdiciones(){
         if (notas && !notas.querySelector('.zona.editada')) notas.classList.remove('con-contenido');
       }
     });
+    pintaDiag();
     return true;
-  } catch (e){ return false; }
+  } catch (e){
+    DIAG.lectura = 'no';
+    DIAG.error = (e && e.message) || 'no se pudo contactar con el servidor';
+    pintaDiag();
+    return false;
+  }
 }
 
 /* ---------- arranque ---------- */
 async function initEdicion(){
-  if (!SB || !SB.url) return;
+  DIAG.version = (document.getElementById('version') || {}).textContent || '';
+  DIAG.servidor = SB && SB.url ? SB.url.replace('https://', '') : null;
+  montaDiag();
+  if (!SB || !SB.url) { pintaDiag(); return; }
+
+  /* un enlace que fuerza solo lectura, pase lo que pase en este navegador */
+  if (/(^|[?&#])ver(=1)?([&#]|$)/.test(location.search + location.hash)){
+    DIAG.token = 'ignorado (enlace de solo lectura)';
+    await traeEdiciones();
+    setInterval(traeEdiciones, 30000);
+    return;
+  }
 
   /* el token viaja en el enlace: se guarda y se quita de la barra de
      direcciones, para que no acabe en el historial ni en una captura */
@@ -2389,35 +2483,32 @@ async function initEdicion(){
     try { TOKEN = localStorage.getItem(CLAVE_TOKEN); } catch (e){ TOKEN = null; }
   }
 
+  DIAG.token = TOKEN ? 'sí' : 'no';
   const hay = await traeEdiciones();
-  if (!hay && !TOKEN) return;
+  if (!hay && !TOKEN) { pintaDiag(); return; }
   setInterval(traeEdiciones, 30000);
   addEventListener('focus', function(){ if (!EDITANDO) traeEdiciones(); });
 
-  if (!TOKEN) return;
-  try { await manda({ accion: 'comprobar' }); PUEDE_EDITAR = true; }
+  if (!TOKEN) { pintaDiag(); return; }
+  try { await manda({ accion: 'comprobar' }); PUEDE_EDITAR = true; DIAG.escritura = 'sí'; }
   catch (e){
     PUEDE_EDITAR = false;
+    DIAG.escritura = 'no';
+    DIAG.error = (e && e.message) || 'la comprobación del enlace falló';
     try { localStorage.removeItem(CLAVE_TOKEN); } catch (e2){}
-    avisa('El enlace de edición ya no es válido. Estás en modo lectura.');
+    avisa('El enlace de edición no vale: ' + DIAG.error);
+    pintaDiag();
     return;
   }
   document.body.classList.add('puede-editar');
   montaEditor();
+  pintaDiag();
 }
 
 function montaEditor(){
   /* Que se vea de un vistazo en qué modo se está: el token queda recordado en
      el navegador, así que el enlace normal también abre como editor una vez
      usado el de edición. Sin esto, los dos enlaces parecen el mismo. */
-  const marca = document.createElement('span');
-  marca.className = 'modo';
-  marca.id = 'marca-modo';
-  marca.textContent = 'Editor';
-  marca.title = 'Este navegador recuerda el enlace de edición';
-  const cont = $('#contador');
-  cont.parentNode.insertBefore(marca, cont);
-
   const acciones = $('.acciones');
   const btn = document.createElement('button');
   btn.className = 'btn'; btn.id = 'btn-editar'; btn.setAttribute('aria-pressed', 'false');
@@ -2838,7 +2929,9 @@ def main():
         '</div>\n'
     )
 
-    servidor = ('<script type="application/json" id="servidor">'
+    sello = datetime.datetime.now().strftime("%d %b %Y · %H:%M")
+    servidor = ('<span id="version" hidden>' + sello + "</span>\n"
+                '<script type="application/json" id="servidor">'
                 + json_seguro(SERVIDOR) + "</script>\n")
 
     cola = (
@@ -2859,7 +2952,7 @@ def main():
     # El artefacto NO lleva servidor: dentro de claude.ai la politica de
     # seguridad bloquea las llamadas a hosts externos, asi que alli el informe
     # es de solo lectura y el editor ni se enciende.
-    artefacto = cabeza + cuerpo + cola
+    artefacto = cabeza + cuerpo + ('<span id="version" hidden>' + sello + "</span>\n") + cola
 
     salida = os.path.join(AQUI, "informe.html")
     with open(salida, "w", encoding="utf-8") as fh:
