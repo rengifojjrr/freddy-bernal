@@ -55,13 +55,46 @@ Qué se puede hacer:
   del equipo por módulo, la descripción y el detalle de las 47 acciones del
   plan, la fase de profundización, las fuentes y la nota metodológica.
   **651 regiones.**
-- **Formato**: negrita, cursiva, listas, color de texto y resaltado, con la
-  paleta del informe. La barra aparece sobre el texto seleccionado.
+- **Deshacer y rehacer**: los dos primeros botones de la cinta, y Ctrl+Z /
+  Ctrl+Y (también Ctrl+Mayús+Z). Ver más abajo.
+- **Formato**: negrita, cursiva, subrayado, tachado; subtítulo, párrafo normal
+  y cita; lista de puntos y numerada; más y menos sangría; alineación;
+  color de texto y resaltado con la paleta del informe; enlaces; quitar el
+  formato. Los botones se encienden según dónde esté el cursor.
+- **Dos sitios para lo mismo**: una cinta fija abajo, siempre a la vista
+  mientras se edita, y —en pantalla ancha— una barra que sale sobre el texto
+  seleccionado. En el móvil la cinta se desplaza a lo ancho con el dedo y la
+  barra flotante se apaga, porque pelea con el menú de selección del sistema.
 - **Imágenes**: botón, **arrastrar y soltar**, o **pegar una captura** con
   Ctrl+V. Se reducen en el navegador antes de subirlas.
 - **Guardado**: automático 1,6 s tras dejar de escribir, más botón y Ctrl+S,
   con el estado siempre visible y aviso al salir con cambios pendientes.
 - **Descargar**: exporta todas las ediciones a un JSON.
+
+### Deshacer: qué alcanza y qué no
+
+El deshacer del navegador no servía. Se pierde en cuanto la página reescribe
+un bloque por su cuenta —al llegar un cambio de otra persona, al insertar una
+imagen, al devolver un bloque con ↺— y no cruza de un bloque a otro. Así que
+la historia se lleva aparte: **una sola línea de tiempo para todo el informe**,
+con el bloque, el antes, el después y dónde estaba el cursor.
+
+- Va **de un bloque a otro**: si se escribe en el M03 y luego en el M05, dos
+  Ctrl+Z devuelven primero el M05 y después el M03, y el cursor viaja hasta
+  allí. Si el punto está plegado, se abre.
+- La escritura seguida se junta en un paso, como en un procesador de texto:
+  hay corte al hacer una pausa, al pulsar Intro, al salir del bloque y antes
+  de cualquier botón de formato.
+- Entran también la **imagen insertada**, el **pegado** y el propio **↺**.
+- Guarda **150 pasos**. Escribir algo nuevo después de deshacer borra lo que
+  quedaba por rehacer, como es costumbre.
+- **Se pierde al recargar la página.** La historia vive en memoria; lo escrito
+  ya está guardado en el servidor. Para volver atrás después de recargar está
+  ↺, que devuelve un bloque entero a su texto del informe.
+- **Deshacer hasta el principio borra la fila del servidor**: el bloque no se
+  queda guardado como una copia idéntica del original, vuelve a estar limpio.
+- Con dos personas a la vez, deshacer restaura la foto del bloque tal y como
+  estaba: puede pisar lo que la otra acabara de escribir en ese mismo bloque.
 
 En el móvil, entrar en edición despliega los puntos plegados —no se puede
 editar lo que no se ve— y al salir vuelve el modo compacto.
@@ -69,8 +102,9 @@ editar lo que no se ve— y al salir vuelve el modo compacto.
 ### El original no se toca
 
 El texto del informe sigue siendo el JSON incrustado, literal. Lo que se
-escribe se guarda **aparte**. Cada región editada lleva un filo verde y puede
-devolverse a su texto original con ↺. El buscador reindexa lo escrito.
+escribe se guarda **aparte**. Cada región editada lleva un filo verde —que se
+apaga solo si el bloque vuelve a su texto de partida— y puede devolverse a su
+original con ↺. El buscador reindexa lo escrito.
 
 ### Cómo está montado
 

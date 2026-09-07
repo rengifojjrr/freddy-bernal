@@ -182,6 +182,15 @@ button,input{font:inherit; color:inherit}
 .btn:hover{border-color:var(--muted); color:var(--texto)}
 .btn[aria-pressed="true"]{background:var(--tinte); color:var(--texto); border-color:var(--muted)}
 .btn svg{width:14px; height:14px; flex:none}
+#btn-editar{
+  background:var(--aqua); border-color:var(--aqua); color:#07281c; font-weight:650;
+  margin-left:auto;
+}
+#btn-editar:hover{border-color:var(--aqua); color:#07281c; filter:brightness(1.05)}
+#btn-editar[aria-pressed="true"]{
+  background:var(--card); color:var(--texto); border-color:var(--muted); font-weight:500;
+}
+.topbar #btn-editar ~ .acciones{margin-left:0}
 
 
 /* ---------- estructura ---------- */
@@ -599,6 +608,7 @@ mark{background:rgba(235,104,52,.26); color:inherit; border-radius:2px; padding:
   .topbar .btn{min-height:38px; padding:8px 10px}
   .acciones .btn .et{display:none}
   .marca,.contador,.chev{display:none}
+  .zona-controles #diag{align-self:center}
   .topbar{gap:8px; padding:0 12px}
 
   .shell{display:block}
@@ -682,6 +692,11 @@ mark{background:rgba(235,104,52,.26); color:inherit; border-radius:2px; padding:
   .tarea input{width:24px; height:24px; margin-top:0}
   .tarea label{font-size:15px; line-height:1.45}
   .modulo-pasos{flex-direction:column}
+}
+
+@media (max-width:540px){
+  /* el buscador necesita sitio: con tres botones rotulados no le queda */
+  #btn-menu .et,#btn-filtros .et{display:none}
 }
 
 @media (max-width:420px){
@@ -776,32 +791,77 @@ body.editando .zona[contenteditable="true"]:focus{
   border:1px solid var(--linea); border-radius:var(--r)}
 .zona.soltando{outline:2px dashed var(--aqua) !important; background:var(--tinte)}
 
-/* barra de formato */
+/* lo que se puede escribir con la barra de herramientas */
+.zona h4{font-size:15.5px; font-weight:650; margin:16px 0 6px; letter-spacing:.005em}
+.zona h4:first-child{margin-top:0}
+.zona blockquote{
+  margin:10px 0; padding:2px 0 2px 14px;
+  border-left:3px solid var(--linea2); color:var(--muted);
+}
+.zona ul,.zona ol{margin:8px 0 8px 22px; padding:0}
+.zona li{margin:3px 0}
+.zona a{color:var(--blue); text-decoration:underline; text-underline-offset:2px}
+.zona s,.zona strike{text-decoration:line-through; opacity:.72}
+
+/* --------- herramientas de edición ---------
+   Dos sitios para lo mismo: la cinta de abajo, siempre a la vista mientras se
+   edita, y la burbuja que sale sobre el texto seleccionado en pantalla ancha.
+   Las dos se dibujan del mismo listado y las atiende el mismo manejador. */
+
+/* botones, comunes a la cinta y a la burbuja */
+#cinta button,#formato button{
+  flex:none; min-width:31px; height:31px; padding:0 7px; border:0; border-radius:5px;
+  background:transparent; color:#f2f1ee; font-size:13px; line-height:1; cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center; gap:5px;
+}
+#cinta button:hover,#formato button:hover{background:rgba(255,255,255,.14)}
+#cinta button.on,#formato button.on{background:rgba(255,255,255,.24); box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
+#cinta button:disabled,#formato button:disabled{opacity:.3; cursor:default; background:transparent}
+#cinta .sep,#formato .sep{
+  flex:none; width:1px; align-self:stretch; margin:3px 4px; background:rgba(255,255,255,.22);
+}
+#cinta .tinta,#formato .tinta{
+  width:17px; height:17px; border-radius:50%; border:1.5px solid rgba(255,255,255,.45);
+}
+#cinta b,#formato b{font-weight:800}
+#cinta .et,#formato .et{font-size:12px; letter-spacing:.01em}
+#cinta .glifo,#formato .glifo{font-size:15px}
+#cinta svg,#formato svg{display:block; flex:none}
+
+/* burbuja sobre la selección */
 #formato{
   position:fixed; z-index:110; display:none; gap:2px; padding:5px;
   background:var(--navy); border-radius:7px; box-shadow:0 6px 20px rgba(0,0,0,.28);
 }
-#formato.visible{display:flex; flex-wrap:wrap; max-width:min(92vw,330px)}
-#formato button{
-  min-width:30px; height:30px; padding:0 7px; border:0; border-radius:5px;
-  background:transparent; color:#f2f1ee; font-size:13px; cursor:pointer;
-  display:inline-flex; align-items:center; justify-content:center;
-}
-#formato button:hover{background:rgba(255,255,255,.14)}
-#formato .sep{width:1px; margin:4px 3px; background:rgba(255,255,255,.2)}
-#formato .tinta{width:18px; height:18px; border-radius:50%; border:1.5px solid rgba(255,255,255,.45)}
-#formato b{font-weight:800}
+#formato.visible{display:flex; flex-wrap:wrap; max-width:min(92vw,344px)}
 
-/* barra de estado de la edición */
-#barra-edicion{
+/* panel de abajo: cinta de herramientas y estado */
+#panel-edicion{
   position:fixed; left:0; right:0; bottom:0; z-index:80;
-  display:none; align-items:center; gap:12px;
-  padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
+  display:none; flex-direction:column;
   background:var(--navy); color:#f2f1ee;
   box-shadow:0 -4px 18px rgba(0,0,0,.2);
 }
+body.editando #panel-edicion{display:flex}
+#cinta{
+  display:flex; align-items:center; gap:2px; padding:7px 12px 6px;
+  overflow-x:auto; overflow-y:hidden; scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,.28) transparent;
+  border-bottom:1px solid rgba(255,255,255,.14);
+  -webkit-overflow-scrolling:touch;
+}
+#cinta::-webkit-scrollbar{height:5px}
+#cinta::-webkit-scrollbar-thumb{background:rgba(255,255,255,.28); border-radius:3px}
+#cinta::-webkit-scrollbar-track{background:transparent}
+#cinta .grupo{display:flex; align-items:center; gap:2px; flex:none}
+
+/* barra de estado de la edición */
+#barra-edicion{
+  display:none; align-items:center; gap:12px; flex-wrap:wrap;
+  padding:9px 14px calc(9px + env(safe-area-inset-bottom,0px));
+}
 body.editando #barra-edicion{display:flex}
-#barra-edicion .estado{font-size:12.5px; opacity:.85; flex:1; min-width:0}
+#barra-edicion .estado{font-size:12.5px; opacity:.85; flex:1; min-width:120px}
 #barra-edicion .estado b{opacity:1; font-weight:600}
 #barra-edicion button{
   padding:8px 14px; border-radius:var(--r); border:1px solid rgba(255,255,255,.28);
@@ -810,9 +870,24 @@ body.editando #barra-edicion{display:flex}
 #barra-edicion button:hover{background:rgba(255,255,255,.12)}
 #barra-edicion button.primario{background:var(--aqua); border-color:var(--aqua); color:#07281c; font-weight:650}
 #barra-edicion .punto-rojo{width:7px; height:7px; border-radius:50%; background:var(--orange); flex:none}
+#barra-edicion .corta{display:none}
 
-body.editando{padding-bottom:64px}
-body.editando .fab{bottom:74px}
+/* el panel no puede taparle a nadie el último párrafo: su altura se mide en
+   marcha y se le devuelve al documento como hueco */
+body.editando{padding-bottom:var(--panel-edicion,118px)}
+body.editando .fab{bottom:calc(var(--panel-edicion,118px) + 12px)}
+
+@media (max-width:760px){
+  /* con la cinta siempre a mano, la burbuja solo estorbaría: en el móvil pelea
+     con el menú de selección del propio sistema */
+  #formato{display:none !important}
+  #cinta{padding:7px 8px 6px}
+  #barra-edicion{gap:8px; padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+  #barra-edicion button{padding:8px 11px; font-size:12.5px}
+  #barra-edicion .estado{flex:1 1 100%; order:-1; min-width:0}
+  #barra-edicion .larga{display:none}
+  #barra-edicion .corta{display:inline}
+}
 
 /* aviso de solo lectura */
 #aviso-lectura{
@@ -822,9 +897,10 @@ body.editando .fab{bottom:74px}
   opacity:0; pointer-events:none; transition:opacity .2s;
 }
 #aviso-lectura.visible{opacity:1}
+body.editando #aviso-lectura{bottom:calc(var(--panel-edicion,118px) + 14px)}
 
 @media print{
-  #formato,#barra-edicion,#aviso-lectura,.notas-et{display:none !important}
+  #formato,#panel-edicion,#aviso-lectura,.notas-et{display:none !important}
   body.editando{padding-bottom:0}
   .zona{outline:0 !important}
   .zona.editada::after{display:none}
@@ -2057,6 +2133,7 @@ const PALETA_FONDO = ['#fff2a8', '#ffd6c2', '#cfe3fb', '#c9f0dd'];
 
 let TOKEN = null, PUEDE_EDITAR = false, EDITANDO = false;
 let PINTA_COMPACTO = null, COMPACTO_PREVIO = false;
+let MIDE_PANEL = null;
 
 /* Qué está pasando de verdad. Si algo falla, tiene que verse en pantalla:
    un fallo silencioso obliga a adivinar desde fuera. */
@@ -2091,13 +2168,15 @@ function pintaDiag(){
 }
 
 function montaDiag(){
-  const cont = $('#contador');
-  if (!cont || document.getElementById('diag')) return;
+  const grupo = $('.acciones');
+  if (!grupo || document.getElementById('diag')) return;
   const chip = document.createElement('button');
   chip.id = 'diag';
   chip.type = 'button';
   chip.title = 'Estado de la conexión con el servidor de cambios';
-  cont.parentNode.insertBefore(chip, cont);
+  /* dentro de .acciones para que viaje con ellos: en el móvil ese grupo se
+     muda al índice, y en la barra de arriba no cabe sin comerse el buscador */
+  grupo.insertBefore(chip, grupo.firstChild);
   const panel = document.createElement('div');
   panel.id = 'diag-panel';
   document.body.appendChild(panel);
@@ -2110,11 +2189,25 @@ function montaDiag(){
 const SUCIAS = new Set();
 let guardando = false, pendiente = null, ultimoGuardado = null;
 
+/* El texto tal y como salió del informe. Se guarda aparte, en memoria: es lo
+   que devuelve ↺ y lo que decide si un bloque sigue contando como editado.
+   Fuera del DOM para no llevar dos copias de todo el informe en la página. */
+const ORIGINAL = new Map();
+function guardaOriginal(zona){
+  const k = zona.dataset.edit;
+  if (!ORIGINAL.has(k)) ORIGINAL.set(k, zona.innerHTML);
+  return ORIGINAL.get(k);
+}
+function textoOriginal(zona){ return ORIGINAL.get(zona.dataset.edit); }
+
 /* ---------- limpieza del HTML que se guarda y se muestra ----------
    Lo escribe gente con el enlace, se guarda y se vuelve a pintar para todos:
    se filtra en ambos sentidos para que nada ejecutable sobreviva. */
-const ETIQUETAS_OK = new Set(['P','BR','B','STRONG','I','EM','U','SPAN','UL','OL','LI','IMG','MARK','DIV','H4']);
-const ESTILOS_OK = ['color', 'background-color', 'font-weight'];
+const ETIQUETAS_OK = new Set(['P','BR','B','STRONG','I','EM','U','S','STRIKE','SPAN',
+  'UL','OL','LI','IMG','MARK','DIV','H4','BLOCKQUOTE','A']);
+const ESTILOS_OK = ['color', 'background-color', 'font-weight', 'font-style',
+  'text-align', 'text-decoration', 'text-decoration-line', 'margin-left'];
+const ENLACE_OK = /^https?:\/\//i;
 
 function esImagenNuestra(u){
   return typeof u === 'string' && SB && u.indexOf(SB.deposito) === 0;
@@ -2133,12 +2226,20 @@ function limpiaHTML(html){
       const v = n.attributes[i].value;
       const conservar =
         (a === 'style') ||
-        (a === 'class' && /^(lead|subida)$/.test(v)) ||
+        (a === 'class' && /^(lead|subida|prosa)$/.test(v)) ||
         (n.tagName === 'IMG' && (a === 'alt' || a === 'width' || a === 'height' || a === 'loading')) ||
-        (n.tagName === 'IMG' && a === 'src' && esImagenNuestra(v));
+        (n.tagName === 'IMG' && a === 'src' && esImagenNuestra(v)) ||
+        (n.tagName === 'A' && a === 'href' && ENLACE_OK.test(v)) ||
+        (n.tagName === 'A' && (a === 'target' || a === 'rel'));
       if (!conservar) n.removeAttribute(a);
     }
     if (n.tagName === 'IMG' && !esImagenNuestra(n.getAttribute('src'))){ fuera.push(n); continue; }
+    /* un enlace sin destino válido pierde la etiqueta, nunca el texto */
+    if (n.tagName === 'A'){
+      if (!n.getAttribute('href')){ fuera.push(n); continue; }
+      n.setAttribute('target', '_blank');
+      n.setAttribute('rel', 'noopener noreferrer');
+    }
     if (n.hasAttribute('style')){
       const limpio = n.style.cssText.split(';').map(function(d){ return d.trim(); })
         .filter(function(d){ return d && ESTILOS_OK.indexOf(d.split(':')[0].trim().toLowerCase()) !== -1; })
@@ -2219,7 +2320,9 @@ async function insertaFichero(fichero, zona){
   el.src = res.url;
   el.loading = 'lazy';
   el.alt = 'Imagen añadida por el equipo';
+  confirmaYa();
   insertaEnCursor(el, zona);
+  confirma(zona);
   marcaSucia(zona);
   avisa('Imagen añadida');
 }
@@ -2257,10 +2360,17 @@ async function guardar(){
   for (const clave of Array.from(SUCIAS)){
     const zona = document.querySelector('.zona[data-edit="' + clave + '"]');
     if (!zona) { SUCIAS.delete(clave); continue; }
+    const html = limpiaHTML(zona.innerHTML);
+    /* deshacer hasta el principio deja el bloque como estaba: entonces no se
+       guarda una copia del original, se quita la fila */
+    const orig = textoOriginal(zona);
+    const vuelto = orig != null && html === limpiaHTML(orig);
     try {
-      await manda({ accion: 'guardar', clave: clave, html: limpiaHTML(zona.innerHTML) });
+      await manda(vuelto ? { accion: 'borrar', clave: clave }
+                         : { accion: 'guardar', clave: clave, html: html });
       SUCIAS.delete(clave);
       zona.dataset.guardado = '1';
+      if (vuelto) sincronizaZona(zona);
     } catch (e){ fallos++; ultimo = e.message; DIAG.error = e.message; pintaDiag(); }
   }
   guardando = false;
@@ -2295,10 +2405,11 @@ function aplicaEdicion(clave, html){
   if (!zona) return;
   if (document.activeElement === zona) return;      // se está escribiendo ahí
   if (SUCIAS.has(clave)) return;                    // hay cambios propios sin guardar
-  if (!zona.dataset.original) zona.dataset.original = zona.innerHTML;
+  guardaOriginal(zona);
   const limpio = limpiaHTML(html);
   if (zona.innerHTML === limpio) return;
   zona.innerHTML = limpio;
+  PREVIO.set(clave, zona.innerHTML);
   zona.classList.add('editada');
   zona.classList.remove('vacia');
   const notas = zona.closest('.notas');
@@ -2307,13 +2418,12 @@ function aplicaEdicion(clave, html){
 }
 
 async function revierte(zona){
-  if (!zona.dataset.original) { avisa('Este bloque ya está como el original.'); return; }
-  zona.innerHTML = zona.dataset.original;
-  zona.classList.remove('editada');
-  if (zona.dataset.edit.slice(-2) === '-n') zona.classList.add('vacia');
-  const notas = zona.closest('.notas');
-  if (notas && !notas.querySelector('.zona.editada')) notas.classList.remove('con-contenido');
-  refrescaIndice(zona);
+  const orig = textoOriginal(zona);
+  if (orig == null || zona.innerHTML === orig){ avisa('Este bloque ya está como el original.'); return; }
+  confirmaYa();
+  zona.innerHTML = orig;
+  sincronizaZona(zona);
+  confirma(zona);                     // devolver el bloque también se deshace
   SUCIAS.delete(zona.dataset.edit);
   pintaEstado();
   if (PUEDE_EDITAR){
@@ -2333,32 +2443,334 @@ function refrescaIndice(zona){
                    ' ' + (cuerpo ? cuerpo.textContent : ''));
 }
 
-/* ---------- barra de formato ---------- */
+/* ---------- deshacer y rehacer ----------
+   El deshacer del navegador no sirve aquí: se pierde en cuanto la página
+   reescribe un bloque por su cuenta —al llegar cambios de otra persona, al
+   insertar una imagen, al devolver un bloque a su original— y no cruza de un
+   bloque a otro. Así que la historia se lleva aparte, como en un procesador
+   de texto: una sola línea de tiempo para todo el informe, con el bloque
+   afectado, el antes, el después y dónde estaba el cursor. */
+const LINEA = [];            // los cambios, en orden
+let IDX = 0;                 // cuántos están aplicados
+const PREVIO = new Map();    // clave -> HTML en el último punto confirmado
+const SEL_BASE = new Map();  // clave -> dónde quedó el cursor en ese punto
+const TOPE_HIST = 150;
+let relojHist = null, zonaEscribiendo = null;
+
+/* El cursor se guarda como número de caracteres, no como nodo: el nodo
+   desaparece al reescribir el bloque, la posición en el texto no. */
+function marcaSeleccion(zona){
+  const sel = getSelection();
+  if (!sel || !sel.rangeCount) return null;
+  const r = sel.getRangeAt(0);
+  if (!zona.contains(r.startContainer)) return null;
+  const hasta = document.createRange();
+  hasta.selectNodeContents(zona);
+  hasta.setEnd(r.startContainer, r.startOffset);
+  return { ini: hasta.toString().length, largo: r.toString().length };
+}
+
+function ponSeleccion(zona, marca){
+  if (!marca) return;
+  const w = document.createTreeWalker(zona, NodeFilter.SHOW_TEXT);
+  const r = document.createRange();
+  let n, visto = 0, puesto = false, cerrado = false;
+  const fin = marca.ini + marca.largo;
+  while ((n = w.nextNode())){
+    const largo = n.nodeValue.length;
+    if (!puesto && visto + largo >= marca.ini){
+      r.setStart(n, Math.max(0, marca.ini - visto)); puesto = true;
+    }
+    if (puesto && visto + largo >= fin){
+      r.setEnd(n, Math.max(0, Math.min(largo, fin - visto))); cerrado = true; break;
+    }
+    visto += largo;
+  }
+  if (!puesto){ r.selectNodeContents(zona); r.collapse(false); }
+  else if (!cerrado){ r.setEnd(r.startContainer, r.startOffset); }
+  try {
+    const sel = getSelection();
+    sel.removeAllRanges(); sel.addRange(r);
+  } catch (e){}
+}
+
+/* El punto de partida de un bloque hay que apuntarlo ANTES de tocarlo: si se
+   apunta al cerrar el paso, el primer cambio se compara consigo mismo y se
+   pierde. De ahí que se llame al entrar en el bloque y antes de cada tecla. */
+function baseDe(zona){
+  const k = zona.dataset.edit;
+  if (!PREVIO.has(k)) PREVIO.set(k, zona.innerHTML);
+  return PREVIO.get(k);
+}
+
+/* Cierra el cambio que estuviera en curso y lo anota. Devuelve si hubo algo
+   que anotar. Todo lo que toca un bloque pasa por aquí. */
+function confirma(zona){
+  if (!zona || !zona.dataset || !zona.dataset.edit) return false;
+  const k = zona.dataset.edit;
+  const antes = baseDe(zona);
+  const ahora = zona.innerHTML;
+  if (antes === ahora) return false;
+  LINEA.length = IDX;                       // lo que se pudiera rehacer, se pierde
+  LINEA.push({
+    clave: k, antes: antes, despues: ahora,
+    selA: SEL_BASE.get(k) || null, selD: marcaSeleccion(zona),
+  });
+  while (LINEA.length > TOPE_HIST) LINEA.shift();
+  IDX = LINEA.length;
+  PREVIO.set(k, ahora);
+  SEL_BASE.set(k, LINEA[LINEA.length - 1].selD);
+  pintaHistorial();
+  return true;
+}
+
+/* Se escribe seguido: los golpes de tecla se juntan en un solo paso mientras
+   no haya pausa. Cualquier otra cosa cierra el paso antes de actuar. */
+function confirmaYa(){
+  clearTimeout(relojHist);
+  const z = zonaEscribiendo || zonaActiva();
+  zonaEscribiendo = null;
+  return confirma(z);
+}
+
+function anotaEscritura(zona){
+  clearTimeout(relojHist);
+  zonaEscribiendo = zona;
+  relojHist = setTimeout(function(){ zonaEscribiendo = null; confirma(zona); }, 700);
+}
+
+function pintaHistorial(){
+  $$('[data-hist="atras"]').forEach(function(b){ b.disabled = IDX <= 0; });
+  $$('[data-hist="adelante"]').forEach(function(b){ b.disabled = IDX >= LINEA.length; });
+}
+
+/* clases y buscador al día después de reescribir un bloque desde fuera */
+function sincronizaZona(zona){
+  const k = zona.dataset.edit;
+  const orig = textoOriginal(zona);
+  const cambiado = orig == null || zona.innerHTML !== orig;
+  zona.classList.toggle('editada', cambiado);
+  if (k.slice(-2) === '-n') zona.classList.toggle('vacia', !zona.textContent.trim() && !zona.querySelector('img'));
+  else zona.classList.remove('vacia');
+  const notas = zona.closest('.notas');
+  if (notas) notas.classList.toggle('con-contenido', !!notas.querySelector('.zona.editada'));
+  refrescaIndice(zona);
+}
+
+function aplicaPaso(entrada, atras){
+  const zona = document.querySelector('.zona[data-edit="' + entrada.clave + '"]');
+  if (!zona) { avisa('Ese cambio era de un bloque que ya no está.'); return false; }
+  const html  = atras ? entrada.antes : entrada.despues;
+  const marca = atras ? entrada.selA  : entrada.selD;
+  const punto = zona.closest('.punto');
+  if (punto) punto.classList.add('abierto');       // no se deshace a ciegas
+  zona.innerHTML = html;
+  /* el navegador vuelve a escribir el HTML a su manera al asignarlo: el punto
+     de partida se lee de vuelta del DOM, nunca de la cadena que se le dio, o
+     el paso siguiente vería una diferencia que no existe */
+  PREVIO.set(entrada.clave, zona.innerHTML);
+  SEL_BASE.set(entrada.clave, marca);
+  sincronizaZona(zona);
+  SUCIAS.add(entrada.clave);
+  pintaEstado();
+  clearTimeout(pendiente);
+  pendiente = setTimeout(guardar, 1200);
+  if (punto && punto.hidden){
+    avisa('Hecho, pero ese punto está oculto por el filtro.');
+    return true;
+  }
+  try { zona.focus({ preventScroll: true }); } catch (e){ zona.focus(); }
+  ponSeleccion(zona, marca);
+  const caja = zona.getBoundingClientRect();
+  if (caja.top < 90 || caja.bottom > innerHeight - 130){
+    zona.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+  return true;
+}
+
+function deshacer(){
+  confirmaYa();
+  if (IDX <= 0){ avisa('No queda nada que deshacer.'); pintaHistorial(); return; }
+  IDX--;
+  if (!aplicaPaso(LINEA[IDX], true)) { /* el bloque ya no existe: se salta */ }
+  pintaHistorial(); pintaBotones();
+}
+
+function rehacer(){
+  confirmaYa();
+  if (IDX >= LINEA.length){ avisa('No queda nada que rehacer.'); pintaHistorial(); return; }
+  const e = LINEA[IDX];
+  IDX++;
+  aplicaPaso(e, false);
+  pintaHistorial(); pintaBotones();
+}
+
+/* ---------- barra de herramientas ----------
+   Un solo listado para los dos sitios donde aparece: la cinta de abajo, fija
+   mientras se edita, y la burbuja sobre el texto seleccionado en pantalla
+   ancha. El mismo manejador atiende a las dos. */
+function svg(d){
+  return '<svg viewBox="0 0 16 16" width="15" height="15" fill="none" ' +
+    'stroke="currentColor" stroke-width="1.5" stroke-linecap="round" ' +
+    'stroke-linejoin="round" aria-hidden="true">' + d + '</svg>';
+}
+const ICO = {
+  deshacer: svg('<path d="M6.5 3.4 3 6.5l3.5 3.1"/><path d="M3.4 6.5h6.1a3.5 3.5 0 0 1 0 7H6.6"/>'),
+  rehacer:  svg('<path d="M9.5 3.4 13 6.5l-3.5 3.1"/><path d="M12.6 6.5H6.5a3.5 3.5 0 0 0 0 7h2.9"/>'),
+  izq:      svg('<path d="M2.2 3.6h11.6M2.2 6.9h7.4M2.2 10.2h10.4M2.2 13.5h5.9"/>'),
+  centro:   svg('<path d="M2.2 3.6h11.6M4.3 6.9h7.4M2.8 10.2h10.4M5 13.5h5.9"/>'),
+  der:      svg('<path d="M2.2 3.6h11.6M6.4 6.9h7.4M3.4 10.2h10.4M7.9 13.5h5.9"/>'),
+  menos:    svg('<path d="M2.2 3.4h11.6M6.6 6.8h7.2M6.6 10h7.2M2.2 13.4h11.6"/><path d="M4.6 6.9 2.3 8.4l2.3 1.5z" fill="currentColor" stroke="none"/>'),
+  mas:      svg('<path d="M2.2 3.4h11.6M6.6 6.8h7.2M6.6 10h7.2M2.2 13.4h11.6"/><path d="M2.3 6.9l2.3 1.5-2.3 1.5z" fill="currentColor" stroke="none"/>'),
+  enlace:   svg('<path d="M6.6 9.4a2.7 2.7 0 0 0 3.8 0l2.2-2.2a2.7 2.7 0 1 0-3.8-3.8l-.9.9"/><path d="M9.4 6.6a2.7 2.7 0 0 0-3.8 0L3.4 8.8a2.7 2.7 0 1 0 3.8 3.8l.9-.9"/>'),
+  imagen:   svg('<path d="M2.2 5.4h2.5l1-1.7h4.6l1 1.7h2.5v8H2.2z"/><circle cx="8" cy="9.3" r="2.4"/>'),
+  revertir: svg('<path d="M3.1 8a4.9 4.9 0 1 0 1.6-3.6"/><path d="M2.4 2.7v3.2h3.2"/>'),
+  limpiar:  svg('<path d="M4 3.2h8M8 3.2v9.6"/><path d="M2.4 13.6l11.2-11.2" stroke-width="1.3"/>'),
+};
+
+const HERRAMIENTAS = [
+  { hist: 'atras',     ico: ICO.deshacer, et: 'Deshacer', t: 'Deshacer el último cambio (Ctrl+Z)' },
+  { hist: 'adelante',  ico: ICO.rehacer,  et: 'Rehacer',  t: 'Rehacer lo deshecho (Ctrl+Y)' },
+  { sep: 1 },
+  { cmd: 'bold',          html: '<b>B</b>', t: 'Negrita (Ctrl+B)', estado: 'bold', burbuja: 1 },
+  { cmd: 'italic',        html: '<i>I</i>', t: 'Cursiva (Ctrl+I)', estado: 'italic', burbuja: 1 },
+  { cmd: 'underline',     html: '<span style="text-decoration:underline">U</span>', t: 'Subrayado (Ctrl+U)', estado: 'underline', burbuja: 1 },
+  { cmd: 'strikeThrough', html: '<span style="text-decoration:line-through">S</span>', t: 'Tachado', estado: 'strikeThrough', burbuja: 1 },
+  { sep: 1, burbuja: 1 },
+  { bloque: '<h4>',         et: 'Título', t: 'Convertir el párrafo en subtítulo' },
+  { bloque: '<p>',          et: 'Normal', t: 'Devolver el párrafo a texto normal' },
+  { bloque: '<blockquote>', glifo: '&#10077;', t: 'Convertir el párrafo en cita' },
+  { sep: 1 },
+  { cmd: 'insertUnorderedList', glifo: '&#8226;&#8212;', t: 'Lista de puntos', estado: 'insertUnorderedList' },
+  { cmd: 'insertOrderedList',   glifo: '1&#8212;',       t: 'Lista numerada',  estado: 'insertOrderedList' },
+  { cmd: 'outdent', css: 1, ico: ICO.menos, t: 'Menos sangría' },
+  { cmd: 'indent',  css: 1, ico: ICO.mas,   t: 'Más sangría' },
+  { sep: 1 },
+  { cmd: 'justifyLeft',    css: 1, ico: ICO.izq,    t: 'Alinear a la izquierda', estado: 'justifyLeft' },
+  { cmd: 'justifyCenter',  css: 1, ico: ICO.centro, t: 'Centrar',                estado: 'justifyCenter' },
+  { cmd: 'justifyRight',   css: 1, ico: ICO.der,    t: 'Alinear a la derecha',   estado: 'justifyRight' },
+  { sep: 1, burbuja: 1 },
+  { tintas: 1, burbuja: 1 },
+  { sep: 1, burbuja: 1 },
+  { fondos: 1, burbuja: 1 },
+  { fondo: 'transparent', glifo: '&#8709;', t: 'Quitar el resaltado', burbuja: 1 },
+  { sep: 1, burbuja: 1 },
+  { enlace: 1, ico: ICO.enlace, t: 'Poner un enlace', burbuja: 1 },
+  { cmd: 'removeFormat', ico: ICO.limpiar, t: 'Quitar el formato de lo seleccionado', burbuja: 1 },
+  { sep: 1 },
+  { img: 1,      ico: ICO.imagen,   et: 'Imagen', t: 'Insertar una imagen' },
+  { revertir: 1, ico: ICO.revertir, t: 'Devolver este bloque a su texto original' },
+];
+
+function dibujaBoton(h){
+  if (h.sep) return '<span class="sep"></span>';
+  if (h.tintas){
+    return PALETA_TINTA.map(function(c){
+      return '<button type="button" data-tinta="' + c[2] + '" title="Texto ' + c[1].toLowerCase() + '">' +
+             '<span class="tinta" style="background:' + c[0] + '"></span></button>';
+    }).join('');
+  }
+  if (h.fondos){
+    return PALETA_FONDO.map(function(c){
+      return '<button type="button" data-fondo="' + c + '" title="Resaltar">' +
+             '<span class="tinta" style="background:' + c + '"></span></button>';
+    }).join('');
+  }
+  let a = '';
+  if (h.hist)     a += ' data-hist="' + h.hist + '"';
+  if (h.cmd)      a += ' data-cmd="' + h.cmd + '"';
+  if (h.bloque)   a += ' data-bloque="' + esc(h.bloque) + '"';
+  if (h.fondo)    a += ' data-fondo="' + h.fondo + '"';
+  if (h.enlace)   a += ' data-enlace="1"';
+  if (h.img)      a += ' data-img-btn="1"';
+  if (h.revertir) a += ' data-revertir="1"';
+  if (h.css)      a += ' data-css="1"';
+  const dentro = (h.ico || '') + (h.html || '') +
+    (h.glifo ? '<span class="glifo">' + h.glifo + '</span>' : '') +
+    (h.et ? '<span class="et">' + h.et + '</span>' : '');
+  return '<button type="button"' + a + ' title="' + esc(h.t || '') + '" ' +
+         'aria-label="' + esc(h.t || '') + '">' + dentro + '</button>';
+}
+
+function construyeCinta(){
+  const c = document.createElement('div');
+  c.id = 'cinta';
+  c.setAttribute('role', 'toolbar');
+  c.setAttribute('aria-label', 'Herramientas de edición');
+  c.innerHTML = HERRAMIENTAS.map(dibujaBoton).join('');
+  return c;
+}
+
 function construyeFormato(){
   const b = document.createElement('div');
   b.id = 'formato';
   b.setAttribute('role', 'toolbar');
-  b.setAttribute('aria-label', 'Formato de texto');
-  let h = '<button data-cmd="bold" title="Negrita (Ctrl+B)"><b>B</b></button>' +
-          '<button data-cmd="italic" title="Cursiva"><i>I</i></button>' +
-          '<button data-cmd="insertUnorderedList" title="Lista">&#8226;&#8212;</button>' +
-          '<span class="sep"></span>';
-  PALETA_TINTA.forEach(function(c){
-    h += '<button data-tinta="' + c[2] + '" title="Texto ' + c[1].toLowerCase() + '">' +
-         '<span class="tinta" style="background:' + c[0] + '"></span></button>';
-  });
-  h += '<span class="sep"></span>';
-  PALETA_FONDO.forEach(function(c){
-    h += '<button data-fondo="' + c + '" title="Resaltar">' +
-         '<span class="tinta" style="background:' + c + '"></span></button>';
-  });
-  h += '<button data-fondo="transparent" title="Quitar resaltado">&#8709;</button>';
-  h += '<span class="sep"></span>' +
-       '<button data-img-btn="1" title="Insertar imagen">&#128247;</button>' +
-       '<button data-revertir="1" title="Devolver este bloque a su texto original">&#8634;</button>';
-  b.innerHTML = h;
+  b.setAttribute('aria-label', 'Formato del texto seleccionado');
+  b.innerHTML = HERRAMIENTAS.filter(function(h){ return h.burbuja; }).map(dibujaBoton).join('');
   document.body.appendChild(b);
   return b;
+}
+
+/* ---------- ejecutar una herramienta ---------- */
+let zonaDestinoImg = null, pideImagen = null;
+
+function ponEnlace(zona){
+  const sel = getSelection();
+  const guardado = sel && sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+  if (guardado && guardado.collapsed){ avisa('Selecciona antes el texto del enlace.'); return; }
+  const u = prompt('Dirección del enlace (tiene que empezar por https://)', 'https://');
+  if (guardado){ try { sel.removeAllRanges(); sel.addRange(guardado); } catch (e){} }
+  if (!u) return;
+  if (!ENLACE_OK.test(u)){ avisa('Solo valen enlaces que empiecen por http:// o https://'); return; }
+  document.execCommand('createLink', false, u);
+  $$('a[href]', zona).forEach(function(a){
+    a.setAttribute('target', '_blank'); a.setAttribute('rel', 'noopener noreferrer');
+  });
+}
+
+function ejecuta(b){
+  if (!b || b.disabled) return;
+  if (b.dataset.hist){ b.dataset.hist === 'atras' ? deshacer() : rehacer(); return; }
+  const z = zonaActiva();
+  if (b.dataset.revertir){ if (z) revierte(z); else avisa('Pon el cursor en el bloque que quieras devolver.'); return; }
+  if (b.dataset.imgBtn){
+    zonaDestinoImg = z;
+    if (!z){ avisa('Pon el cursor donde quieras la imagen.'); return; }
+    if (pideImagen) pideImagen();
+    return;
+  }
+  if (!z){ avisa('Pon antes el cursor en un bloque.'); return; }
+  confirmaYa();                                   // el paso anterior se cierra aquí
+  baseDe(z);
+  /* styleWithCSS solo donde hace falta: la negrita y las demás salen mejor
+     como etiqueta, y el color no sobrevive de otra forma. */
+  const conCSS = !!(b.dataset.css || b.hasAttribute('data-tinta') || b.hasAttribute('data-fondo'));
+  try { document.execCommand('styleWithCSS', false, conCSS); } catch (e){}
+  if (b.dataset.enlace) ponEnlace(z);
+  else if (b.dataset.bloque) document.execCommand('formatBlock', false, b.dataset.bloque);
+  else if (b.dataset.cmd) document.execCommand(b.dataset.cmd);
+  else if (b.hasAttribute('data-tinta')) document.execCommand('foreColor', false, b.getAttribute('data-tinta') || '#0b0b0b');
+  else if (b.hasAttribute('data-fondo')){
+    const c = b.getAttribute('data-fondo');
+    if (!document.execCommand('hiliteColor', false, c)) document.execCommand('backColor', false, c);
+  }
+  if (confirma(z)) marcaSucia(z);
+  pintaBotones();
+}
+
+/* que los botones digan en qué estado está el cursor, como en un Word */
+const ESTADOS = ['bold','italic','underline','strikeThrough',
+                 'insertUnorderedList','insertOrderedList',
+                 'justifyLeft','justifyCenter','justifyRight'];
+function pintaBotones(){
+  pintaHistorial();
+  const dentro = !!zonaActiva();
+  $$('#cinta [data-cmd], #formato [data-cmd]').forEach(function(b){
+    if (ESTADOS.indexOf(b.dataset.cmd) === -1) return;
+    let on = false;
+    if (dentro){ try { on = document.queryCommandState(b.dataset.cmd); } catch (e){} }
+    b.classList.toggle('on', !!on);
+  });
 }
 
 function colocaFormato(barra){
@@ -2372,9 +2784,12 @@ function colocaFormato(barra){
   if (!r.width && !r.height) return;
   barra.classList.add('visible');
   const cb = barra.getBoundingClientRect();
+  const panel = document.getElementById('panel-edicion');
+  const suelo = innerHeight - ((panel && panel.offsetHeight) || 0) - 8;
   let x = r.left + r.width / 2 - cb.width / 2;
   let y = r.top - cb.height - 10;
   if (y < 66) y = r.bottom + 10;
+  if (y + cb.height > suelo) y = Math.max(66, r.top - cb.height - 10);
   x = Math.max(8, Math.min(x, innerWidth - cb.width - 8));
   barra.style.left = Math.round(x) + 'px';
   barra.style.top = Math.round(y) + 'px';
@@ -2384,8 +2799,9 @@ function zonaActiva(){
   const a = document.activeElement;
   if (a && a.classList && a.classList.contains('zona')) return a;
   const sel = getSelection();
-  if (sel && sel.anchorNode && sel.anchorNode.parentElement){
-    const z = sel.anchorNode.parentElement.closest('.zona');
+  if (sel && sel.anchorNode){
+    const base = sel.anchorNode.nodeType === 1 ? sel.anchorNode : sel.anchorNode.parentElement;
+    const z = base && base.closest ? base.closest('.zona') : null;
     if (z) return z;
   }
   return null;
@@ -2403,19 +2819,25 @@ function modoEdicion(on){
       COMPACTO_PREVIO = false; PINTA_COMPACTO(true);
     }
   }
+  if (!on) confirmaYa();
   EDITANDO = on;
   document.body.classList.toggle('editando', on);
   $$('.zona').forEach(function(z){
+    /* el texto de partida se guarda antes de tocar nada: es lo que devuelve ↺
+       y lo que decide si el bloque sigue marcado como editado */
+    guardaOriginal(z);
     if (on) z.setAttribute('contenteditable', 'true');
     else z.removeAttribute('contenteditable');
   });
+  if (on && MIDE_PANEL) requestAnimationFrame(MIDE_PANEL);
   const btn = document.getElementById('btn-editar');
   if (btn){
     btn.setAttribute('aria-pressed', String(on));
     const et = btn.querySelector('.et');
-    if (et) et.textContent = on ? 'Salir' : 'Editar';
+    if (et) et.textContent = on ? 'Listo' : 'Editar';
   }
   if (on){
+    pintaBotones();
     avisa('Todo lo que salga con borde punteado se puede escribir. ' +
           $$('.zona').length + ' bloques.');
   } else {
@@ -2435,8 +2857,9 @@ async function traeEdiciones(){
     /* lo que ya no está en el servidor vuelve a su original */
     $$('.zona.editada').forEach(function(z){
       const k = z.dataset.edit;
-      if (!vistas.has(k) && z.dataset.original && !SUCIAS.has(k) && document.activeElement !== z){
-        z.innerHTML = z.dataset.original;
+      if (!vistas.has(k) && ORIGINAL.has(k) && !SUCIAS.has(k) && document.activeElement !== z){
+        z.innerHTML = ORIGINAL.get(k);
+        PREVIO.set(k, z.innerHTML);
         z.classList.remove('editada');
         if (k.slice(-2) === '-n') z.classList.add('vacia');
         const notas = z.closest('.notas');
@@ -2509,66 +2932,108 @@ function montaEditor(){
   /* Que se vea de un vistazo en qué modo se está: el token queda recordado en
      el navegador, así que el enlace normal también abre como editor una vez
      usado el de edición. Sin esto, los dos enlaces parecen el mismo. */
-  const acciones = $('.acciones');
   const btn = document.createElement('button');
   btn.className = 'btn'; btn.id = 'btn-editar'; btn.setAttribute('aria-pressed', 'false');
   btn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M11.5 2.5l2 2L6 12l-2.5.5.5-2.5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg><span class="et">Editar</span>';
-  acciones.insertBefore(btn, acciones.firstChild);
+  /* En la barra de arriba, no dentro de .acciones: en el móvil ese grupo se
+     muda al índice desplegable, y entonces para editar había que abrir antes
+     el menú. Es el botón principal de quien tiene el enlace de edición. */
+  const arriba = $('.topbar');
+  arriba.insertBefore(btn, $('#btn-filtros') || $('.acciones'));
   btn.addEventListener('click', function(){ modoEdicion(!EDITANDO); });
 
+  /* un solo panel abajo: la cinta de herramientas encima del estado */
+  const panel = document.createElement('div');
+  panel.id = 'panel-edicion';
+  const cinta = construyeCinta();
   const barra = document.createElement('div');
   barra.id = 'barra-edicion';
   barra.innerHTML =
     '<div class="estado" id="estado-edicion" role="status" aria-live="polite">Todo al día</div>' +
-    '<button id="btn-imagen">Imagen</button>' +
     '<button id="btn-exportar">Descargar</button>' +
-    '<button id="btn-salir-editor">Salir del modo editor</button>' +
+    '<button id="btn-salir-editor" ' +
+      'title="Olvida el enlace de edición en este navegador: vuelve a ser solo lectura">' +
+      '<span class="larga">Cerrar sesión de editor</span><span class="corta">Cerrar sesión</span>' +
+    '</button>' +
     '<button id="btn-guardar" class="primario">Guardar</button>';
-  document.body.appendChild(barra);
+  panel.appendChild(cinta);
+  panel.appendChild(barra);
+  document.body.appendChild(panel);
+
+  /* la altura del panel se le devuelve al documento como hueco: nadie debe
+     quedarse con el último párrafo tapado */
+  function mideePanel(){
+    document.documentElement.style.setProperty('--panel-edicion',
+      (panel.offsetHeight || 118) + 'px');
+  }
+  if (window.ResizeObserver) new ResizeObserver(mideePanel).observe(panel);
+  addEventListener('resize', mideePanel);
+  MIDE_PANEL = mideePanel;
 
   const formato = construyeFormato();
   const inputImg = document.createElement('input');
   inputImg.type = 'file'; inputImg.accept = 'image/*'; inputImg.hidden = true;
   document.body.appendChild(inputImg);
-  let zonaDestino = null;
+  pideImagen = function(){ inputImg.click(); };
 
+  document.addEventListener('beforeinput', function(e){
+    const z = e.target.closest && e.target.closest('.zona');
+    if (z && EDITANDO) baseDe(z);           // el antes, antes de que cambie
+  });
+  document.addEventListener('focusin', function(e){
+    const z = e.target.closest && e.target.closest('.zona');
+    if (z && EDITANDO) baseDe(z);
+  });
   document.addEventListener('input', function(e){
     const z = e.target.closest && e.target.closest('.zona');
-    if (z && EDITANDO) marcaSucia(z);
+    if (!z || !EDITANDO) return;
+    marcaSucia(z);
+    anotaEscritura(z);
+  });
+  /* al salir de un bloque, lo escrito ahí queda cerrado como un paso */
+  document.addEventListener('focusout', function(e){
+    const z = e.target.closest && e.target.closest('.zona');
+    if (z && EDITANDO) confirma(z);
   });
 
   document.addEventListener('selectionchange', function(){
     if (!EDITANDO) return;
-    requestAnimationFrame(function(){ colocaFormato(formato); });
+    requestAnimationFrame(function(){ colocaFormato(formato); pintaBotones(); });
   });
   addEventListener('scroll', function(){
     if (EDITANDO && formato.classList.contains('visible')) colocaFormato(formato);
   }, { passive: true });
 
-  formato.addEventListener('mousedown', function(e){ e.preventDefault(); });
-  formato.addEventListener('click', function(e){
-    const b = e.target.closest('button');
-    if (!b) return;
-    const z = zonaActiva();
-    if (b.dataset.revertir){ if (z) revierte(z); return; }
-    if (b.dataset.imgBtn){ zonaDestino = z; inputImg.click(); return; }
-    if (!z) return;
-    try { document.execCommand('styleWithCSS', false, true); } catch (err){}
-    if (b.dataset.cmd) document.execCommand(b.dataset.cmd);
-    else if (b.hasAttribute('data-tinta')) document.execCommand('foreColor', false, b.getAttribute('data-tinta') || '#0b0b0b');
-    else if (b.hasAttribute('data-fondo')){
-      const c = b.getAttribute('data-fondo');
-      if (!document.execCommand('hiliteColor', false, c)) document.execCommand('backColor', false, c);
-    }
-    marcaSucia(z);
+  /* las dos barras hacen lo mismo y no le roban el foco al texto */
+  [cinta, formato].forEach(function(bar){
+    bar.addEventListener('mousedown', function(e){ e.preventDefault(); });
+    bar.addEventListener('click', function(e){
+      const b = e.target.closest('button');
+      if (b) ejecuta(b);
+    });
   });
 
   document.addEventListener('keydown', function(e){
     if (!EDITANDO) return;
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's'){ e.preventDefault(); guardar(); return; }
+    if (!(e.ctrlKey || e.metaKey)) {
+      /* el Intro cierra el paso: deshacer no debe saltarse un párrafo entero */
+      if (e.key === 'Enter' && zonaActiva()) setTimeout(confirmaYa, 0);
+      return;
+    }
+    const t = e.key.toLowerCase();
+    if (t === 's'){ e.preventDefault(); confirmaYa(); guardar(); return; }
+    if (t === 'z' && !e.shiftKey){ e.preventDefault(); deshacer(); return; }
+    if ((t === 'z' && e.shiftKey) || t === 'y'){ e.preventDefault(); rehacer(); return; }
     const z = zonaActiva();
-    if (z && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b'){
-      e.preventDefault(); document.execCommand('bold'); marcaSucia(z);
+    if (!z) return;
+    const atajo = { b: 'bold', i: 'italic', u: 'underline' }[t];
+    if (atajo){
+      e.preventDefault();
+      confirmaYa();
+      try { document.execCommand('styleWithCSS', false, false); } catch (err){}
+      document.execCommand(atajo);
+      if (confirma(z)) marcaSucia(z);
+      pintaBotones();
     }
   });
 
@@ -2585,8 +3050,9 @@ function montaEditor(){
       }
     }
     e.preventDefault();
+    confirmaYa();
     document.execCommand('insertText', false, (e.clipboardData && e.clipboardData.getData('text/plain')) || '');
-    marcaSucia(z);
+    if (confirma(z)) marcaSucia(z);
   });
 
   /* arrastrar y soltar */
@@ -2609,20 +3075,18 @@ function montaEditor(){
 
   inputImg.addEventListener('change', function(){
     const f = inputImg.files && inputImg.files[0];
-    if (f) insertaFichero(f, zonaDestino);
+    if (f) insertaFichero(f, zonaDestinoImg);
     inputImg.value = '';
   });
 
-  document.getElementById('btn-guardar').addEventListener('click', guardar);
-  document.getElementById('btn-imagen').addEventListener('click', function(){
-    zonaDestino = zonaActiva();
-    if (!zonaDestino){ avisa('Pon el cursor donde quieras la imagen.'); return; }
-    inputImg.click();
+  document.getElementById('btn-guardar').addEventListener('click', function(){
+    confirmaYa(); guardar();
   });
   document.getElementById('btn-exportar').addEventListener('click', exporta);
 
   /* devolver este navegador a modo lectura: olvida el enlace de edición */
   document.getElementById('btn-salir-editor').addEventListener('click', async function(){
+    confirmaYa();
     if (SUCIAS.size && !confirm('Hay cambios sin guardar. ¿Salir igualmente?')) return;
     await guardar().catch(function(){});
     try { localStorage.removeItem(CLAVE_TOKEN); } catch (e){}
@@ -2634,6 +3098,7 @@ function montaEditor(){
   });
 
   pintaEstado();
+  pintaHistorial();
 }
 
 async function exporta(){
