@@ -54,22 +54,90 @@ Qué se puede hacer:
   resumen de cada módulo, el hallazgo y la acción de los 267 puntos, las notas
   del equipo por módulo, la descripción y el detalle de las 47 acciones del
   plan, la fase de profundización, las fuentes y la nota metodológica.
-  **651 regiones.**
+  **651 regiones, cada una con su clave propia.**
 - **Deshacer y rehacer**: los dos primeros botones de la cinta, y Ctrl+Z /
   Ctrl+Y (también Ctrl+Mayús+Z). Ver más abajo.
 - **Formato**: negrita, cursiva, subrayado, tachado; subtítulo, párrafo normal
   y cita; lista de puntos y numerada; más y menos sangría; alineación;
-  color de texto y resaltado con la paleta del informe; enlaces; quitar el
-  formato. Los botones se encienden según dónde esté el cursor.
+  **cuatro tamaños de letra**; color de texto y resaltado con la paleta del
+  informe; enlaces; quitar el formato. Los botones se encienden según dónde
+  esté el cursor.
+- **Los tamaños van en `em`**, no en píxeles: 0,85 · normal · 1,25 · 1,6,
+  relativos al texto de alrededor. Así siguen la escala del informe en vez de
+  pelearse con ella, y valen igual en el móvil, donde el cuerpo es más
+  pequeño. Son los únicos valores que el filtro deja pasar: un tamaño metido a
+  mano no llega a guardarse.
 - **Dos sitios para lo mismo**: una cinta fija abajo, siempre a la vista
   mientras se edita, y —en pantalla ancha— una barra que sale sobre el texto
   seleccionado. En el móvil la cinta se desplaza a lo ancho con el dedo y la
   barra flotante se apaga, porque pelea con el menú de selección del sistema.
 - **Imágenes**: botón, **arrastrar y soltar**, o **pegar una captura** con
   Ctrl+V. Se reducen en el navegador antes de subirlas.
-- **Guardado**: automático 1,6 s tras dejar de escribir, más botón y Ctrl+S,
-  con el estado siempre visible y aviso al salir con cambios pendientes.
+- **Guardado**: automático 1,6 s tras dejar de escribir, más botón y Ctrl+S.
+  Ver más abajo: no se da nada por guardado hasta que el servidor lo devuelve
+  leído.
 - **Descargar**: exporta todas las ediciones a un JSON.
+
+### Que lo guardado esté guardado
+
+Se perdían cambios de verdad, y por una razón tonta: **los 47 puntos de la
+hoja de ruta compartían once claves**. Las acciones se numeran del 1 en
+adelante dentro de cada uno de los cinco bloques, así que `plan-a01` existía
+cinco veces. La página busca el bloque por su clave y siempre encontraba el
+primero: editar cualquiera de los otros 36 guardaba el texto del primero y
+tiraba el cambio sin decir nada. Ahora la clave lleva también el bloque
+(`plan-a3-07`) y **las 651 son distintas**.
+
+Alrededor de eso, el guardado se rehízo con tres reglas:
+
+1. **Nada se da por guardado hasta comprobarlo.** Después de mandar, se vuelve
+   a leer del servidor lo que se acaba de escribir y se compara. Un `200` dice
+   que la petición llegó, no que la fila esté como creemos. Por eso el
+   indicador dice «Guardado **y comprobado**»; si la comprobación no se puede
+   hacer, dice «Mandado» y lo explica.
+2. **Lo pendiente sobrevive a cerrar la página.** Cada cambio se copia al
+   instante en el navegador. Al volver a abrir, lo que quedó sin mandar se
+   devuelve a su sitio y se manda solo, avisando de qué se ha recuperado. En
+   el móvil hace falta: el sistema descarta la pestaña sin preguntar y el aviso
+   de «vas a salir» no siempre llega.
+3. **Si algo falla, se ve.** El estado se pone en rojo con el motivo. Se
+   reintenta solo con esperas crecientes, y al instante en cuanto vuelve la
+   conexión o la pestaña. Lo que el servidor rechaza en firme —un bloque
+   demasiado grande— deja de reintentarse pero **no se da por guardado**:
+   sigue contando como pendiente y con su nombre a la vista.
+
+Y unos cuantos casos concretos que ya no muerden:
+
+- Escribir mientras se está guardando ya no se pierde: antes esa segunda tanda
+  se quedaba esperando a la siguiente tecla, que podía no llegar nunca.
+- Ninguna petición se queda colgada: hay veinte segundos de plazo, cuerpo de
+  la respuesta incluido.
+- Un corte de red al abrir ya no borra el enlace de edición. Solo lo borra un
+  401 de verdad. Antes, como el token ya no está en la barra de direcciones,
+  un fallo pasajero dejaba a esa persona en solo lectura sin manera de volver.
+- El resaltado amarillo del buscador ya no puede acabar guardado como parte
+  del texto.
+- Las clases del propio informe (`prosa`, `lista-fuentes`, `esfuerzo`) ya no
+  se caen al guardar; un bloque editado seguía viéndose distinto al resto.
+- ↺ pasa por el guardado normal, con sus reintentos: si el borrado fallaba, el
+  bloque volvía a aparecer solo treinta segundos después.
+- Pulsar «Listo» ya no esconde el estado: mientras quede algo por guardar, la
+  barra se queda.
+- «Cerrar sesión de editor» espera a que termine lo que estuviera en vuelo, y
+  si aun así queda algo, lo dice antes de olvidar el enlace.
+- Una lectura del servidor rara —vacía donde antes había filas— ya no deshace
+  trabajo en pantalla.
+- «Descargar» ya no entrega un JSON vacío cuando la lectura falla.
+- El cartelito de avisos **no existía en la página**: tenía estilos pero nadie
+  lo creaba, así que todos los mensajes —los de error incluidos— se perdían.
+
+Lo que sigue sin resolver, y conviene saberlo:
+
+- **Dos personas editando el mismo bloque a la vez se pisan.** Gana quien
+  guarde el último, sin aviso. Hace falta control de versiones para arreglarlo
+  de verdad; hoy no lo hay.
+- El enlace de edición es una llave sin nombre: no queda registro de quién
+  escribió qué, y quien lo tenga puede devolver cualquier bloque al original.
 
 ### Deshacer: qué alcanza y qué no
 

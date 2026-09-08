@@ -827,6 +827,9 @@ body.editando .zona[contenteditable="true"]:focus{
 #cinta .et,#formato .et{font-size:12px; letter-spacing:.01em}
 #cinta .glifo,#formato .glifo{font-size:15px}
 #cinta svg,#formato svg{display:block; flex:none}
+#cinta .letra,#formato .letra{
+  font-weight:650; line-height:1; display:block; width:1em; text-align:center;
+}
 
 /* burbuja sobre la selección */
 #formato{
@@ -842,7 +845,10 @@ body.editando .zona[contenteditable="true"]:focus{
   background:var(--navy); color:#f2f1ee;
   box-shadow:0 -4px 18px rgba(0,0,0,.2);
 }
-body.editando #panel-edicion{display:flex}
+body.editando #panel-edicion,
+body.pendiente #panel-edicion{display:flex}
+/* fuera del modo edición solo interesa saber si se guardó, no las herramientas */
+body.pendiente:not(.editando) #cinta{display:none}
 #cinta{
   display:flex; align-items:center; gap:2px; padding:7px 12px 6px;
   overflow-x:auto; overflow-y:hidden; scrollbar-width:thin;
@@ -854,15 +860,23 @@ body.editando #panel-edicion{display:flex}
 #cinta::-webkit-scrollbar-thumb{background:rgba(255,255,255,.28); border-radius:3px}
 #cinta::-webkit-scrollbar-track{background:transparent}
 #cinta .grupo{display:flex; align-items:center; gap:2px; flex:none}
+/* en pantalla ancha caben en dos filas y se ven todas; en el móvil no hay
+   sitio para dos filas, así que allí se desliza a lo largo con el dedo */
+@media (min-width:761px){
+  #cinta{flex-wrap:wrap; overflow-x:visible; row-gap:4px}
+}
 
 /* barra de estado de la edición */
 #barra-edicion{
   display:none; align-items:center; gap:12px; flex-wrap:wrap;
   padding:9px 14px calc(9px + env(safe-area-inset-bottom,0px));
 }
-body.editando #barra-edicion{display:flex}
+body.editando #barra-edicion,
+body.pendiente #barra-edicion{display:flex}
 #barra-edicion .estado{font-size:12.5px; opacity:.85; flex:1; min-width:120px}
 #barra-edicion .estado b{opacity:1; font-weight:600}
+#barra-edicion .estado.mal{opacity:1; color:#ffb4ac}
+#barra-edicion .estado.mal b{color:#ffb4ac}
 #barra-edicion button{
   padding:8px 14px; border-radius:var(--r); border:1px solid rgba(255,255,255,.28);
   background:transparent; color:#f2f1ee; font-size:13px; cursor:pointer; white-space:nowrap;
@@ -874,8 +888,8 @@ body.editando #barra-edicion{display:flex}
 
 /* el panel no puede taparle a nadie el último párrafo: su altura se mide en
    marcha y se le devuelve al documento como hueco */
-body.editando{padding-bottom:var(--panel-edicion,118px)}
-body.editando .fab{bottom:calc(var(--panel-edicion,118px) + 12px)}
+body.editando,body.pendiente{padding-bottom:var(--panel-edicion,118px)}
+body.editando .fab,body.pendiente .fab{bottom:calc(var(--panel-edicion,118px) + 12px)}
 
 @media (max-width:760px){
   /* con la cinta siempre a mano, la burbuja solo estorbaría: en el móvil pelea
@@ -897,7 +911,8 @@ body.editando .fab{bottom:calc(var(--panel-edicion,118px) + 12px)}
   opacity:0; pointer-events:none; transition:opacity .2s;
 }
 #aviso-lectura.visible{opacity:1}
-body.editando #aviso-lectura{bottom:calc(var(--panel-edicion,118px) + 14px)}
+body.editando #aviso-lectura,
+body.pendiente #aviso-lectura{bottom:calc(var(--panel-edicion,118px) + 14px)}
 
 @media print{
   #formato,#panel-edicion,#aviso-lectura,.notas-et{display:none !important}
@@ -1717,7 +1732,7 @@ function render(){
         '<span class="num">' + String(ac[3]).padStart(2,'0') + '</span>' +
         '<label for="' + id + '">' + esc(ac[0]) + '</label>' +
         '<span class="mods">' + esc(ac[1]) + '</span></div>' +
-        '<div class="det zona" data-edit="plan-a' + String(ac[3]).padStart(2,'0') + '"><p>' +
+        '<div class="det zona" data-edit="plan-a' + bi + '-' + String(ac[3]).padStart(2,'0') + '"><p>' +
         (ac[2] ? esc(ac[2].t) : '') + '</p></div>' +
         '</div></div>';
     });
@@ -1869,6 +1884,10 @@ function resaltar(el, q){
       if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
       const p = n.parentNode.nodeName;
       if (p === 'SCRIPT' || p === 'STYLE' || p === 'MARK') return NodeFilter.FILTER_REJECT;
+      /* mientras se edita, el resaltado no entra en los bloques escribibles:
+         el <mark> acabaría dentro del texto guardado */
+      if (typeof EDITANDO !== 'undefined' && EDITANDO &&
+          n.parentElement && n.parentElement.closest('.zona')) return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT;
     }
   });
@@ -2131,6 +2150,18 @@ const PALETA_TINTA = [
 ];
 const PALETA_FONDO = ['#fff2a8', '#ffd6c2', '#cfe3fb', '#c9f0dd'];
 
+/* Tamaños de letra en em, relativos al texto de alrededor: así siguen la
+   escala del informe en vez de pelearse con ella, y valen igual en el móvil,
+   donde el cuerpo es más pequeño. Son los únicos valores que el filtro deja
+   pasar, para que nadie meta un tamaño a mano y rompa la maqueta. */
+const PALETA_TAMANO = [
+  ['0.85em', 'Letra pequeña',    12],
+  ['',       'Letra normal',     14],
+  ['1.25em', 'Letra grande',     17],
+  ['1.6em',  'Letra muy grande', 20],
+];
+const TAMANOS_OK = /^(0?\.85|1\.25|1\.6)em$/;
+
 let TOKEN = null, PUEDE_EDITAR = false, EDITANDO = false;
 let PINTA_COMPACTO = null, COMPACTO_PREVIO = false;
 let MIDE_PANEL = null;
@@ -2139,7 +2170,7 @@ let MIDE_PANEL = null;
    un fallo silencioso obliga a adivinar desde fuera. */
 const DIAG = {
   servidor: null, lectura: '—', escritura: '—', token: 'no',
-  ediciones: 0, error: '', version: '',
+  ediciones: 0, error: '', version: '', claves: '—', comprobado: 0,
 };
 
 function pintaDiag(){
@@ -2162,6 +2193,9 @@ function pintaDiag(){
     fila('Enlace de edición', DIAG.token) +
     fila('Permiso de escritura', DIAG.escritura, DIAG.escritura === 'sí' ? 'si' : (DIAG.escritura === '—' ? '' : 'no')) +
     fila('Bloques editables', String($$('.zona').length)) +
+    fila('Claves de guardado', DIAG.claves, /repetidas 0|correctas/.test(DIAG.claves) ? 'si' : (DIAG.claves === '—' ? '' : 'no')) +
+    fila('Sin guardar ahora', String(SUCIAS.size), SUCIAS.size ? 'no' : 'si') +
+    fila('Comprobados contra el servidor', String(DIAG.comprobado)) +
     fila('Versión', DIAG.version || '—') +
     (DIAG.error ? fila('Último error', DIAG.error, 'no') : '') +
     '</dl><div class="pie">Si algo aquí sale en rojo, manda una captura de este panel.</div>';
@@ -2187,7 +2221,7 @@ function montaDiag(){
   pintaDiag();
 }
 const SUCIAS = new Set();
-let guardando = false, pendiente = null, ultimoGuardado = null;
+let guardando = false, pendiente = null, ultimoGuardado = null, ultimoError = '';
 
 /* El texto tal y como salió del informe. Se guarda aparte, en memoria: es lo
    que devuelve ↺ y lo que decide si un bloque sigue contando como editado.
@@ -2203,11 +2237,18 @@ function textoOriginal(zona){ return ORIGINAL.get(zona.dataset.edit); }
 /* ---------- limpieza del HTML que se guarda y se muestra ----------
    Lo escribe gente con el enlace, se guarda y se vuelve a pintar para todos:
    se filtra en ambos sentidos para que nada ejecutable sobreviva. */
+/* MARK no está en la lista a propósito: lo pone el resaltado del buscador, no
+   el editor, y si pasara se guardaría el resaltado como si fuera texto. El
+   filtro lo desmonta dejando las letras. */
 const ETIQUETAS_OK = new Set(['P','BR','B','STRONG','I','EM','U','S','STRIKE','SPAN',
-  'UL','OL','LI','IMG','MARK','DIV','H4','BLOCKQUOTE','A']);
+  'UL','OL','LI','IMG','DIV','H4','BLOCKQUOTE','A']);
 const ESTILOS_OK = ['color', 'background-color', 'font-weight', 'font-style',
-  'text-align', 'text-decoration', 'text-decoration-line', 'margin-left'];
+  'text-align', 'text-decoration', 'text-decoration-line', 'margin-left', 'font-size'];
 const ENLACE_OK = /^https?:\/\//i;
+/* Las clases que el propio informe pone dentro de los bloques. Si el filtro se
+   las come, el bloque editado deja de parecerse al resto: pasó con «prosa»,
+   que fija el ancho de lectura. Salen de contarlas en el HTML generado. */
+const CLASES_OK = /^(lead|subida|prosa|esfuerzo|lista-fuentes)$/;
 
 function esImagenNuestra(u){
   return typeof u === 'string' && SB && u.indexOf(SB.deposito) === 0;
@@ -2226,7 +2267,7 @@ function limpiaHTML(html){
       const v = n.attributes[i].value;
       const conservar =
         (a === 'style') ||
-        (a === 'class' && /^(lead|subida|prosa)$/.test(v)) ||
+        (a === 'class' && CLASES_OK.test(v)) ||
         (n.tagName === 'IMG' && (a === 'alt' || a === 'width' || a === 'height' || a === 'loading')) ||
         (n.tagName === 'IMG' && a === 'src' && esImagenNuestra(v)) ||
         (n.tagName === 'A' && a === 'href' && ENLACE_OK.test(v)) ||
@@ -2242,7 +2283,15 @@ function limpiaHTML(html){
     }
     if (n.hasAttribute('style')){
       const limpio = n.style.cssText.split(';').map(function(d){ return d.trim(); })
-        .filter(function(d){ return d && ESTILOS_OK.indexOf(d.split(':')[0].trim().toLowerCase()) !== -1; })
+        .filter(function(d){
+          if (!d) return false;
+          const prop = d.split(':')[0].trim().toLowerCase();
+          if (ESTILOS_OK.indexOf(prop) === -1) return false;
+          /* del tamaño de letra solo pasan los de la barra: un valor a mano
+             rompería la escala tipográfica del informe */
+          if (prop === 'font-size') return TAMANOS_OK.test(d.slice(d.indexOf(':') + 1).trim());
+          return true;
+        })
         .join('; ');
       if (limpio) n.setAttribute('style', limpio); else n.removeAttribute('style');
     }
@@ -2261,20 +2310,59 @@ function limpiaHTML(html){
 
 /* ---------- hablar con el servidor ---------- */
 async function pide(ruta){
-  const r = await fetch(SB.url + '/rest/v1/' + ruta, {
-    headers: { apikey: SB.anon, Authorization: 'Bearer ' + SB.anon },
-  });
+  const corta = new AbortController();
+  const reloj = setTimeout(function(){ corta.abort(); }, ESPERA_MAXIMA);
+  let r;
+  try {
+    r = await fetch(SB.url + '/rest/v1/' + ruta, {
+      headers: { apikey: SB.anon, Authorization: 'Bearer ' + SB.anon },
+      signal: corta.signal,
+    });
+  } catch (e){
+    clearTimeout(reloj);
+    throw new Error((e && e.name === 'AbortError')
+      ? 'el servidor no contestó en 20 segundos' : 'sin conexión con el servidor');
+  }
+  clearTimeout(reloj);
   if (!r.ok) throw new Error('lectura ' + r.status);
   return r.json();
 }
 
-async function manda(cuerpo){
-  const r = await fetch(SB.url + '/functions/v1/fb360', {
+async function manda(cuerpo, persistente){
+  /* Una petición que no vuelve dejaba el estado en «Guardando…» para siempre.
+     Veinte segundos y se da por fallida, que es lo que hay que contarle a
+     quien está escribiendo. */
+  const corta = new AbortController();
+  const reloj = setTimeout(function(){ corta.abort(); }, ESPERA_MAXIMA);
+  const cuerpoTexto = JSON.stringify(Object.assign({ token: TOKEN }, cuerpo));
+  const opciones = {
     method: 'POST',
     headers: { apikey: SB.anon, Authorization: 'Bearer ' + SB.anon, 'content-type': 'application/json' },
-    body: JSON.stringify(Object.assign({ token: TOKEN }, cuerpo)),
-  });
-  const d = await r.json().catch(function(){ return {}; });
+    body: cuerpoTexto,
+    signal: corta.signal,
+  };
+  /* al cerrar la pestaña el navegador mata las peticiones normales; keepalive
+     las deja terminar, pero solo admite cuerpos pequeños */
+  if (persistente && cuerpoTexto.length < 60000) opciones.keepalive = true;
+  let r;
+  try { r = await fetch(SB.url + '/functions/v1/fb360', opciones); }
+  catch (e){
+    clearTimeout(reloj);
+    const msg = (e && e.name === 'AbortError')
+      ? 'el servidor no contestó en 20 segundos'
+      : 'sin conexión con el servidor';
+    const err = new Error(msg); err.red = true; throw err;
+  }
+  /* el reloj sigue en marcha hasta tener el cuerpo entero: una conexión que se
+     corta a mitad de respuesta dejaba «Guardando…» para siempre */
+  let d;
+  try { d = await r.json(); }
+  catch (e){
+    clearTimeout(reloj);
+    if (r.ok) return {};                       // 2xx sin cuerpo: vale igual
+    const err = new Error('respuesta incompleta del servidor'); err.estado = r.status; throw err;
+  }
+  clearTimeout(reloj);
   if (!r.ok) { const e = new Error(d.error || ('error ' + r.status)); e.estado = r.status; throw e; }
   return d;
 }
@@ -2341,62 +2429,302 @@ function insertaEnCursor(nodo, zona){
   if (!nodo.nextSibling) zona.appendChild(document.createElement('p'));
 }
 
-/* ---------- estado y guardado ---------- */
+/* ---------- estado y guardado ----------
+   Tres reglas, después de que se perdieran cambios de verdad:
+     1. nada se da por guardado hasta que el servidor lo devuelve leído;
+     2. lo que está pendiente sobrevive a cerrar la pestaña;
+     3. si algo falla, se ve en pantalla y se reintenta solo. */
+
+const CLAVE_BORRADOR = 'fb360.pendiente';
+const ESPERA_MAXIMA = 20000;      // una petición que no vuelve no puede colgar el estado
+const TOPE_BORRADOR = 400000;     // lo que cabe con holgura en el almacén del navegador
+const CONFIRMADO = new Map();     // clave -> HTML que el servidor ha devuelto leído
+let otraVuelta = false, esperaReintento = 4000, verificados = 0;
+/* Bloques que el servidor rechaza siempre —demasiado grandes, clave no
+   válida—. Reintentar no arregla nada, así que se dejan de reintentar, pero
+   NO se dan por guardados: siguen contando como pendientes, siguen en el
+   borrador local y siguen saliendo en rojo hasta que alguien lo vea. */
+const SIN_REMEDIO = new Map();
+function pendientesDeVerdad(){
+  let n = 0;
+  SUCIAS.forEach(function(k){ if (!SIN_REMEDIO.has(k)) n++; });
+  return n;
+}
+
 function marcaSucia(zona){
   SUCIAS.add(zona.dataset.edit);
+  /* si se toca un bloque que el servidor rechazaba, merece otro intento:
+     a lo mejor lo que se acaba de hacer es justo quitarle lo que sobraba */
+  if (SIN_REMEDIO.delete(zona.dataset.edit)) esperaReintento = 4000;
   zona.classList.add('editada');
   zona.classList.remove('vacia');
   const notas = zona.closest('.notas');
   if (notas) notas.classList.add('con-contenido');
   pintaEstado();
+  anotaBorrador();
   clearTimeout(pendiente);
   pendiente = setTimeout(guardar, 1600);
 }
 
-async function guardar(){
-  if (!PUEDE_EDITAR || guardando || !SUCIAS.size) { pintaEstado(); return; }
-  guardando = true; pintaEstado();
-  let fallos = 0, ultimo = '';
-  for (const clave of Array.from(SUCIAS)){
-    const zona = document.querySelector('.zona[data-edit="' + clave + '"]');
-    if (!zona) { SUCIAS.delete(clave); continue; }
-    const html = limpiaHTML(zona.innerHTML);
-    /* deshacer hasta el principio deja el bloque como estaba: entonces no se
-       guarda una copia del original, se quita la fila */
-    const orig = textoOriginal(zona);
-    const vuelto = orig != null && html === limpiaHTML(orig);
-    try {
-      await manda(vuelto ? { accion: 'borrar', clave: clave }
-                         : { accion: 'guardar', clave: clave, html: html });
-      SUCIAS.delete(clave);
-      zona.dataset.guardado = '1';
-      if (vuelto) sincronizaZona(zona);
-    } catch (e){ fallos++; ultimo = e.message; DIAG.error = e.message; pintaDiag(); }
+/* Copia local de lo que aún no ha llegado al servidor. Es la red de seguridad
+   de verdad: en el móvil el navegador descarta la pestaña sin avisar y
+   beforeunload no siempre llega, pero esto se escribe al instante. */
+function anotaBorrador(){
+  try {
+    const bloques = {};
+    let peso = 0, fuera = 0;
+    SUCIAS.forEach(function(k){
+      const z = document.querySelector('.zona[data-edit="' + k + '"]');
+      if (!z) return;
+      const h = limpiaHTML(z.innerHTML);
+      if (peso + h.length > TOPE_BORRADOR){ fuera++; return; }
+      peso += h.length;
+      bloques[k] = h;
+    });
+    if (fuera) avisa('Aviso: ' + fuera + ' bloque(s) no caben en la copia de seguridad del navegador. No cierres la página hasta que ponga «Guardado».');
+    if (Object.keys(bloques).length){
+      localStorage.setItem(CLAVE_BORRADOR, JSON.stringify({ t: Date.now(), bloques: bloques }));
+    } else {
+      localStorage.removeItem(CLAVE_BORRADOR);
+    }
+  } catch (e){ /* sin almacén: se sigue sin red de seguridad, pero se sigue */ }
+}
+
+function olvidaBorrador(){
+  try { localStorage.removeItem(CLAVE_BORRADOR); } catch (e){}
+}
+
+/* Al abrir: si quedó algo escrito y sin mandar, se devuelve a su sitio y se
+   manda. Antes esto se perdía sin dejar rastro. */
+const VIDA_BORRADOR = 86400000;    // un día: más allá, es basura de otra sesión
+
+function recuperaBorrador(){
+  let d = null;
+  try { d = JSON.parse(localStorage.getItem(CLAVE_BORRADOR) || 'null'); } catch (e){}
+  if (!d || typeof d !== 'object') return 0;
+  const bloques = d.bloques || d;                // formato viejo, por si acaso
+  if (d.t && Date.now() - d.t > VIDA_BORRADOR){
+    olvidaBorrador();
+    return 0;
   }
-  guardando = false;
-  if (!fallos) ultimoGuardado = new Date();
-  pintaEstado(fallos ? ('No se guardaron ' + fallos + ': ' + ultimo) : '');
-  if (fallos){ clearTimeout(pendiente); pendiente = setTimeout(guardar, 6000); }
+  const nombres = [];
+  Object.keys(bloques).forEach(function(k){
+    const z = document.querySelector('.zona[data-edit="' + k + '"]');
+    if (!z) return;
+    const limpio = limpiaHTML(bloques[k]);
+    if (z.innerHTML === limpio) return;          // ya estaba puesto
+    guardaOriginal(z);
+    z.innerHTML = limpio;
+    PREVIO.set(k, z.innerHTML);
+    sincronizaZona(z);
+    SUCIAS.add(k);
+    nombres.push(k);
+  });
+  if (nombres.length){
+    pintaEstado();
+    avisa('Se ' + (nombres.length === 1 ? 'ha recuperado 1 bloque que quedó' :
+          ('han recuperado ' + nombres.length + ' bloques que quedaron')) +
+          ' sin guardar (' + nombres.slice(0, 4).join(', ') +
+          (nombres.length > 4 ? '…' : '') + '). Se están mandando ahora.');
+    guardar();
+  } else { olvidaBorrador(); }
+  return nombres.length;
+}
+
+async function guardar(){
+  if (!PUEDE_EDITAR){ pintaEstado(); return; }
+  /* Llamar mientras ya se guarda no se pierde: se encadena otra vuelta. Antes
+     esa llamada se descartaba y lo escrito entretanto se quedaba esperando a
+     la siguiente tecla, que a lo mejor no llegaba nunca. */
+  if (guardando){ otraVuelta = true; return; }
+  if (!SUCIAS.size){ pintaEstado(); return; }
+  guardando = true; ultimoError = ''; pintaEstado();
+  let fallos = 0, ultimo = '', tocadas = [];
+  try {
+    let vueltas = 0;
+    do {
+      otraVuelta = false;
+      const tanda = Array.from(SUCIAS);
+      for (let i = 0; i < tanda.length; i++){
+        const clave = tanda[i];
+        if (!SUCIAS.has(clave)) continue;
+        if (SIN_REMEDIO.has(clave)) continue;      // ya se sabe que no va a entrar
+        const zona = document.querySelector('.zona[data-edit="' + clave + '"]');
+        if (!zona){ SUCIAS.delete(clave); continue; }
+        const html = limpiaHTML(zona.innerHTML);
+        /* deshacer hasta el principio deja el bloque como estaba: entonces no se
+           guarda una copia del original, se quita la fila */
+        const orig = textoOriginal(zona);
+        const vuelto = orig != null && html === limpiaHTML(orig);
+        try {
+          await manda(vuelto ? { accion: 'borrar', clave: clave }
+                             : { accion: 'guardar', clave: clave, html: html });
+          selloEscritura++;
+          /* solo deja de estar pendiente si nadie lo tocó mientras iba de
+             camino; si siguió escribiendo, sigue sucio y se vuelve a mandar */
+          if (limpiaHTML(zona.innerHTML) === html){
+            SUCIAS.delete(clave);
+            CONFIRMADO.set(clave, vuelto ? null : html);
+            tocadas.push(clave);
+          } else { otraVuelta = true; }
+          if (vuelto) sincronizaZona(zona);
+        } catch (e){
+          fallos++; ultimo = e.message; DIAG.error = e.message; pintaDiag();
+          if (e.estado === 400 || e.estado === 413){
+            /* el servidor no lo va a aceptar nunca: se deja de reintentar,
+               pero se sigue contando como pendiente y se dice cuál es */
+            SIN_REMEDIO.set(clave, e.message);
+            avisa('El bloque «' + clave + '» no se puede guardar: ' + e.message);
+          }
+        }
+      }
+      vueltas++;
+    } while ((otraVuelta || (!fallos && pendientesDeVerdad())) && vueltas < 12);
+  } finally {
+    guardando = false;
+  }
+
+  /* Comprobar de verdad: se vuelve a leer del servidor lo que se acaba de
+     mandar y se compara. Un 200 dice que la petición llegó, no que la fila
+     esté como creemos. */
+  let discrepan = [], comprobado = true;
+  if (tocadas.length){
+    try { discrepan = await compruebaGuardado(tocadas); }
+    catch (e){
+      comprobado = false;
+      DIAG.error = 'no se pudo comprobar: ' + e.message; pintaDiag();
+    }
+  }
+  discrepan.forEach(function(k){
+    const z = document.querySelector('.zona[data-edit="' + k + '"]');
+    if (z) SUCIAS.add(k);
+  });
+
+  if (!fallos && comprobado && !discrepan.length && !SUCIAS.size){
+    ultimoGuardado = new Date();
+    verificados = tocadas.length;
+    esperaReintento = 4000;
+    olvidaBorrador();
+  } else {
+    /* el borrador local se queda mientras no haya certeza: es lo único que
+       salva el trabajo si la pestaña se cierra ahora */
+    anotaBorrador();
+  }
+  if (SIN_REMEDIO.size){
+    const k = SIN_REMEDIO.keys().next().value;
+    ultimoError = SIN_REMEDIO.size + (SIN_REMEDIO.size === 1 ? ' bloque no se puede' : ' bloques no se pueden') +
+      ' guardar («' + k + '»: ' + SIN_REMEDIO.get(k) + ')';
+  } else {
+    ultimoError = fallos ? ('no se pudieron guardar ' + fallos + ': ' + ultimo)
+      : (discrepan.length ? ('el servidor no confirmó ' + discrepan.length + ', reintentando')
+      : (!comprobado ? 'mandado, pero no se pudo comprobar contra el servidor' : ''));
+  }
+  pintaEstado();
+  if (pendientesDeVerdad()){
+    clearTimeout(pendiente);
+    pendiente = setTimeout(guardar, esperaReintento);
+    esperaReintento = Math.min(esperaReintento * 2, 30000);
+  }
+}
+
+/* Vuelve la línea: se reintenta ya, sin esperar a que venza la cuenta atrás. */
+function reintentaYa(){
+  if (!PUEDE_EDITAR || !pendientesDeVerdad()) return;
+  esperaReintento = 4000;
+  clearTimeout(pendiente);
+  guardar();
+}
+
+/* Un empujón final al esconderse la pestaña. No se espera la respuesta: si no
+   llega, el borrador local la recupera al volver a abrir. */
+function mandaUltimoIntento(){
+  if (!PUEDE_EDITAR) return;
+  SUCIAS.forEach(function(clave){
+    const z = document.querySelector('.zona[data-edit="' + clave + '"]');
+    if (!z) return;
+    const html = limpiaHTML(z.innerHTML);
+    const orig = textoOriginal(z);
+    const vuelto = orig != null && html === limpiaHTML(orig);
+    manda(vuelto ? { accion: 'borrar', clave: clave }
+                 : { accion: 'guardar', clave: clave, html: html }, true)
+      .catch(function(){});
+  });
+}
+
+/* Dos bloques con la misma clave se pisan: querySelector devuelve siempre el
+   primero, así que editar el segundo guardaba el texto del primero y tiraba el
+   cambio sin decir nada. Pasó de verdad con los 47 puntos de la hoja de ruta.
+   Esto lo caza en el arranque en vez de dejarlo perder trabajo en silencio. */
+const CLAVE_SERVIDOR = /^[a-z0-9]{1,6}(-[a-z0-9]{1,8}){1,3}$/;
+function compruebaClaves(){
+  const vistas = new Set(), repes = new Set(), malas = [];
+  $$('.zona').forEach(function(z){
+    const k = z.dataset.edit || '';
+    if (vistas.has(k)) repes.add(k); else vistas.add(k);
+    if (!CLAVE_SERVIDOR.test(k)) malas.push(k);
+  });
+  DIAG.claves = repes.size || malas.length
+    ? (repes.size + ' repetidas, ' + malas.length + ' no válidas')
+    : vistas.size + ' correctas';
+  if (repes.size || malas.length){
+    DIAG.error = 'hay bloques que no se pueden guardar bien: ' +
+      Array.from(repes).concat(malas).slice(0, 6).join(', ');
+    avisa('Aviso: ' + DIAG.error + '. Dilo antes de seguir editando.');
+  }
+  return repes.size + malas.length;
+}
+
+/* Devuelve las claves cuya fila en el servidor NO coincide con lo que se mandó. */
+async function compruebaGuardado(claves){
+  const lista = claves.filter(function(k){ return /^[a-z0-9-]+$/.test(k); });
+  if (!lista.length) return [];
+  const filas = await pide('fb360_ediciones?select=clave,html&clave=in.(' + lista.join(',') + ')');
+  const enBase = new Map();
+  filas.forEach(function(f){ enBase.set(f.clave, f.html); });
+  DIAG.comprobado = lista.length;
+  return lista.filter(function(k){
+    const esperado = CONFIRMADO.get(k);
+    if (esperado === null || esperado === undefined) return enBase.has(k);   // se pidió borrar
+    return limpiaHTML(enBase.get(k) || '') !== limpiaHTML(esperado);
+  });
 }
 
 function pintaEstado(extra){
   const el = document.getElementById('estado-edicion');
   if (!el) return;
-  let t;
+  let t, mal = false;
   if (guardando) t = 'Guardando…';
-  else if (SUCIAS.size) t = '<span class="punto-rojo"></span> Sin guardar (' + SUCIAS.size + ')';
-  else if (ultimoGuardado) t = '<b>Guardado</b> a las ' + ultimoGuardado.toLocaleTimeString('es-ES', {hour:'2-digit', minute:'2-digit'});
+  else if (SUCIAS.size){ t = '<span class="punto-rojo"></span> Sin guardar (' + SUCIAS.size + ')'; mal = true; }
+  else if (ultimoGuardado) t = '<b>Guardado</b> y comprobado a las ' +
+    ultimoGuardado.toLocaleTimeString('es-ES', {hour:'2-digit', minute:'2-digit'});
+  else if (ultimoError) t = 'Mandado';
   else t = 'Todo al día';
-  el.innerHTML = t + (extra ? ' · ' + esc(extra) : '');
+  const nota = extra || ultimoError;
+  if (ultimoError) mal = true;
+  el.className = 'estado' + (mal ? ' mal' : '');
+  el.innerHTML = t + (nota ? ' · ' + esc(nota) : '');
+  /* Al pulsar «Listo» se ocultaba el panel y con él el único sitio donde se ve
+     si algo falló. Mientras quede algo por guardar, el panel se queda. */
+  document.body.classList.toggle('pendiente', !!(SUCIAS.size || guardando));
+  if (MIDE_PANEL) MIDE_PANEL();
 }
 
+/* El cartelito de abajo. Se crea aquí la primera vez que hace falta: nadie lo
+   ponía en el documento, así que todos los avisos —los de error incluidos— se
+   perdían sin que nadie los viera. */
 function avisa(texto){
-  const el = document.getElementById('aviso-lectura');
-  if (!el) return;
+  let el = document.getElementById('aviso-lectura');
+  if (!el){
+    el = document.createElement('div');
+    el.id = 'aviso-lectura';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    document.body.appendChild(el);
+  }
   el.textContent = texto;
   el.classList.add('visible');
   clearTimeout(avisa._t);
-  avisa._t = setTimeout(function(){ el.classList.remove('visible'); }, 3000);
+  avisa._t = setTimeout(function(){ el.classList.remove('visible'); }, 4000);
 }
 
 /* ---------- pintar una edición sobre el informe ---------- */
@@ -2417,19 +2745,20 @@ function aplicaEdicion(clave, html){
   refrescaIndice(zona);
 }
 
-async function revierte(zona){
+function revierte(zona){
   const orig = textoOriginal(zona);
   if (orig == null || zona.innerHTML === orig){ avisa('Este bloque ya está como el original.'); return; }
   confirmaYa();
   zona.innerHTML = orig;
   sincronizaZona(zona);
   confirma(zona);                     // devolver el bloque también se deshace
-  SUCIAS.delete(zona.dataset.edit);
-  pintaEstado();
-  if (PUEDE_EDITAR){
-    try { await manda({ accion: 'borrar', clave: zona.dataset.edit }); avisa('Devuelto al original'); }
-    catch (e){ avisa('No se pudo borrar en el servidor: ' + e.message); }
-  }
+  /* No se habla con el servidor aquí. Se marca como sucio y guardar() se
+     encarga: al ver que el bloque volvió a su texto de partida manda borrar,
+     y si falla lo reintenta y lo dice. Antes se borraba a mano, se quitaba de
+     lo pendiente ANTES de saber si el servidor había aceptado, y un fallo
+     dejaba el bloque revertido en pantalla y guardado en la base. */
+  marcaSucia(zona);
+  avisa('Devuelto al original. Guardando…');
 }
 
 /* el buscador tiene que encontrar también lo que se acaba de escribir */
@@ -2650,6 +2979,8 @@ const HERRAMIENTAS = [
   { cmd: 'justifyCenter',  css: 1, ico: ICO.centro, t: 'Centrar',                estado: 'justifyCenter' },
   { cmd: 'justifyRight',   css: 1, ico: ICO.der,    t: 'Alinear a la derecha',   estado: 'justifyRight' },
   { sep: 1, burbuja: 1 },
+  { tamanos: 1, burbuja: 1 },
+  { sep: 1, burbuja: 1 },
   { tintas: 1, burbuja: 1 },
   { sep: 1, burbuja: 1 },
   { fondos: 1, burbuja: 1 },
@@ -2674,6 +3005,13 @@ function dibujaBoton(h){
     return PALETA_FONDO.map(function(c){
       return '<button type="button" data-fondo="' + c + '" title="Resaltar">' +
              '<span class="tinta" style="background:' + c + '"></span></button>';
+    }).join('');
+  }
+  if (h.tamanos){
+    return PALETA_TAMANO.map(function(t){
+      return '<button type="button" data-tam="' + t[0] + '" title="' + t[1] + '" ' +
+             'aria-label="' + t[1] + '">' +
+             '<span class="letra" style="font-size:' + t[2] + 'px">A</span></button>';
     }).join('');
   }
   let a = '';
@@ -2714,6 +3052,62 @@ function construyeFormato(){
 /* ---------- ejecutar una herramienta ---------- */
 let zonaDestinoImg = null, pideImagen = null;
 
+/* No hay orden de navegador para «letra a 1,25 em»: la que existe usa palabras
+   —x-small… xxx-large— que son absolutas y se pelean con la escala del informe.
+   Se marca la selección con el tamaño 7, que el navegador sí sabe aplicar a
+   trozos sueltos de texto, y acto seguido se cambia esa marca por el valor que
+   queremos. Es el truco de siempre, y es el único que respeta la selección. */
+function ponTamano(zona, valor){
+  const sel = getSelection();
+  if (!sel || !sel.rangeCount || sel.isCollapsed){
+    avisa('Selecciona antes el texto que quieras cambiar de tamaño.');
+    return;
+  }
+  try { document.execCommand('styleWithCSS', false, true); } catch (e){}
+  document.execCommand('fontSize', false, '7');
+  const marcados = $$('[style*="xxx-large"]', zona).concat($$('font[size="7"]', zona));
+  marcados.forEach(function(el){
+    let caja = el;
+    if (el.tagName === 'FONT'){          // el navegador no hizo caso a styleWithCSS
+      caja = document.createElement('span');
+      while (el.firstChild) caja.appendChild(el.firstChild);
+      el.parentNode.insertBefore(caja, el);
+      el.remove();
+    }
+    caja.style.fontSize = valor || '';
+    /* que pulsar dos veces no acumule: dentro no queda ningún tamaño suelto */
+    $$('[style*="font-size"]', caja).forEach(function(d){ d.style.fontSize = ''; });
+    if (!caja.getAttribute('style')) caja.removeAttribute('style');
+  });
+}
+
+/* «Normal» tiene que QUITAR el color, no pintar uno: pintaba #0b0b0b fijo, que
+   en tema oscuro es texto casi negro sobre fondo oscuro —ilegible— y encima se
+   guardaba así para todo el mundo. Mismo truco que el tamaño: se marca la
+   selección con un color imposible y después se le quita la propiedad. */
+function quitaTinta(zona){
+  document.execCommand('foreColor', false, '#010203');
+  $$('[style]', zona).forEach(function(el){
+    const c = (el.style.color || '').replace(/\s/g, '');
+    if (c !== 'rgb(1,2,3)' && c !== '#010203') return;
+    el.style.color = '';
+    $$('*', el).forEach(function(d){ if (d.style && d.style.color) d.style.color = ''; });
+    if (!el.getAttribute('style')) el.removeAttribute('style');
+  });
+}
+
+/* Firefox —y a veces los demás— escriben la sangría como «margin: 0 0 0 40px».
+   El filtro solo deja pasar margin-left, así que se pasa a esa forma antes de
+   guardar; si no, la sangría se ve al hacerla y desaparece al recargar. */
+function normalizaSangria(zona){
+  $$('[style]', zona).forEach(function(el){
+    const izq = el.style.marginLeft;
+    if (!izq) return;
+    el.style.margin = '';
+    el.style.marginLeft = izq;
+  });
+}
+
 function ponEnlace(zona){
   const sel = getSelection();
   const guardado = sel && sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
@@ -2744,16 +3138,23 @@ function ejecuta(b){
   baseDe(z);
   /* styleWithCSS solo donde hace falta: la negrita y las demás salen mejor
      como etiqueta, y el color no sobrevive de otra forma. */
-  const conCSS = !!(b.dataset.css || b.hasAttribute('data-tinta') || b.hasAttribute('data-fondo'));
+  const conCSS = !!(b.dataset.css || b.hasAttribute('data-tinta') ||
+                    b.hasAttribute('data-fondo') || b.hasAttribute('data-tam'));
   try { document.execCommand('styleWithCSS', false, conCSS); } catch (e){}
   if (b.dataset.enlace) ponEnlace(z);
+  else if (b.hasAttribute('data-tam')) ponTamano(z, b.getAttribute('data-tam'));
   else if (b.dataset.bloque) document.execCommand('formatBlock', false, b.dataset.bloque);
   else if (b.dataset.cmd) document.execCommand(b.dataset.cmd);
-  else if (b.hasAttribute('data-tinta')) document.execCommand('foreColor', false, b.getAttribute('data-tinta') || '#0b0b0b');
+  else if (b.hasAttribute('data-tinta')){
+    const tinta = b.getAttribute('data-tinta');
+    if (tinta) document.execCommand('foreColor', false, tinta);
+    else quitaTinta(z);
+  }
   else if (b.hasAttribute('data-fondo')){
     const c = b.getAttribute('data-fondo');
     if (!document.execCommand('hiliteColor', false, c)) document.execCommand('backColor', false, c);
   }
+  if (b.dataset.cmd === 'indent' || b.dataset.cmd === 'outdent') normalizaSangria(z);
   if (confirma(z)) marcaSucia(z);
   pintaBotones();
 }
@@ -2837,6 +3238,10 @@ function modoEdicion(on){
     if (et) et.textContent = on ? 'Listo' : 'Editar';
   }
   if (on){
+    $$('.zona mark').forEach(function(m){
+      m.parentNode.replaceChild(document.createTextNode(m.textContent), m);
+    });
+    $$('.zona').forEach(function(z){ z.normalize(); });
     pintaBotones();
     avisa('Todo lo que salga con borde punteado se puede escribir. ' +
           $$('.zona').length + ' bloques.');
@@ -2848,13 +3253,33 @@ function modoEdicion(on){
 }
 
 /* ---------- traer lo que hay guardado ---------- */
+/* Cada escritura sube este número. Una lectura que salió antes de la última
+   escritura llega con datos viejos: si se pintara, devolvería el bloque a como
+   estaba antes de guardar, delante del usuario. */
+let selloEscritura = 0;
+
 async function traeEdiciones(){
+  const selloAlPedir = selloEscritura;
   try {
-    const filas = await pide('fb360_ediciones?select=clave,html');
-    DIAG.lectura = 'sí'; DIAG.ediciones = filas.length; DIAG.error = '';
+    const filas = await pide('fb360_ediciones?select=clave,html&limit=2000');
+    if (selloEscritura !== selloAlPedir){
+      DIAG.lectura = 'sí';
+      return true;                 // se escribió mientras leíamos: esta foto ya es vieja
+    }
+    DIAG.lectura = 'sí'; DIAG.error = '';
     const vistas = new Set();
     filas.forEach(function(f){ vistas.add(f.clave); aplicaEdicion(f.clave, f.html); });
-    /* lo que ya no está en el servidor vuelve a su original */
+    /* Lo que ya no está en el servidor vuelve a su original. Pero una respuesta
+       vacía donde antes había filas, o una que viene justo en el tope, huele a
+       lectura a medias: entonces no se deshace nada. Deshacer trabajo por una
+       respuesta rara es peor que enseñar algo desactualizado treinta segundos. */
+    const sospechosa = (filas.length === 0 && DIAG.ediciones > 0) || filas.length >= 2000;
+    DIAG.ediciones = filas.length;
+    if (sospechosa){
+      DIAG.error = 'respuesta rara del servidor (' + filas.length + ' filas): no se ha deshecho nada';
+      pintaDiag();
+      return true;
+    }
     $$('.zona.editada').forEach(function(z){
       const k = z.dataset.edit;
       if (!vistas.has(k) && ORIGINAL.has(k) && !SUCIAS.has(k) && document.activeElement !== z){
@@ -2896,12 +3321,20 @@ async function initEdicion(){
   const m = (location.hash || '').match(/^#k=([A-Za-z0-9-]{8,80})$/);
   if (m){
     TOKEN = m[1];
-    try { localStorage.setItem(CLAVE_TOKEN, TOKEN); } catch (e){}
-    /* fuera de la barra de direcciones: que no acabe en el historial, en una
-       captura de pantalla ni en un enlace reenviado sin querer */
-    const sinHash = location.href.split('#')[0];
-    try { history.replaceState(null, '', sinHash); } catch (e){}
-    if (location.hash){ try { location.replace(sinHash); } catch (e){} }
+    let recordado = false;
+    try { localStorage.setItem(CLAVE_TOKEN, TOKEN); recordado = true; } catch (e){}
+    /* Fuera de la barra de direcciones: que no acabe en el historial, en una
+       captura de pantalla ni en un enlace reenviado sin querer. Pero solo si
+       el navegador ha podido recordarlo; si no —Safari con el almacenamiento
+       bloqueado—, quitárselo dejaría a esa persona en solo lectura al
+       recargar, sin manera de volver. */
+    if (recordado){
+      const sinHash = location.href.split('#')[0];
+      try { history.replaceState(null, '', sinHash); } catch (e){}
+      if (location.hash){ try { location.replace(sinHash); } catch (e){} }
+    } else {
+      DIAG.token = 'sí (este navegador no lo puede recordar: no cierres la pestaña)';
+    }
   } else {
     try { TOKEN = localStorage.getItem(CLAVE_TOKEN); } catch (e){ TOKEN = null; }
   }
@@ -2918,13 +3351,26 @@ async function initEdicion(){
     PUEDE_EDITAR = false;
     DIAG.escritura = 'no';
     DIAG.error = (e && e.message) || 'la comprobación del enlace falló';
-    try { localStorage.removeItem(CLAVE_TOKEN); } catch (e2){}
-    avisa('El enlace de edición no vale: ' + DIAG.error);
+    /* Solo un 401 significa que el enlace no vale. Un corte de red o un
+       servidor lento NO pueden borrar el token: el hash ya no está en la
+       barra de direcciones, así que borrarlo dejaba a la persona en solo
+       lectura sin manera de volver. */
+    if (e && e.estado === 401){
+      try { localStorage.removeItem(CLAVE_TOKEN); } catch (e2){}
+      avisa('El enlace de edición ya no vale: ' + DIAG.error);
+    } else {
+      DIAG.escritura = 'no se pudo comprobar';
+      avisa('No se pudo comprobar el enlace de edición (' + DIAG.error +
+            '). El enlace sigue guardado: vuelve a cargar la página cuando haya conexión.');
+    }
     pintaDiag();
     return;
   }
   document.body.classList.add('puede-editar');
   montaEditor();
+  compruebaClaves();
+  const rescatados = recuperaBorrador();
+  if (rescatados) modoEdicion(true);
   pintaDiag();
 }
 
@@ -3087,14 +3533,46 @@ function montaEditor(){
   /* devolver este navegador a modo lectura: olvida el enlace de edición */
   document.getElementById('btn-salir-editor').addEventListener('click', async function(){
     confirmaYa();
-    if (SUCIAS.size && !confirm('Hay cambios sin guardar. ¿Salir igualmente?')) return;
-    await guardar().catch(function(){});
+    /* Un guardar() lanzado mientras ya se guarda vuelve enseguida sin esperar
+       a nada: irse en ese momento se llevaba por delante lo que estuviera de
+       camino, y además borraba el token, así que el borrador local ya no se
+       podía mandar nunca. Aquí se espera de verdad. */
+    if (SUCIAS.size){
+      avisa('Guardando lo que queda antes de cerrar la sesión…');
+      await guardar().catch(function(){});
+      for (let i = 0; i < 60 && guardando; i++){
+        await new Promise(function(r){ setTimeout(r, 250); });
+      }
+    }
+    if (SUCIAS.size){
+      const sigue = confirm('Todavía quedan ' + SUCIAS.size + ' bloque(s) sin guardar.\n\n' +
+        'Si cierras la sesión de editor ahora, este navegador ya no podrá mandarlos ' +
+        'y ese trabajo se pierde.\n\n¿Cerrar la sesión igualmente?');
+      if (!sigue) return;
+      olvidaBorrador();
+    }
     try { localStorage.removeItem(CLAVE_TOKEN); } catch (e){}
     location.replace(location.href.split('#')[0]);
   });
 
   addEventListener('beforeunload', function(e){
-    if (SUCIAS.size){ e.preventDefault(); e.returnValue = ''; }
+    if (SUCIAS.size){ anotaBorrador(); e.preventDefault(); e.returnValue = ''; }
+  });
+  /* En el móvil no hay beforeunload que valga: el sistema descarta la pestaña
+     al cambiar de aplicación. Estos dos sí llegan, y el borrador se escribe al
+     instante; el envío va con keepalive por si da tiempo. */
+  addEventListener('online', reintentaYa);
+  addEventListener('focus', reintentaYa);
+  addEventListener('visibilitychange', function(){
+    if (document.visibilityState !== 'hidden'){ reintentaYa(); return; }
+    if (!SUCIAS.size) return;
+    anotaBorrador();
+    mandaUltimoIntento();
+  });
+  addEventListener('pagehide', function(){
+    if (!SUCIAS.size) return;
+    anotaBorrador();
+    mandaUltimoIntento();
   });
 
   pintaEstado();
@@ -3103,7 +3581,14 @@ function montaEditor(){
 
 async function exporta(){
   let filas = [];
-  try { filas = await pide('fb360_ediciones?select=clave,html,actualizado'); } catch (e){}
+  try { filas = await pide('fb360_ediciones?select=clave,html,actualizado&limit=2000'); }
+  catch (e){
+    /* un respaldo vacío por un fallo de lectura es peor que no dar ninguno:
+       parece que no hay nada guardado */
+    avisa('No se pudo leer del servidor (' + e.message + '). No se ha descargado nada.');
+    DIAG.error = 'descarga: ' + e.message; pintaDiag();
+    return;
+  }
   const salida = { informe: DATA.meta.titulo, generado: new Date().toISOString(), ediciones: filas };
   const blob = new Blob([JSON.stringify(salida, null, 1)], { type: 'application/json' });
   const a = document.createElement('a');
